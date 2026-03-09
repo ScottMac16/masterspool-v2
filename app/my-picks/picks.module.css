@@ -1,0 +1,282 @@
+.page {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.leftHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background: white;
+}
+
+.leftTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a4731;
+}
+
+.search {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  outline: none;
+  width: 180px;
+}
+
+.golferList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.golferHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background: #1a4731;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+}
+
+.golferRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.golferRow:hover {
+  background: #f5f0e8;
+}
+
+.picked {
+  background: #e8f5e9 !important;
+  border-left: 3px solid #1a4731;
+}
+
+.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.golferInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headshot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.golferName {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.golferRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.salary {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a4731;
+}
+
+.checkmark {
+  color: #1a4731;
+  font-weight: 700;
+}
+
+/* RIGHT PANEL */
+.right {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow-y: auto;
+  background: #fafafa;
+  gap: 16px;
+}
+
+.capBar {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.capInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.over { color: #8b1a1a; }
+
+.capTrack {
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.capFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.2s;
+}
+
+.capCount {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: right;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input:focus { border-color: #1a4731; }
+
+.grandPool {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.selectedList h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a4731;
+}
+
+.empty {
+  font-size: 0.85rem;
+  color: #999;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.selectedRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.pickNum {
+  font-size: 0.75rem;
+  color: #999;
+  width: 16px;
+}
+
+.smallHeadshot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pickName {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.pickSalary {
+  font-size: 0.8rem;
+  color: #1a4731;
+  font-weight: 600;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+}
+
+.removeBtn:hover { color: #8b1a1a; }
+
+.submitBtn {
+  background: #1a4731;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submitBtn:hover { background: #2d6a4f; }
+.submitBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.locked {
+  text-align: center;
+  color: #8b1a1a;
+  font-weight: 600;
+  padding: 12px;
+  background: #fff0f0;
+  border-radius: 8px;
+}
+
+.noOrg {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+  padding: 12px;
+}
+

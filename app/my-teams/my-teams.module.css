@@ -1,0 +1,147 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a4731;
+  margin-bottom: 4px;
+}
+
+.tournament {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 0;
+  color: #888;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 12px;
+  background: #1a4731;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.teamGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.teamCard {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.teamHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #1a4731;
+  color: white;
+}
+
+.teamName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+}
+
+.poolName {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.grandPoolBadge {
+  background: #c9a84c;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.salary {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+}
+
+.golferGrid {
+  padding: 12px 20px;
+}
+
+.golferRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.golferRow:last-child {
+  border-bottom: none;
+}
+
+.golferNum {
+  font-size: 0.75rem;
+  color: #999;
+  width: 16px;
+}
+
+.headshot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+}
+
+.golferName {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.golferSalary {
+  font-size: 0.85rem;
+  color: #1a4731;
+  font-weight: 600;
+}
+
+.editBtn {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  background: #f5f0e8;
+  color: #1a4731;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-top: 1px solid #e0e0e0;
+}
+
+.editBtn:hover {
+  background: #ede8e0;
+}

@@ -4,7 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET() {
   const { data } = await supabaseAdmin
-    .from('tournaments')
+    .from('orgs')
     .select('*')
     .order('created_at', { ascending: false })
   return Response.json(data || [])
@@ -15,19 +15,14 @@ export async function POST(req) {
   if (!isSuperAdmin(userId)) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
   const body = await req.json()
-  console.log('Inserting:', body)
-  
   const { data, error } = await supabaseAdmin
-    .from('tournaments')
-    .insert(body)
+    .from('orgs')
+    .insert({ ...body, admin_user_id: userId })
     .select()
     .single()
 
-  
-  console.log('Result:', data, 'Error:', error)
-
   if (error) return Response.json({ error }, { status: 500 })
-  
   return Response.json(data)
 }

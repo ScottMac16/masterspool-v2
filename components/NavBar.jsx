@@ -11,13 +11,14 @@ export default function NavBar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.left}>
-        <Link href="/leaderboard" className={styles.logo}>⛳ Masters Pool</Link>
+        <Link href="/leaderboard" className={styles.logo}>SM Masters Pool</Link>
       </div>
       <div className={styles.right}>
         <Link href="/leaderboard" className={styles.link}>Leaderboard</Link>
         <Link href="/my-picks" className={styles.link}>My Picks</Link>
+        <Link href="/my-teams" className={styles.link}>My Teams</Link>
         {isAdmin && (
-          <Link href="/admin" className={styles.adminLink}>Admin ⚙️</Link>
+          <Link href="/admin" className={styles.adminLink}>Admin</Link>
         )}
         <SignOutButton>
           <button className={styles.signOut}>Sign Out</button>

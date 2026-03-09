@@ -2,11 +2,14 @@ import { auth } from '@clerk/nextjs/server'
 import { isSuperAdmin } from '@/lib/admin'
 import { supabaseAdmin } from '@/lib/supabase'
 
-export async function GET() {
+export async function GET(req) {
+  const { searchParams } = new URL(req.url)
+  const tournament_id = searchParams.get('tournament_id')
   const { data } = await supabaseAdmin
-    .from('tournaments')
+    .from('golfer_salaries')
     .select('*')
-    .order('created_at', { ascending: false })
+    .eq('tournament_id', tournament_id)
+    .order('salary', { ascending: false })
   return Response.json(data || [])
 }
 
@@ -16,18 +19,10 @@ export async function POST(req) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const body = await req.json()
-  console.log('Inserting:', body)
-  
   const { data, error } = await supabaseAdmin
-    .from('tournaments')
-    .insert(body)
+    .from('golfer_salaries')
+    .upsert(body, { onConflict: 'tournament_id,golfer_espn_id' })
     .select()
-    .single()
-
-  
-  console.log('Result:', data, 'Error:', error)
-
   if (error) return Response.json({ error }, { status: 500 })
-  
   return Response.json(data)
 }

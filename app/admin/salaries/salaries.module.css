@@ -1,0 +1,171 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 24px 60px;
+}
+
+.back {
+  color: #1a4731;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a4731;
+  margin: 16px 0 24px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.tournamentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tournamentBtn {
+  background: #f0f0f0;
+  border: 2px solid transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.tournamentBtn:hover { background: #e0e0e0; }
+
+.active {
+  background: #1a4731;
+  color: white;
+  border-color: #1a4731;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.hint code {
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.fileInput {
+  font-size: 0.9rem;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.golferList {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.golferHeader {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  padding: 10px 16px;
+  background: #1a4731;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.golferRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.golferRow:last-child { border-bottom: none; }
+.golferRow:hover { background: #f9f9f9; }
+
+.golferInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headshot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.csvName {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.salary {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.salaryInput {
+  width: 110px;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.salaryInput:focus { border-color: #1a4731; }
+
+.saveBtn {
+  background: #1a4731;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.saveBtn:hover { background: #2d6a4f; }
+.saveBtn:disabled { opacity: 0.6; cursor: not-allowed; }
