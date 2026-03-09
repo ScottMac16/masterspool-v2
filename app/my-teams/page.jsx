@@ -53,16 +53,13 @@ export default async function MyTeamsPage() {
             <div className={styles.teamHeader}>
               <div>
                 <h2 className={styles.teamName}>{team.team_name}</h2>
-                <span className={styles.poolName}>{poolMap[team.pool_id]}</span>
-              </div>
-              <div className={styles.badges}>
+                <span className={styles.poolName}>
                 {team.in_grand_pool && (
-                  <span className={styles.grandPoolBadge}>🏆 Grand Pool</span>
+                  <span>SM Masters Pool, </span>
                 )}
-                <span className={styles.salary}>
-                  💰 ${team.total_salary?.toLocaleString()}
-                </span>
+                  {poolMap[team.pool_id]}</span>
               </div>
+
             </div>
 
             <div className={styles.golferGrid}>
@@ -86,7 +83,7 @@ export default async function MyTeamsPage() {
 
             {!tournament?.picks_locked && (
               <a href={`/my-picks?edit=${team.id}`} className={styles.editBtn}>
-                ✏️ Edit Team
+                Edit Team
               </a>
             )}
           </div>

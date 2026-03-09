@@ -1,5 +1,6 @@
 .container {
-  max-width: 900px;
+  max-width: 1920px;
+  width: 100%;
   margin: 40px auto;
   padding: 0 24px;
 }
@@ -35,15 +36,20 @@
 }
 
 .teamGrid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(425px, 1fr));
   gap: 20px;
 }
 
 .teamCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: white;
+
+  flex: 0 0 425px;   /* key change */
   border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
