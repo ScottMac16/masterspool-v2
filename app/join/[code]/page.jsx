@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
-import JoinClient from './JoinClient'
+import JoinClient from '../JoinClient'
 
 export default async function JoinPage() {
   const { userId } = await auth()
