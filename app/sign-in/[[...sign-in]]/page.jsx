@@ -16,6 +16,7 @@ export default function SignInPage() {
 
           },
           elements: {
+    
             card: {
               boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
               border: '2px solid white',
@@ -34,15 +35,16 @@ export default function SignInPage() {
               color: '#1a4731',
             },
              footer: {
-                display: 'none', // remove this line
+
               },
-              footerPages: {
-                display: 'block',
-              },
+
               footerPagesLink__signUp: {
                 display: 'block',
               },
               internal__clerk_branding: {
+                display: 'none',
+              },
+              'footer > div > div': {
                 display: 'none',
               },
           }

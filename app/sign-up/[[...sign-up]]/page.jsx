@@ -34,7 +34,7 @@ export default function SignUpPage() {
               color: '#1a4731',
             },
             footer: {
-                display: 'none', // remove this line
+    
               },
               footerPages: {
                 display: 'block',
