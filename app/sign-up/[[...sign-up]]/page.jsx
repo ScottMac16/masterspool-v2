@@ -9,7 +9,7 @@ export default function SignUpPage() {
           variables: {
             colorPrimary: '#1a4731',
             colorText: '#1a1a1a',
-            colorBackground: '#ffffff',
+            colorBackground: '#ffffff84',
             colorInputBackground: '#f9f9f9',
             borderRadius: '10px',
             fontFamily: 'inherit',
