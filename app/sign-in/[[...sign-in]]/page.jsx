@@ -9,19 +9,17 @@ export default function SignInPage() {
           variables: {
             colorPrimary: '#1a4731',
             colorText: '#1a1a1a',
-            colorBackground: '#ffffff95',
+            colorBackground: '#ffffff',
             colorInputBackground: '#f9f9f9',
             borderRadius: '10px',
             fontFamily: 'inherit',
-
           },
           elements: {
-    
             card: {
               boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
-              border: '2px solid white',
-              backdropFilter: 'blur(5px)',
-              
+              border: 'none',
+              backdropFilter: 'blur(40px)',
+              backgroundColor: 'rgba(255,255,255,0.75)',
             },
             headerTitle: {
               color: '#1a4731',
@@ -29,27 +27,16 @@ export default function SignInPage() {
             },
             formButtonPrimary: {
               backgroundColor: '#1a4731',
-              '&:hover': { backgroundColor: '#2d6a4f' },
             },
-            footerActionLink: {
-              color: '#1a4731',
+            footer: {
+              display: 'none',
             },
-             footer: {
-
-              },
-
-              footerPagesLink__signUp: {
-                display: 'block',
-              },
-              internal__clerk_branding: {
-                display: 'none',
-              },
-              'footer > div > div': {
-                display: 'none',
-              },
           }
         }}
       />
+      <p className={styles.switchLink}>
+        Don't have an account? <a href="/sign-up">Sign up</a>
+      </p>
     </div>
   )
 }
