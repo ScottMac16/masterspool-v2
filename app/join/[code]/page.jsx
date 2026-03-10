@@ -1,45 +1,32 @@
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
-import styles from '../join.module.css'
+import JoinClient from './JoinClient'
 
-export default async function JoinCodePage({ params }) {
-  const { code } = await params
+export default async function JoinPage() {
   const { userId } = await auth()
 
-  const { data: org } = await supabaseAdmin
-    .from('orgs')
-    .select('*')
-    .eq('join_code', code)
-    .single()
-
-  if (!org) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.card}>
-          <div className={styles.icon}>❌</div>
-          <h1 className={styles.title}>Invalid invite link</h1>
-          <p className={styles.subtitle}>This invite link is invalid or has expired.</p>
-        </div>
-      </div>
-    )
-  }
-
-  // Check if already a member
-  const { data: existing } = await supabaseAdmin
+  // Check if already in any org
+  const { data: memberships } = await supabaseAdmin
     .from('org_members')
     .select('id')
-    .eq('org_id', org.id)
     .eq('user_id', userId)
+
+  if (memberships?.length > 0) {
+    redirect('/my-picks')
+  }
+
+  // New user — make sure they exist in users table
+  const { data: existingUser } = await supabaseAdmin
+    .from('users')
+    .select('id')
+    .eq('id', userId)
     .single()
 
-  if (existing) redirect('/my-picks')
+  if (!existingUser) {
+    // Insert basic user record if webhook hasn't fired yet
+    await supabaseAdmin.from('users').insert({ id: userId })
+  }
 
-  // Join the org
-  await supabaseAdmin.from('org_members').insert({
-    org_id: org.id,
-    user_id: userId,
-  })
-
-  redirect('/my-picks')
+  return <JoinClient />
 }
