@@ -33,7 +33,16 @@ export default function SignUpPage() {
             footerActionLink: {
               color: '#1a4731',
             },
-              footer: {
+            footer: {
+                display: 'none', // remove this line
+              },
+              footerPages: {
+                display: 'block',
+              },
+              footerPagesLink__signUp: {
+                display: 'block',
+              },
+              internal__clerk_branding: {
                 display: 'none',
               },
           }
