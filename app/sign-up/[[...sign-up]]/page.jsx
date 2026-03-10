@@ -1,8 +1,9 @@
 import { SignUp } from '@clerk/nextjs'
+import styles from './sign-up.module.css'
 
 export default function SignUpPage() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
+    <div className={styles.container}>
       <SignUp
         appearance={{
           variables: {
