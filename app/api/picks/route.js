@@ -25,7 +25,6 @@ export async function POST(req) {
 
   const totalSalary = picks.reduce((sum, p) => sum + p.salary, 0)
 
-  // Build golfer columns
   const golferCols = {}
   picks.forEach((p, i) => {
     golferCols[`golfer_${i + 1}`] = {
@@ -45,6 +44,39 @@ export async function POST(req) {
       total_salary: totalSalary,
       ...golferCols,
     })
+    .select()
+    .single()
+
+  if (error) return Response.json({ error }, { status: 500 })
+  return Response.json({ success: true, team })
+}
+
+export async function PUT(req) {
+  const { userId } = await auth()
+  const body = await req.json()
+  const { team_id, team_name, in_grand_pool, picks } = body
+
+  const totalSalary = picks.reduce((sum, p) => sum + p.salary, 0)
+
+  const golferCols = {}
+  picks.forEach((p, i) => {
+    golferCols[`golfer_${i + 1}`] = {
+      id: p.golfer_espn_id,
+      name: p.golfer_name,
+      salary: p.salary,
+    }
+  })
+
+  const { data: team, error } = await supabaseAdmin
+    .from('teams')
+    .update({
+      team_name,
+      in_grand_pool,
+      total_salary: totalSalary,
+      ...golferCols,
+    })
+    .eq('id', team_id)
+    .eq('user_id', userId)
     .select()
     .single()
 

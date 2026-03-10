@@ -30,6 +30,12 @@ export default async function AdminPage() {
           <a href="/admin/salaries" className={styles.btn}>Manage</a>
         </div>
 
+        <div className={styles.card}>
+          <h2>📋 Entries</h2>
+          <p>View all entries and track payments</p>
+          <a href="/admin/entries" className={styles.btn}>Manage</a>
+        </div>
+
       </div>
     </div>
   )

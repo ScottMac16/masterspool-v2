@@ -3,10 +3,11 @@ import { supabaseAdmin } from '@/lib/supabase'
 import PicksClient from './PicksClient'
 import { redirect } from 'next/navigation'
 
-export default async function MyPicksPage() {
+export default async function MyPicksPage({ searchParams }) {
   const { userId } = await auth()
+  const { edit } = await searchParams
 
-  // Get the active tournament
+  // Get latest tournament
   const { data: tournament } = await supabaseAdmin
     .from('tournaments')
     .select('*')
@@ -30,29 +31,39 @@ export default async function MyPicksPage() {
     .eq('user_id', userId)
 
   // Get golfers with salaries for this tournament
-const { data: salaries, error: salariesError } = await supabaseAdmin
-  .from('golfer_salaries')
-  .select('*')
-  .eq('tournament_id', tournament.id)
-  .order('salary', { ascending: false })
+  const { data: salaries } = await supabaseAdmin
+    .from('golfer_salaries')
+    .select('*')
+    .eq('tournament_id', tournament.id)
+    .order('salary', { ascending: false })
 
+  // Get pools for this tournament
+  const { data: pools } = await supabaseAdmin
+    .from('pools')
+    .select('id')
+    .eq('tournament_id', tournament.id)
 
-  // Get user's existing teams for this tournament
+  const poolIds = pools?.map(p => p.id) || []
+
+  // Get user's existing teams
   const { data: existingTeams } = await supabaseAdmin
     .from('teams')
-    .select('*, picks(*)')
+    .select('*')
     .eq('user_id', userId)
-    .in('pool_id', memberships?.length > 0 ? (
-      await supabaseAdmin
-        .from('pools')
-        .select('id')
-        .eq('tournament_id', tournament.id)
-        .then(r => r.data?.map(p => p.id) || [])
-    ) : ['none'])
+    .in('pool_id', poolIds.length > 0 ? poolIds : ['none'])
+    .order('created_at', { ascending: false })
+
+  // If editing, load that team
+  let editTeam = null
+  if (edit) {
+    editTeam = existingTeams?.find(t => t.id === edit) || null
+  }
 
   const orgs = memberships?.map(m => m.orgs) || []
 
-
+  console.log('Orgs:', orgs)
+console.log('Memberships:', memberships)
+console.log('userId:', userId)
 
   return (
     <PicksClient
@@ -61,6 +72,7 @@ const { data: salaries, error: salariesError } = await supabaseAdmin
       salaries={salaries || []}
       existingTeams={existingTeams || []}
       userId={userId}
+      editTeam={editTeam}
     />
   )
 }

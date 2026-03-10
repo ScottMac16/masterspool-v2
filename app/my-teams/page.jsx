@@ -50,17 +50,25 @@ export default async function MyTeamsPage() {
       <div className={styles.teamGrid}>
         {teams?.map(team => (
           <div key={team.id} className={styles.teamCard}>
-            <div className={styles.teamHeader}>
-              <div>
-                <h2 className={styles.teamName}>{team.team_name}</h2>
-                <span className={styles.poolName}>
-                {team.in_grand_pool && (
-                  <span>SM Masters Pool, </span>
-                )}
-                  {poolMap[team.pool_id]}</span>
-              </div>
-
+           <div className={styles.teamHeader}>
+            <div>
+              <h2 className={styles.teamName}>{team.team_name}</h2>
+              <span className={styles.poolName}>{poolMap[team.pool_id]}</span>
             </div>
+            <div className={styles.badges}>
+              {team.in_grand_pool && (
+                <span className={styles.grandPoolBadge}>🏆 Grand Pool</span>
+              )}
+              {team.paid ? (
+                  <span className={styles.paidBadge}>✅ Paid</span>
+                ) : (
+                  <span className={styles.notPaidBadge}>⏳ Not Paid</span>
+                )}
+              <span className={styles.salary}>
+                💰 ${team.total_salary?.toLocaleString()}
+              </span>
+            </div>
+          </div>
 
             <div className={styles.golferGrid}>
               {[1,2,3,4,5,6,7,8].map(i => {

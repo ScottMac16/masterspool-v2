@@ -3,20 +3,37 @@
 import { useState } from 'react'
 import styles from './picks.module.css'
 
-export default function PicksClient({ tournament, orgs, salaries, existingTeams, userId }) {
+export default function PicksClient({ tournament, orgs, salaries, existingTeams, userId, editTeam }) {
   const [selectedOrg, setSelectedOrg] = useState(orgs[0]?.id || null)
-  const [teamName, setTeamName] = useState('')
-  const [picks, setPicks] = useState([])
-  const [inGrandPool, setInGrandPool] = useState(false)
+  const [teamName, setTeamName] = useState(editTeam?.team_name || '')
+  const [inGrandPool, setInGrandPool] = useState(
+  editTeam?.in_grand_pool || (orgs.length === 1 && orgs[0]?.id === '00000000-0000-0000-0000-000000000001')
+  )
+  const [editTeamId] = useState(editTeam?.id || null)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [search, setSearch] = useState('')
+ 
+
+  const initialPicks = editTeam
+    ? [1,2,3,4,5,6,7,8]
+        .map(i => editTeam[`golfer_${i}`])
+        .filter(Boolean)
+        .map(g => ({
+          golfer_espn_id: g.id,
+          golfer_name: g.name,
+          salary: g.salary,
+        }))
+    : []
+
+  const [picks, setPicks] = useState(initialPicks)
 
   const maxPicks = tournament.max_picks
   const salaryCap = tournament.salary_cap
   const totalSalary = picks.reduce((sum, p) => sum + p.salary, 0)
   const remaining = salaryCap - totalSalary
   const picksLocked = tournament.picks_locked
+  const isGrandPoolOnly = orgs.length === 1 && orgs[0]?.id === '00000000-0000-0000-0000-000000000001'
 
   function togglePick(golfer) {
     const already = picks.find(p => p.golfer_espn_id === golfer.golfer_espn_id)
@@ -26,21 +43,24 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
     }
     if (picks.length >= maxPicks) return
     if (totalSalary + golfer.salary > salaryCap) return
-    setPicks([...picks, golfer])
+    setPicks(prev => [...prev, golfer].sort((a, b) => b.salary - a.salary))
   }
 
   async function handleSubmit() {
     if (!teamName) return alert('Please enter a team name')
     if (picks.length !== maxPicks) return alert(`Please select exactly ${maxPicks} players`)
-    if (!selectedOrg) return alert('Please select an org')
+
+    const orgId = selectedOrg || orgs[0]?.id
+    if (!orgId) return alert('Please join a pool first')
 
     setSaving(true)
 
     const res = await fetch('/api/picks', {
-      method: 'POST',
+      method: editTeamId ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        org_id: selectedOrg,
+        team_id: editTeamId,
+        org_id: orgId,
         tournament_id: tournament.id,
         team_name: teamName,
         in_grand_pool: inGrandPool,
@@ -54,9 +74,11 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
 
     if (res.ok) {
       setSaved(true)
-      setTeamName('')
-      setPicks([])
-      setInGrandPool(false)
+      if (!editTeamId) {
+        setTeamName('')
+        setPicks([])
+        setInGrandPool(false)
+      }
     }
 
     setSaving(false)
@@ -72,7 +94,9 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
       {/* LEFT — Golfer List */}
       <div className={styles.left}>
         <div className={styles.leftHeader}>
-          <h2 className={styles.leftTitle}>Available Players</h2>
+          <h2 className={styles.leftTitle}>
+            {editTeamId ? `Editing: ${editTeam.team_name}` : 'Available Players'}
+          </h2>
           <input
             className={styles.search}
             placeholder="Search player..."
@@ -104,7 +128,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
                     src={`https://a.espncdn.com/i/headshots/golf/players/full/${g.golfer_espn_id}.png`}
                     alt={g.golfer_name}
                     className={styles.headshot}
-                    />
+                  />
                   <span className={styles.golferName}>{g.golfer_name}</span>
                 </div>
                 <div className={styles.golferRight}>
@@ -117,40 +141,6 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
         </div>
       </div>
 
-      {/* Existing Teams */}
-        {existingTeams.length > 0 && (
-        <div className={styles.existingTeams}>
-            <h3>Your Submitted Teams</h3>
-            {existingTeams.map(team => (
-            <div key={team.id} className={styles.teamCard}>
-                <div className={styles.teamCardHeader}>
-                <strong>{team.team_name}</strong>
-                <div className={styles.teamMeta}>
-                    <span>💰 ${team.total_salary?.toLocaleString()}</span>
-                    {team.in_grand_pool && <span className={styles.grandPoolBadge}>🏆 Grand Pool</span>}
-                </div>
-                </div>
-                <div className={styles.teamGolfers}>
-                {[1,2,3,4,5,6,7,8].map(i => {
-                    const g = team[`golfer_${i}`]
-                    if (!g) return null
-                    return (
-                    <div key={i} className={styles.teamGolfer}>
-                        <img
-                        src={`https://a.espncdn.com/i/headshots/golf/players/full/${g.id}.png`}
-                        className={styles.smallHeadshot}
-                        />
-                        <span>{g.name}</span>
-                        <span className={styles.pickSalary}>${g.salary?.toLocaleString()}</span>
-                    </div>
-                    )
-                })}
-                </div>
-            </div>
-            ))}
-        </div>
-        )}
-
       {/* RIGHT — Team Builder */}
       <div className={styles.right}>
         <div className={styles.capBar}>
@@ -161,14 +151,15 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
           <div className={styles.capTrack}>
             <div
               className={styles.capFill}
-              style={{ width: `${Math.min((totalSalary / salaryCap) * 100, 100)}%`,
-                background: remaining < 0 ? '#8b1a1a' : '#1a4731' }}
+              style={{
+                width: `${Math.min((totalSalary / salaryCap) * 100, 100)}%`,
+                background: remaining < 0 ? '#8b1a1a' : '#1a4731'
+              }}
             />
           </div>
           <div className={styles.capCount}>{picks.length} / {maxPicks} players</div>
         </div>
 
-        {/* Team Name */}
         <div className={styles.field}>
           <label>Team Name</label>
           <input
@@ -180,15 +171,14 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
           />
         </div>
 
-        {/* Org Selector */}
-        {orgs.length > 0 && (
+        {orgs.length > 1 && (
           <div className={styles.field}>
             <label>Pool</label>
             <select
               value={selectedOrg}
               onChange={e => setSelectedOrg(e.target.value)}
               className={styles.input}
-              disabled={picksLocked}
+              disabled={picksLocked || !!editTeamId}
             >
               {orgs.map(o => (
                 <option key={o.id} value={o.id}>{o.name}</option>
@@ -197,19 +187,19 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
           </div>
         )}
 
-        {/* Grand Pool */}
-        <div className={styles.grandPool}>
-          <input
-            type="checkbox"
-            id="grandpool"
-            checked={inGrandPool}
-            onChange={e => setInGrandPool(e.target.checked)}
-            disabled={picksLocked}
-          />
-          <label htmlFor="grandpool">Enter Grand Pool</label>
-        </div>
+        {!isGrandPoolOnly && (
+            <div className={styles.grandPool}>
+              <input
+                type="checkbox"
+                id="grandpool"
+                checked={inGrandPool}
+                onChange={e => setInGrandPool(e.target.checked)}
+                disabled={picksLocked}
+              />
+              <label htmlFor="grandpool">Enter Grand Pool</label>
+            </div>
+          )}
 
-        {/* Selected Players */}
         <div className={styles.selectedList}>
           <h3>Your Picks</h3>
           {picks.length === 0 && (
@@ -218,10 +208,10 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
           {picks.map((p, i) => (
             <div key={p.golfer_espn_id} className={styles.selectedRow}>
               <span className={styles.pickNum}>{i + 1}</span>
-             <img
+              <img
                 src={`https://a.espncdn.com/i/headshots/golf/players/full/${p.golfer_espn_id}.png`}
                 className={styles.smallHeadshot}
-                />
+              />
               <span className={styles.pickName}>{p.golfer_name}</span>
               <span className={styles.pickSalary}>${p.salary.toLocaleString()}</span>
               <button
@@ -241,7 +231,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
             onClick={handleSubmit}
             disabled={saving || picks.length !== maxPicks || !teamName}
           >
-            {saving ? 'Saving...' : saved ? '✅ Team Saved!' : 'Submit Team'}
+            {saving ? 'Saving...' : saved ? '✅ Saved!' : editTeamId ? 'Update Team' : 'Submit Team'}
           </button>
         )}
 
