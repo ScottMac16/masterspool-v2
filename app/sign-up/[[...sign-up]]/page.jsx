@@ -1,5 +1,5 @@
 import { SignUp } from '@clerk/nextjs'
-import styles from './sign-up.module.css'
+import styles from '../../sign-in/[[...sign-in]]/sign-in.module.css'
 
 export default function SignUpPage() {
   return (
@@ -18,7 +18,7 @@ export default function SignUpPage() {
             card: {
               boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
               border: 'none',
-              backdropFilter: 'blur(40px)',
+              backdropFilter: 'blur(10px)',
               backgroundColor: 'rgba(255,255,255,0.75)',
             },
             headerTitle: {

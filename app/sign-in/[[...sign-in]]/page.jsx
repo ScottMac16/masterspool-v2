@@ -18,7 +18,7 @@ export default function SignInPage() {
             card: {
               boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
               border: 'none',
-              backdropFilter: 'blur(40px)',
+              backdropFilter: 'blur(10px)',
               backgroundColor: 'rgba(255,255,255,0.75)',
             },
             headerTitle: {
