@@ -38,6 +38,7 @@ export default async function JoinCodePage({ params }) {
     org_id: org.id,
     user_id: userId,
   })
-
+  
+  console.log('JoinCodePage hit! code:', code, 'userId:', userId)
   redirect('/my-picks')
 }
