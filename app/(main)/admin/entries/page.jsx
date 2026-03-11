@@ -9,11 +9,12 @@ export default async function EntriesPage() {
   const superAdmin = isSuperAdmin(userId)
 
   // Check if org admin
-  const { data: adminOrg } = await supabaseAdmin
+  const { data: adminOrgs } = await supabaseAdmin
     .from('orgs')
     .select('*')
     .eq('admin_user_id', userId)
-    .single()
+
+  const adminOrg = adminOrgs?.[0] || null
 
   if (!superAdmin && !adminOrg) redirect('/')
 
