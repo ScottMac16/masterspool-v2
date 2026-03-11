@@ -9,29 +9,20 @@ export default async function EntriesPage() {
   const superAdmin = isSuperAdmin(userId)
 
   // Check if org admin
-  const { data: adminOrgs } = await supabaseAdmin
+ const { data: adminOrgs } = await supabaseAdmin
     .from('orgs')
     .select('*')
     .eq('admin_user_id', userId)
 
-  const adminOrg = adminOrgs?.[0] || null
+    if (!superAdmin && !adminOrgs?.length) redirect('/')
 
-  if (!superAdmin && !adminOrg) redirect('/')
-
-  const { data: tournament } = await supabaseAdmin
-    .from('tournaments')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single()
-
-  let orgs
-  if (superAdmin) {
-    const { data } = await supabaseAdmin.from('orgs').select('*').order('name')
-    orgs = data
-  } else {
-    orgs = [adminOrg]
-  }
+    let orgs
+    if (superAdmin) {
+        const { data } = await supabaseAdmin.from('orgs').select('*').order('name')
+        orgs = data
+    } else {
+        orgs = adminOrgs
+    }
 
   const { data: pools } = await supabaseAdmin
     .from('pools')
