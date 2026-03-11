@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import styles from './entries.module.css'
 
-export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams }) {
-  const [activeOrg, setActiveOrg] = useState('all')
+export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, isSuperAdmin }) {
+  const [activeOrg, setActiveOrg] = useState(() =>
+    isSuperAdmin ? 'all' : orgs[0]?.id || 'all'
+  )
   const [paidMap, setPaidMap] = useState(() => {
     const map = {}
     allTeams.forEach(t => { map[t.id] = t.paid })
@@ -20,9 +22,9 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams }
     })
   }
 
-  const grandPoolTeams = allTeams.filter(t => 
-  t.in_grand_pool || t.org_name === 'Grand Pool'
-)
+  const grandPoolTeams = allTeams.filter(t =>
+    t.in_grand_pool || t.org_name === 'Grand Pool'
+  )
 
   const activeTeams = activeOrg === 'grandpool'
     ? grandPoolTeams
@@ -48,24 +50,23 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams }
         <p className={styles.tournament}>📍 {tournament.name} {tournament.year}</p>
       )}
 
-      {/* Tabs */}
       <div className={styles.tabs}>
-        <button
-          className={`${styles.tab} ${activeOrg === 'all' ? styles.activeTab : ''}`}
-          onClick={() => setActiveOrg('all')}
-        >
-          All
-          <span className={styles.tabCount}>{allTeams.length}</span>
-        </button>
-
-        <button
-          className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
-          onClick={() => setActiveOrg('grandpool')}
-        >
-          🏆 Grand Pool
-          <span className={styles.tabCount}>{grandPoolTeams.length}</span>
-        </button>
-
+        {isSuperAdmin && (
+          <>
+            <button
+              className={`${styles.tab} ${activeOrg === 'all' ? styles.activeTab : ''}`}
+              onClick={() => setActiveOrg('all')}
+            >
+              All <span className={styles.tabCount}>{allTeams.length}</span>
+            </button>
+            <button
+              className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
+              onClick={() => setActiveOrg('grandpool')}
+            >
+              🏆 Grand Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+            </button>
+          </>
+        )}
         {orgs
           .filter(org => org.id !== '00000000-0000-0000-0000-000000000001')
           .map(org => (
@@ -78,11 +79,8 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams }
               <span className={styles.tabCount}>{teamsByOrg[org.id]?.length || 0}</span>
             </button>
           ))}
-
-   
       </div>
 
-      {/* Table */}
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <thead>
@@ -98,7 +96,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams }
           <tbody>
             {activeTeams.length === 0 && (
               <tr>
-                <td colSpan={8} className={styles.empty}>No entries yet</td>
+                <td colSpan={6} className={styles.empty}>No entries yet</td>
               </tr>
             )}
             {activeTeams.map((team, i) => (
