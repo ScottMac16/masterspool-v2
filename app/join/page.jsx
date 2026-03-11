@@ -1,12 +1,10 @@
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
-import JoinClient from './JoinClient'
 
 export default async function JoinPage() {
   const { userId } = await auth()
 
-  // Check if already in any org
   const { data: memberships } = await supabaseAdmin
     .from('org_members')
     .select('id')
@@ -16,5 +14,11 @@ export default async function JoinPage() {
     redirect('/my-picks')
   }
 
-  return <JoinClient />
+  // Auto-join grand pool
+  await supabaseAdmin.from('org_members').insert({
+    org_id: process.env.NEXT_PUBLIC_GRAND_POOL_ORG_ID,
+    user_id: userId,
+  })
+
+  redirect('/my-picks')
 }
