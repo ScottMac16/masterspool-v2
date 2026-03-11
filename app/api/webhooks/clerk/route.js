@@ -28,6 +28,17 @@ export async function POST(req) {
   const { id, email_addresses, first_name, last_name, image_url } = event.data
   const email = email_addresses?.[0]?.email_address
 
+  if (event.type === 'user.created') {
+    const { error } = await supabaseAdmin.from('users').upsert({
+      id,
+      email,
+      first_name,
+      last_name,
+      image_url,
+    })
+    console.log('Supabase error:', error)
+
+  }
 
   if (event.type === 'user.updated') {
     const { error } = await supabaseAdmin.from('users').upsert({
