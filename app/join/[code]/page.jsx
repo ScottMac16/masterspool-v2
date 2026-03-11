@@ -7,11 +7,15 @@ export default async function JoinCodePage({ params }) {
   const { code } = await params
   const { userId } = await auth()
 
+  console.log('JoinCodePage hit - code:', code, 'userId:', userId)
+
   const { data: org } = await supabaseAdmin
     .from('orgs')
     .select('*')
     .eq('join_code', code)
     .single()
+
+  console.log('Org found:', org)
 
   if (!org) {
     return (
@@ -32,13 +36,16 @@ export default async function JoinCodePage({ params }) {
     .eq('user_id', userId)
     .single()
 
+  console.log('Existing membership:', existing)
+
   if (existing) redirect('/my-picks')
 
-  await supabaseAdmin.from('org_members').insert({
+  const { error } = await supabaseAdmin.from('org_members').insert({
     org_id: org.id,
     user_id: userId,
   })
-  
-  console.log('JoinCodePage hit! code:', code, 'userId:', userId)
+
+  console.log('Insert error:', error)
+
   redirect('/my-picks')
 }
