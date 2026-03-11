@@ -1,0 +1,203 @@
+.wrapper {
+  background: #f5f0e8;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+}
+
+.listView, .cardGrid{
+  width: 100%;
+  background: red;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #1a4731;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #666;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 4px;
+}
+
+.viewBtn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #1a4731;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #1a4731;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activeView {
+  background: #1a4731;
+  color: white;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid #1a4731;
+  background: white;
+  color: #1a4731;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.activeTab {
+  background: #1a4731;
+  color: white;
+}
+
+.tabCount {
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+  padding: 1px 6px;
+  font-size: 0.75rem;
+}
+
+/* List View */
+.listView { display: flex; flex-direction: column; gap: 2px; }
+
+.listHeader {
+  display: grid;
+  grid-template-columns: 40px 1fr 70px 70px 50px 30px;
+  padding: 6px 16px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.listRow {
+  display: grid;
+  grid-template-columns: 40px 1fr 70px 70px 50px 30px;
+  align-items: center;
+  background: #1a4731;
+  border-radius: 6px;
+  padding: 14px 16px;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.colPos { font-weight: 800; font-size: 1rem; }
+.colTeam { font-weight: 700; font-size: 0.95rem; }
+.colStat { text-align: center; font-weight: 700; font-size: 0.9rem; }
+.colExpand { text-align: right; opacity: 0.4; font-size: 0.7rem; }
+
+/* Card View */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.cardHeader {
+  background: #1a4731;
+  color: white;
+  display: grid;
+  grid-template-columns: 40px 1fr 70px 70px 50px;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 8px;
+}
+
+.cardRank { font-weight: 800; font-size: 1.1rem; }
+.cardTeamName { font-weight: 700; font-size: 0.95rem; }
+.cardTotal { text-align: center; font-weight: 800; font-size: 1rem; }
+.cardToday { text-align: center; font-size: 0.85rem; font-weight: 600; }
+.cardCuts { text-align: center; font-size: 0.85rem; opacity: 0.8; }
+
+.cardGolferHeader {
+  display: grid;
+  grid-template-columns: 50px 1fr 55px 55px 55px 60px;
+  padding: 6px 16px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #aaa;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cardGolferRow {
+  display: grid;
+  grid-template-columns: 50px 1fr 55px 55px 55px 60px;
+  align-items: center;
+  padding: 7px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 0.85rem;
+}
+
+.cardGolferRow:last-child { border-bottom: none; }
+
+.cgPos { color: #888; font-size: 0.8rem; }
+.cgName { font-weight: 600; color: #111; }
+.cgStat { text-align: center; font-weight: 600; }
+
+.cutGolfer { background: #fff5f5; }
+.cutGolfer .cgName { color: #c0392b; }
+.cutGolfer .cgPos { color: #c0392b; }
+
+/* Score colors */
+.under { color: #1a6b3c; }
+.over { color: #c0392b; }
+.even { color: #333; }
+
+/* Override for dark backgrounds */
+.listRow .under { color: #7fffb0; }
+.listRow .over { color: #ff9999; }
+.listRow .even { color: white; }
+.cardHeader .under { color: #7fffb0; }
+.cardHeader .over { color: #ff9999; }
+.cardHeader .even { color: white; }
+
+
+.listItem {
+  background: #1a4731;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  overflow: hidden;
+}
+
+.expandedGolfers {
+  background: white;
+  padding: 4px 0;
+}
