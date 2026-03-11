@@ -1,7 +1,12 @@
+'use client'
+import { useSearchParams } from 'next/navigation'
 import { SignIn } from '@clerk/nextjs'
 import styles from './sign-in.module.css'
 
 export default function SignInPage() {
+  const searchParams = useSearchParams()
+  const redirectUrl = searchParams.get('redirect_url') || ''
+
   return (
     <div className={styles.container}>
       <SignIn
@@ -35,7 +40,10 @@ export default function SignInPage() {
         }}
       />
       <p className={styles.switchLink}>
-        Don't have an account? <a href="/sign-up">Sign up</a>
+        Don't have an account?{' '}
+        <a href={`/sign-up${redirectUrl ? `?redirect_url=${encodeURIComponent(redirectUrl)}` : ''}`}>
+          Sign up
+        </a>
       </p>
     </div>
   )
