@@ -32,6 +32,17 @@ export async function GET() {
 
   const missedCutScore = worstScore + 1
 
+  // Get salary list sorted by salary descending
+  const { data: salaries } = await supabaseAdmin
+    .from('golfer_salaries')
+    .select('*')
+    .eq('tournament_id', tournament.id)
+    .order('salary', { ascending: false })
+
+  const salaryList = salaries || []
+  const salaryIndexMap = {}
+  salaryList.forEach((s, i) => { salaryIndexMap[s.golfer_espn_id] = i })
+
   const { data: pools } = await supabaseAdmin
     .from('pools')
     .select('*, orgs(id, name)')
@@ -59,6 +70,7 @@ export async function GET() {
 
   const scoredTeams = teams?.map(team => {
     const golfers = [1,2,3,4,5,6,7,8].map(i => team[`golfer_${i}`]).filter(Boolean)
+    const teamGolferIds = new Set(golfers.map(g => g.id))
 
     let totalScore = 0
     let todayScore = 0
@@ -68,6 +80,37 @@ export async function GET() {
       const espn = scoreMap[g.id]
       const pct = totalTeams > 0 ? ((pickCount[g.id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
 
+      // Handle WD before teeing off
+      if (espn?.status === 'STATUS_WD' && !espn?.thru) {
+        const currentIndex = salaryIndexMap[g.id] ?? -1
+        let replacement = null
+        for (let i = currentIndex + 1; i < salaryList.length; i++) {
+          const candidate = salaryList[i]
+          if (!teamGolferIds.has(candidate.golfer_espn_id) && scoreMap[candidate.golfer_espn_id]) {
+            replacement = candidate
+            break
+          }
+        }
+
+        if (replacement) {
+          const repEspn = scoreMap[replacement.golfer_espn_id]
+          const repPct = totalTeams > 0 ? ((pickCount[replacement.golfer_espn_id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
+          totalScore += repEspn.score
+          todayScore += repEspn.today
+          return {
+            id: replacement.golfer_espn_id,
+            name: replacement.golfer_name,
+            score: repEspn.score,
+            today: repEspn.today,
+            thru: repEspn.thru,
+            missedCut: false,
+            position: repEspn.position,
+            pickPct: repPct,
+          }
+        }
+      }
+
+      // Handle missed cut
       if (!espn || espn.status === 'STATUS_CUT') {
         cutCount++
         totalScore += missedCutScore
