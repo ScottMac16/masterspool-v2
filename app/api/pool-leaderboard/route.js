@@ -24,10 +24,10 @@ export async function GET() {
   const scoreMap = {}
   let worstScore = -999
   espnGolfers.forEach(g => {
-    const score = parseScore(g.score)
-    const today = parseScore(g.today)
-    scoreMap[g.id] = { score, today, thru: g.thru, status: g.status, position: g.position }
-    if (g.status !== 'STATUS_CUT' && score > worstScore) worstScore = score
+  const score = parseScore(g.score)
+  const today = parseScore(g.today)
+  scoreMap[g.id] = { score, today, thru: g.thru, status: g.status, position: g.position, displayValue: g.displayValue }
+  if (g.status !== 'STATUS_CUT' && score > worstScore) worstScore = score
   })
 
   const missedCutScore = worstScore + 1
@@ -142,12 +142,20 @@ export async function GET() {
         cutCount++
         totalScore += missedCutScore
         todayScore += missedCutScore
-        return { ...g, score: missedCutScore, today: missedCutScore, thru: '—', missedCut: true, position: 'CUT', pickPct: pct }
+        return { ...g, score: missedCutScore, today: missedCutScore, thru: '—', missedCut: true, position: espn.displayValue || 'CUT', pickPct: pct }
       }
 
       totalScore += espn.score
       todayScore += espn.today
       return { ...g, score: espn.score, today: espn.today, thru: espn.thru, missedCut: false, position: espn.position, pickPct: pct }
+    })
+
+    golferScores.sort((a, b) => {
+      // CUT/WD always go to bottom
+      if (a.missedCut && !b.missedCut) return 1
+      if (!a.missedCut && b.missedCut) return -1
+      // Sort by score (lower is better)
+      return a.score - b.score
     })
 
     const org = poolOrgMap[team.pool_id]
