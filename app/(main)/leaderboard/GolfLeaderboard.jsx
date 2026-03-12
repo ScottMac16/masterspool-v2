@@ -14,10 +14,15 @@ export default function GolfLeaderboard() {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
+  function fetchData() {
     fetch('/api/golf')
       .then(r => r.json())
       .then(setGolfers)
-  }, [])
+  }
+  fetchData()
+  const interval = setInterval(fetchData, 60000)
+  return () => clearInterval(interval)
+    }, [])
 
   const filtered = golfers.filter(g =>
     g.name?.toLowerCase().includes(search.toLowerCase())

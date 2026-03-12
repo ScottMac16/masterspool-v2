@@ -31,10 +31,15 @@ export default function PoolLeaderboard() {
   }
 
   useEffect(() => {
+  function fetchData() {
     fetch('/api/pool-leaderboard')
       .then(r => r.json())
       .then(setData)
-  }, [])
+  }
+  fetchData()
+  const interval = setInterval(fetchData, 60000)
+  return () => clearInterval(interval)
+}, [])
 
   if (!data) return <div className={styles.loading}>Loading...</div>
 
