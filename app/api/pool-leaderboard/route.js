@@ -55,7 +55,6 @@ export async function GET() {
     .select('*, users(first_name, last_name)')
     .in('pool_id', poolIds)
 
-  // Build pick count map
   const pickCount = {}
   const totalTeams = teams?.length || 0
   teams?.forEach(team => {
@@ -76,22 +75,50 @@ export async function GET() {
     let todayScore = 0
     let cutCount = 0
 
+    function findReplacement(golferEspnId) {
+      const currentIndex = salaryIndexMap[golferEspnId] ?? -1
+      for (let i = currentIndex + 1; i < salaryList.length; i++) {
+        const candidate = salaryList[i]
+        if (!teamGolferIds.has(candidate.golfer_espn_id) && scoreMap[candidate.golfer_espn_id]) {
+          return candidate
+        }
+      }
+      return null
+    }
+
     const golferScores = golfers.map(g => {
       const espn = scoreMap[g.id]
       const pct = totalTeams > 0 ? ((pickCount[g.id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
 
-      // Handle WD before teeing off
-      if (espn?.status === 'STATUS_WD' && !espn?.thru) {
-        const currentIndex = salaryIndexMap[g.id] ?? -1
-        let replacement = null
-        for (let i = currentIndex + 1; i < salaryList.length; i++) {
-          const candidate = salaryList[i]
-          if (!teamGolferIds.has(candidate.golfer_espn_id) && scoreMap[candidate.golfer_espn_id]) {
-            replacement = candidate
-            break
+      // Golfer missing from ESPN entirely = pre-tournament WD
+      if (!espn) {
+        const replacement = findReplacement(g.id)
+        if (replacement) {
+          const repEspn = scoreMap[replacement.golfer_espn_id]
+          const repPct = totalTeams > 0 ? ((pickCount[replacement.golfer_espn_id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
+          totalScore += repEspn.score
+          todayScore += repEspn.today
+          return {
+            id: replacement.golfer_espn_id,
+            name: replacement.golfer_name,
+            score: repEspn.score,
+            today: repEspn.today,
+            thru: repEspn.thru,
+            missedCut: false,
+            position: repEspn.position,
+            pickPct: repPct,
           }
         }
+        // No replacement found
+        cutCount++
+        totalScore += missedCutScore
+        todayScore += missedCutScore
+        return { ...g, score: missedCutScore, today: missedCutScore, thru: '—', missedCut: true, position: 'CUT', pickPct: pct }
+      }
 
+      // STATUS_WD before teeing off
+      if (espn.status === 'STATUS_WD' && !espn.thru) {
+        const replacement = findReplacement(g.id)
         if (replacement) {
           const repEspn = scoreMap[replacement.golfer_espn_id]
           const repPct = totalTeams > 0 ? ((pickCount[replacement.golfer_espn_id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
@@ -110,8 +137,8 @@ export async function GET() {
         }
       }
 
-      // Handle missed cut
-      if (!espn || espn.status === 'STATUS_CUT') {
+      // Missed cut
+      if (espn.status === 'STATUS_CUT') {
         cutCount++
         totalScore += missedCutScore
         todayScore += missedCutScore
