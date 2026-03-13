@@ -31,21 +31,49 @@ export default function PoolLeaderboard() {
     })
   }
 
-  useEffect(() => {
-    function fetchData() {
-      const url = activeRound === 'live'
-        ? '/api/pool-leaderboard'
-        : `/api/pool-leaderboard?round=${activeRound}`
-      fetch(url)
-        .then(r => r.json())
-        .then(d => { if (d && !d.error) setData(d) })
-    }
-    fetchData()
-    const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
-    return () => { if (interval) clearInterval(interval) }
-  }, [activeRound])
+  const [error, setError] = useState(false)
 
-  if (!data) return <div className={styles.loading}>Loading...</div>
+    useEffect(() => {
+      let retries = 0
+
+      async function fetchData() {
+        try {
+          const url = activeRound === 'live'
+            ? '/api/pool-leaderboard'
+            : `/api/pool-leaderboard?round=${activeRound}`
+          const res = await fetch(url)
+          const d = await res.json()
+          if (d && d.scoredTeams) {
+            setData(d)
+            setError(false)
+          } else if (retries < 3) {
+            retries++
+            setTimeout(fetchData, 2000)
+          } else {
+            setError(true)
+          }
+        } catch (e) {
+          if (retries < 3) {
+            retries++
+            setTimeout(fetchData, 2000)
+          } else {
+            setError(true)
+          }
+        }
+      }
+
+      fetchData()
+      const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
+      return () => { if (interval) clearInterval(interval) }
+    }, [activeRound])
+
+    if (error) return (
+      <div className={styles.loading} onClick={() => { setError(false); setData(null) }}>
+        Failed to load. Tap to retry.
+      </div>
+    )
+
+    if (!data) return <div className={styles.loading}>Loading...</div>
 
   const { scoredTeams, orgs, completedRounds = [] } = data
 
