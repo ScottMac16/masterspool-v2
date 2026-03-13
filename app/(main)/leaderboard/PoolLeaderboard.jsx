@@ -55,6 +55,23 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
+  const [activeRound, setActiveRound] = useState('live')
+
+  // Update fetch to include round
+  useEffect(() => {
+    function fetchData() {
+      const url = activeRound === 'live' 
+        ? '/api/pool-leaderboard' 
+        : `/api/pool-leaderboard?round=${activeRound}`
+      fetch(url)
+        .then(r => r.json())
+        .then(setData)
+    }
+    fetchData()
+    const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
+    return () => { if (interval) clearInterval(interval) }
+  }, [activeRound])
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -72,6 +89,17 @@ export default function PoolLeaderboard() {
           >⊞</button>
         </div>
       </div>
+      <div className={styles.roundTabs}>
+          {['live', 1, 2, 3, 4].map(r => (
+            <button
+              key={r}
+              className={`${styles.roundTab} ${activeRound === r ? styles.activeRoundTab : ''}`}
+              onClick={() => setActiveRound(r)}
+            >
+              {r === 'live' ? '🔴 Live' : `R${r}`}
+            </button>
+          ))}
+        </div>
 
       <div className={styles.tabs}>
         <button

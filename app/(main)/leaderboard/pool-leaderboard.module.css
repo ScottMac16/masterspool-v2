@@ -201,3 +201,27 @@
   background: white;
   padding: 4px 0;
 }
+
+.roundTabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.roundTab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid #888;
+  background: white;
+  color: #888;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.activeRoundTab {
+  border-color: #1a4731;
+  background: #1a4731;
+  color: white;
+}

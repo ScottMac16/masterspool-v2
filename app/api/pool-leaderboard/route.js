@@ -19,6 +19,42 @@ export async function GET() {
 
   if (!tournament) return Response.json({ error: 'No tournament' }, { status: 404 })
 
+    // If round specified, fetch from snapshots
+  if (round) {
+    const { data: snapshots } = await supabaseAdmin
+      .from('round_snapshots')
+      .select('*')
+      .eq('tournament_id', tournament.id)
+      .eq('round', round)
+
+    if (!snapshots?.length) return Response.json({ error: 'No snapshot for this round' }, { status: 404 })
+
+    const scoredTeams = snapshots.map(s => ({
+      id: s.team_id,
+      team_name: s.team_name,
+      user: null,
+      totalScore: s.total_score,
+      todayScore: s.today_score,
+      cutCount: s.cut_count,
+      golfers: s.golfers,
+      in_grand_pool: s.in_grand_pool,
+      org_id: s.org_id,
+      pool_id: s.pool_id,
+    })).sort((a, b) => a.totalScore - b.totalScore)
+
+    let orgs = []
+    if (userId) {
+      const { data: userOrgs } = await supabaseAdmin
+        .from('org_members')
+        .select('orgs(id, name)')
+        .eq('user_id', userId)
+      orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
+    }
+
+    return Response.json({ scoredTeams, orgs, tournament, round: parseInt(round) })
+  }
+
+
   const espnGolfers = await getLeaderboard(tournament.espn_event_id)
 
   const scoreMap = {}
