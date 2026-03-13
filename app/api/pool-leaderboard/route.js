@@ -54,7 +54,15 @@ export async function GET(req) {
       orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
     }
 
-    return Response.json({ scoredTeams, orgs, tournament, round: parseInt(round) })
+    // Get which rounds have snapshots
+    const { data: snapshotRounds } = await supabaseAdmin
+      .from('round_snapshots')
+      .select('round')
+      .eq('tournament_id', tournament.id)
+
+    const completedRounds = [...new Set(snapshotRounds?.map(s => s.round) || [])]
+
+    return Response.json({ scoredTeams, orgs, tournament, round: parseInt(round), completedRounds })
   }
 
 
@@ -225,5 +233,13 @@ export async function GET(req) {
     orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
   }
 
-  return Response.json({ scoredTeams, orgs, tournament, missedCutScore })
+  // Get which rounds have snapshots
+  const { data: snapshotRounds } = await supabaseAdmin
+    .from('round_snapshots')
+    .select('round')
+    .eq('tournament_id', tournament.id)
+
+  const completedRounds = [...new Set(snapshotRounds?.map(s => s.round) || [])]
+
+  return Response.json({ scoredTeams, orgs, tournament, missedCutScore, completedRounds })
 }
