@@ -20,6 +20,7 @@ export default function PoolLeaderboard() {
   const [activeTab, setActiveTab] = useState('grandpool')
   const [view, setView] = useState('list')
   const [expandedTeams, setExpandedTeams] = useState(new Set())
+  const [activeRound, setActiveRound] = useState('live')  // ← moved up here
 
   function toggleTeam(id) {
     setExpandedTeams(prev => {
@@ -30,16 +31,20 @@ export default function PoolLeaderboard() {
     })
   }
 
+  // Only ONE useEffect now
   useEffect(() => {
-  function fetchData() {
-    fetch('/api/pool-leaderboard')
-      .then(r => r.json())
-      .then(setData)
-  }
-  fetchData()
-  const interval = setInterval(fetchData, 60000)
-  return () => clearInterval(interval)
-}, [])
+    function fetchData() {
+      const url = activeRound === 'live'
+        ? '/api/pool-leaderboard'
+        : `/api/pool-leaderboard?round=${activeRound}`
+      fetch(url)
+        .then(r => r.json())
+        .then(setData)
+    }
+    fetchData()
+    const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
+    return () => { if (interval) clearInterval(interval) }
+  }, [activeRound])
 
   if (!data) return <div className={styles.loading}>Loading...</div>
 
@@ -55,22 +60,9 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
-  const [activeRound, setActiveRound] = useState('live')
 
-  // Update fetch to include round
-  useEffect(() => {
-    function fetchData() {
-      const url = activeRound === 'live' 
-        ? '/api/pool-leaderboard' 
-        : `/api/pool-leaderboard?round=${activeRound}`
-      fetch(url)
-        .then(r => r.json())
-        .then(setData)
-    }
-    fetchData()
-    const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
-    return () => { if (interval) clearInterval(interval) }
-  }, [activeRound])
+
+
 
   return (
     <div className={styles.wrapper}>

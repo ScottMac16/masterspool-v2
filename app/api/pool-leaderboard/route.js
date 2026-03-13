@@ -7,8 +7,11 @@ function parseScore(score) {
   return parseInt(score.replace('+', '')) || 0
 }
 
-export async function GET() {
+export async function GET(req) {
   const { userId } = await auth()
+  const { searchParams } = new URL(req.url)
+  const round = searchParams.get('round')
+
 
   const { data: tournament } = await supabaseAdmin
     .from('tournaments')
