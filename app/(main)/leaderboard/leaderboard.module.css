@@ -151,3 +151,149 @@
   letter-spacing: 1px;
   text-align: center;
 }
+
+.scorecardWrap {
+  background: white;
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 4px;
+  overflow-x: auto;
+  padding: 12px;
+}
+
+.noData {
+  text-align: center;
+  color: #999;
+  padding: 16px;
+  font-size: 0.85rem;
+}
+
+.loadingScore {
+  text-align: center;
+  color: #999;
+  padding: 16px;
+  font-size: 0.85rem;
+}
+
+.roundTabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.roundTab {
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 2px solid #1a4731;
+  background: white;
+  color: #1a4731;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.activeRoundTab {
+  background: #1a4731;
+  color: white;
+}
+
+.scorecardTable {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 600px;
+}
+
+.scRow {
+  display: grid;
+  grid-template-columns: 50px repeat(9, 1fr) 40px repeat(9, 1fr) 40px 40px;
+  align-items: center;
+  gap: 2px;
+}
+
+.scHeader {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.scParRow {
+  font-size: 0.8rem;
+  color: #555;
+  font-weight: 600;
+}
+
+.scScoreRow {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.scLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.scCell {
+  text-align: center;
+}
+
+.scOut, .scIn {
+  text-align: center;
+  font-weight: 800;
+  background: #f5f0e8;
+  border-radius: 4px;
+  padding: 2px 0;
+}
+
+.scTotal {
+  text-align: center;
+  font-weight: 800;
+  background: #1a4731;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 0;
+}
+
+.scScore {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.eagle {
+  background: #ffd700;
+  color: #333;
+  border-radius: 50%;
+}
+
+.birdie {
+  background: #c0392b;
+  color: white;
+  border-radius: 50%;
+}
+
+.bogey {
+  background: #3498db;
+  color: white;
+  border-radius: 4px;
+}
+
+.doubleBogey {
+  background: #2c3e50;
+  color: white;
+  border-radius: 4px;
+  outline: 2px solid #2c3e50;
+}
+
+.tripleBogey {
+  background: #000;
+  color: white;
+  border-radius: 4px;
+}

@@ -9,27 +9,139 @@ function scoreClass(score, styles) {
   return styles.scoreOver
 }
 
+function holeScoreClass(scoreType) {
+  if (!scoreType) return ''
+  switch (scoreType) {
+    case 'EAGLE': return styles.eagle
+    case 'BIRDIE': return styles.birdie
+    case 'BOGEY': return styles.bogey
+    case 'DOUBLE_BOGEY': return styles.doubleBogey
+    case 'TRIPLE_BOGEY': return styles.tripleBogey
+    default: return ''
+  }
+}
+
+const PARS = {
+  1: 4, 2: 5, 3: 4, 4: 3, 5: 4, 6: 3, 7: 4, 8: 5, 9: 4,
+  10: 4, 11: 4, 12: 3, 13: 5, 14: 4, 15: 5, 16: 3, 17: 4, 18: 4
+}
+
 export default function GolfLeaderboard() {
   const [golfers, setGolfers] = useState([])
   const [search, setSearch] = useState('')
+  const [expandedId, setExpandedId] = useState(null)
+  const [scorecards, setScorecards] = useState({})
+  const [activeRound, setActiveRound] = useState({})
+  const [loadingId, setLoadingId] = useState(null)
 
   useEffect(() => {
-  function fetchData() {
-    fetch('/api/golf')
-      .then(r => r.json())
-      .then(setGolfers)
+    function fetchData() {
+      fetch('/api/golf')
+        .then(r => r.json())
+        .then(setGolfers)
+    }
+    fetchData()
+    const interval = setInterval(fetchData, 60000)
+    return () => clearInterval(interval)
+  }, [])
+
+  async function togglePlayer(id) {
+    if (expandedId === id) {
+      setExpandedId(null)
+      return
+    }
+    setExpandedId(id)
+    if (!scorecards[id]) {
+      setLoadingId(id)
+      const res = await fetch(`/api/golf/player/${id}`)
+      const data = await res.json()
+      const rounds = (data.items || []).filter(r => r.linescores?.length > 0)
+      setScorecards(prev => ({ ...prev, [id]: rounds }))
+      setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
+      setLoadingId(null)
+    }
   }
-  fetchData()
-  const interval = setInterval(fetchData, 60000)
-  return () => clearInterval(interval)
-    }, [])
 
   const filtered = golfers.filter(g =>
     g.name?.toLowerCase().includes(search.toLowerCase())
   )
 
-  const active = filtered.filter(g => g.status !== 'STATUS_CUT')
-  const cut = filtered.filter(g => g.status === 'STATUS_CUT')
+  const active = filtered.filter(g => g.status !== 'STATUS_CUT' && g.status !== 'STATUS_WD')
+  const cut = filtered.filter(g => g.status === 'STATUS_CUT' || g.status === 'STATUS_WD')
+
+  function renderScorecard(golferId) {
+    const rounds = scorecards[golferId]
+    if (!rounds || rounds.length === 0) return <div className={styles.noData}>No scorecard available</div>
+
+    const roundIndex = activeRound[golferId] ?? rounds.length - 1
+    const round = rounds[roundIndex]
+    if (!round) return null
+
+    // Sort holes by period 1-18
+    const holes = [...(round.linescores || [])].sort((a, b) => a.period - b.period)
+    const front = holes.filter(h => h.period <= 9)
+    const back = holes.filter(h => h.period >= 10)
+
+    const frontPar = front.reduce((s, h) => s + h.par, 0)
+    const backPar = back.reduce((s, h) => s + h.par, 0)
+    const frontScore = front.reduce((s, h) => s + h.value, 0)
+    const backScore = back.reduce((s, h) => s + h.value, 0)
+
+    return (
+      <div className={styles.scorecard}>
+        {/* Round tabs */}
+        <div className={styles.roundTabs}>
+          {rounds.map((r, i) => (
+            <button
+              key={i}
+              className={`${styles.roundTab} ${(activeRound[golferId] ?? rounds.length - 1) === i ? styles.activeRoundTab : ''}`}
+              onClick={e => { e.stopPropagation(); setActiveRound(prev => ({ ...prev, [golferId]: i })) }}
+            >
+              R{r.period}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.scorecardTable}>
+          {/* Header row */}
+          <div className={styles.scRow + ' ' + styles.scHeader}>
+            <span className={styles.scLabel}>HOLE</span>
+            {front.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
+            <span className={styles.scOut}>OUT</span>
+            {back.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
+            <span className={styles.scIn}>IN</span>
+            <span className={styles.scTotal}>TOT</span>
+          </div>
+          {/* Par row */}
+          <div className={styles.scRow + ' ' + styles.scParRow}>
+            <span className={styles.scLabel}>PAR</span>
+            {front.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
+            <span className={styles.scOut}>{frontPar}</span>
+            {back.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
+            <span className={styles.scIn}>{backPar}</span>
+            <span className={styles.scTotal}>{frontPar + backPar}</span>
+          </div>
+          {/* Score row */}
+          <div className={styles.scRow + ' ' + styles.scScoreRow}>
+            <span className={styles.scLabel}>SCORE</span>
+            {front.map(h => (
+              <span key={h.period} className={`${styles.scCell} ${styles.scScore} ${holeScoreClass(h.scoreType?.name, styles)}`}>
+                {h.value}
+              </span>
+            ))}
+            <span className={styles.scOut}>{frontScore}</span>
+            {back.map(h => (
+              <span key={h.period} className={`${styles.scCell} ${styles.scScore} ${holeScoreClass(h.scoreType?.name, styles)}`}>
+                {h.value}
+              </span>
+            ))}
+            <span className={styles.scIn}>{backScore}</span>
+            <span className={styles.scTotal}>{frontScore + backScore}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -56,19 +168,33 @@ export default function GolfLeaderboard() {
         <span>TOTAL</span>
         <span>TODAY</span>
         <span>THRU</span>
-        <span>Pick %</span>
+        <span></span>
       </div>
 
       {active.map((g) => (
-        <div key={g.id} className={styles.row}>
-          <span className={styles.position}>{g.position}</span>
-          <img className={styles.headshot} src={g.headshot} alt={g.name} />
-          <img className={styles.flag} src={g.flag} alt={g.country} />
-          <span className={styles.name}>{g.name}</span>
-          <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
-          <span className={styles.today}>{g.today}</span>
-          <span className={styles.thru}>{g.thru}</span>
-          <span></span>
+        <div key={g.id}>
+          <div
+            className={styles.row}
+            style={{ cursor: 'pointer' }}
+            onClick={() => togglePlayer(g.id)}
+          >
+            <span className={styles.position}>{g.position}</span>
+            <img className={styles.headshot} src={g.headshot} alt={g.name} />
+            <img className={styles.flag} src={g.flag} alt={g.country} />
+            <span className={styles.name}>{g.name}</span>
+            <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
+            <span className={styles.today}>{g.today}</span>
+            <span className={styles.thru}>{g.thru}</span>
+            <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
+          </div>
+          {expandedId === g.id && (
+            <div className={styles.scorecardWrap}>
+              {loadingId === g.id
+                ? <div className={styles.loadingScore}>Loading...</div>
+                : renderScorecard(g.id)
+              }
+            </div>
+          )}
         </div>
       ))}
 
@@ -80,15 +206,29 @@ export default function GolfLeaderboard() {
             <span></span><span></span><span></span><span></span>
           </div>
           {cut.map((g) => (
-            <div key={g.id} className={`${styles.row} ${styles.cutRow}`}>
-              <span className={styles.position}>{g.position}</span>
-              <img className={styles.headshot} src={g.headshot} alt={g.name} />
-              <img className={styles.flag} src={g.flag} alt={g.country} />
-              <span className={styles.name}>{g.name}</span>
-              <span className={styles.score}>{g.score}</span>
-              <span className={styles.today}>{g.today}</span>
-              <span className={styles.thru}>{g.thru}</span>
-              <span></span>
+            <div key={g.id}>
+              <div
+                className={`${styles.row} ${styles.cutRow}`}
+                style={{ cursor: 'pointer' }}
+                onClick={() => togglePlayer(g.id)}
+              >
+                <span className={styles.position}>{g.position}</span>
+                <img className={styles.headshot} src={g.headshot} alt={g.name} />
+                <img className={styles.flag} src={g.flag} alt={g.country} />
+                <span className={styles.name}>{g.name}</span>
+                <span className={styles.score}>{g.score}</span>
+                <span className={styles.today}>{g.today}</span>
+                <span className={styles.thru}>{g.thru}</span>
+                <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
+              </div>
+              {expandedId === g.id && (
+                <div className={styles.scorecardWrap}>
+                  {loadingId === g.id
+                    ? <div className={styles.loadingScore}>Loading...</div>
+                    : renderScorecard(g.id)
+                  }
+                </div>
+              )}
             </div>
           ))}
         </>
