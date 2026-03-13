@@ -1,3 +1,5 @@
+import { auth } from '@clerk/nextjs/server'
+import { isSuperAdmin } from '@/lib/admin'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getLeaderboard } from '@/lib/golf-api'
 
@@ -7,11 +9,8 @@ function parseScore(score) {
 }
 
 export async function POST(req) {
-  // Verify cron secret
-  const authHeader = req.headers.get('authorization')
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const { userId } = await auth()
+  if (!isSuperAdmin(userId)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { round } = await req.json()
 
@@ -94,7 +93,6 @@ export async function POST(req) {
       const espn = scoreMap[g.id]
       const pct = totalTeams > 0 ? ((pickCount[g.id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
 
-      // Missing from ESPN = pre-tournament WD
       if (!espn) {
         const replacement = findReplacement(g.id)
         if (replacement) {
@@ -103,15 +101,10 @@ export async function POST(req) {
           todayScore += repEspn.today
           return { id: replacement.golfer_espn_id, name: replacement.golfer_name, score: repEspn.score, today: repEspn.today, thru: repEspn.thru, missedCut: false, position: repEspn.position, pickPct: pct }
         }
-        if (applyCutPenalty) {
-          cutCount++
-          totalScore += missedCutScore
-          todayScore += missedCutScore
-        }
+        if (applyCutPenalty) { cutCount++; totalScore += missedCutScore; todayScore += missedCutScore }
         return { ...g, score: applyCutPenalty ? missedCutScore : 0, today: 0, thru: '—', missedCut: true, position: 'CUT', pickPct: pct }
       }
 
-      // WD before teeing off
       if (espn.status === 'STATUS_WD' && !espn.thru) {
         const replacement = findReplacement(g.id)
         if (replacement) {
@@ -122,17 +115,12 @@ export async function POST(req) {
         }
       }
 
-      // Cut — only apply penalty in rounds 3+
       if (espn.status === 'STATUS_CUT') {
         if (applyCutPenalty) {
-          cutCount++
-          totalScore += missedCutScore
-          todayScore += missedCutScore
+          cutCount++; totalScore += missedCutScore; todayScore += missedCutScore
           return { ...g, score: missedCutScore, today: missedCutScore, thru: '—', missedCut: true, position: 'CUT', pickPct: pct }
         } else {
-          // Rounds 1-2: use actual score
-          totalScore += espn.score
-          todayScore += espn.today
+          totalScore += espn.score; todayScore += espn.today
           return { ...g, score: espn.score, today: espn.today, thru: espn.thru, missedCut: false, position: espn.position, pickPct: pct }
         }
       }
@@ -166,14 +154,12 @@ export async function POST(req) {
     }
   }) || []
 
-  // Delete existing snapshots for this round
   await supabaseAdmin
     .from('round_snapshots')
     .delete()
     .eq('tournament_id', tournament.id)
     .eq('round', round)
 
-  // Insert new snapshots
   const { error } = await supabaseAdmin
     .from('round_snapshots')
     .insert(snapshots)
