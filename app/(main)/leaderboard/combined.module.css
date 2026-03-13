@@ -1,32 +1,26 @@
 .container {
-  overflow: hidden;
+  display: flex;
+  flex-direction: row;
   width: 100%;
   
 }
 
-/* Desktop: side by side */
-@media (min-width: 768px) {
-  .container {
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: minmax(35vw, 1000px) 1fr;
-    width: 100%;
-
-  }
-
-  .mobileTabs { display: none; }
-
-  .swipeContainer {
-    display: flex;
-    transform: none !important;
-    width: 100%;
-  }
-
-  .panel {
-    overflow-y: auto;
-
-  }
+.swipeContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
 }
+
+.panel{
+  width: 100%;
+}
+@media (min-width: 767px) {
+    .mobileTabs {
+      display: none;
+    }
+
+}
+
 
 /* Mobile: swipe panels */
 @media (max-width: 767px) {

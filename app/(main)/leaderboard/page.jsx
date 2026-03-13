@@ -16,20 +16,19 @@ export default function LeaderboardPage() {
           className={`${styles.mobileTab} ${activePanel === 0 ? styles.activeMobileTab : ''}`}
           onClick={() => setActivePanel(0)}
         >
-          ⛳ Golf
+          PGA Leaderboard
         </button>
         <button
           className={`${styles.mobileTab} ${activePanel === 1 ? styles.activeMobileTab : ''}`}
           onClick={() => setActivePanel(1)}
         >
-          🏆 Pool
+          Pool Leaderboard
         </button>
       </div>
 
       {/* Swipe container */}
-      <div
-        className={styles.swipeContainer}
-        style={{ transform: `translateX(-${activePanel * 50}%)` }}
+      <div className={styles.swipeContainer}
+        
       >
         <div className={styles.panel}>
           <GolfLeaderboard />
