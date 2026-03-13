@@ -11,7 +11,7 @@ export default function SnapshotTrigger() {
   async function triggerSnapshot() {
     setLoading(true)
     setResult(null)
-    const res = await fetch('/api/admin/trigger-snapshot', {
+    const res = await fetch('/api/admin/snapshot', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ round }),
