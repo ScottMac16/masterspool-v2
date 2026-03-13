@@ -3,7 +3,7 @@ import { isSuperAdmin } from '@/lib/admin'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
 import styles from './admin.module.css'
- <SnapshotTrigger />
+import SnapshotTrigger from './SnapshotTrigger'
 
 export default async function AdminPage() {
   const { userId } = await auth()
