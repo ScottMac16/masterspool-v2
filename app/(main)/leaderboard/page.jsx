@@ -27,7 +27,7 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Swipe container */}
-      <div className={styles.swipeContainer}
+      <div className={styles.swipeContainer} style={{ transform: `translateX(-${activePanel * 50}%)` }}
         
       >
         <div className={styles.panel}>
