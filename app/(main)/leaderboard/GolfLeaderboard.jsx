@@ -56,7 +56,7 @@ export default function GolfLeaderboard() {
         <span>TOTAL</span>
         <span>TODAY</span>
         <span>THRU</span>
-        <span></span>
+        <span>Pick %</span>
       </div>
 
       {active.map((g) => (

@@ -1,20 +1,31 @@
 .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
-  
+  height: 100vh;
+  overflow: hidden;
+
 }
 
 .swipeContainer{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
+  display: flex;
+  align-items: flex-start;
 }
 
 .panel{
-  width: 100%;
+  overflow: scroll;
+  height: 100%;
 }
-@media (min-width: 767px) {
+.panel:first-child {
+  flex: 1 1 475px;  /* can grow and shrink, but anchored around 475px */
+  max-width: 500px;
+}
+
+.panel:last-child {
+  flex: 2;  /* grows twice as fast, takes the majority of space */
+}
+
+@media (min-width: 800px) {
     .mobileTabs {
       display: none;
     }
@@ -23,16 +34,19 @@
 
 
 /* Mobile: swipe panels */
-@media (max-width: 767px) {
+@media (max-width: 799px) {
   .mobileTabs {
     display: flex;
+    flex: 1;
     background: #1a4731;
-    position: sticky;
+    position: fixed;
     top: 60px;
     z-index: 10;
+
   }
 
   .mobileTab {
+    display: flex;
     flex: 1;
     padding: 12px;
     border: none;
