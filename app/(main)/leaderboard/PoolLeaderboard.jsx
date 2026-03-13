@@ -20,7 +20,7 @@ export default function PoolLeaderboard() {
   const [activeTab, setActiveTab] = useState('grandpool')
   const [view, setView] = useState('list')
   const [expandedTeams, setExpandedTeams] = useState(new Set())
-  const [activeRound, setActiveRound] = useState('live')  // ← moved up here
+  const [activeRound, setActiveRound] = useState('live')
 
   function toggleTeam(id) {
     setExpandedTeams(prev => {
@@ -31,7 +31,6 @@ export default function PoolLeaderboard() {
     })
   }
 
-  // Only ONE useEffect now
   useEffect(() => {
     function fetchData() {
       const url = activeRound === 'live'
@@ -39,7 +38,7 @@ export default function PoolLeaderboard() {
         : `/api/pool-leaderboard?round=${activeRound}`
       fetch(url)
         .then(r => r.json())
-        .then(setData)
+        .then(d => { if (d && !d.error) setData(d) })
     }
     fetchData()
     const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
@@ -48,7 +47,7 @@ export default function PoolLeaderboard() {
 
   if (!data) return <div className={styles.loading}>Loading...</div>
 
-  const { scoredTeams, orgs } = data
+  const { scoredTeams, orgs, completedRounds = [] } = data
 
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool)
   const activeTeams = activeTab === 'grandpool'
@@ -60,12 +59,10 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
-
-
-
-
   return (
     <div className={styles.wrapper}>
+
+      {/* Header */}
       <div className={styles.header}>
         <h1 className={styles.title}>POOL LEADERBOARD</h1>
         <div className={styles.viewToggle}>
@@ -81,18 +78,27 @@ export default function PoolLeaderboard() {
           >⊞</button>
         </div>
       </div>
-      <div className={styles.roundTabs}>
-          {['live', 1, 2, 3, 4].map(r => (
-            <button
-              key={r}
-              className={`${styles.roundTab} ${activeRound === r ? styles.activeRoundTab : ''}`}
-              onClick={() => setActiveRound(r)}
-            >
-              {r === 'live' ? '🔴 Live' : `R${r}`}
-            </button>
-          ))}
-        </div>
 
+      {/* Round Tabs */}
+      <div className={styles.roundTabs}>
+        <button
+          className={`${styles.roundTab} ${activeRound === 'live' ? styles.activeRoundTab : ''}`}
+          onClick={() => setActiveRound('live')}
+        >
+          🔴 Live
+        </button>
+        {[1, 2, 3, 4].filter(r => completedRounds.includes(r)).map(r => (
+          <button
+            key={r}
+            className={`${styles.roundTab} ${activeRound === r ? styles.activeRoundTab : ''}`}
+            onClick={() => setActiveRound(r)}
+          >
+            R{r}
+          </button>
+        ))}
+      </div>
+
+      {/* Org Tabs */}
       <div className={styles.tabs}>
         <button
           className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
@@ -214,6 +220,7 @@ export default function PoolLeaderboard() {
           ))}
         </div>
       )}
+
     </div>
   )
 }
