@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
+import { LuSearch } from "react-icons/lu";
+
 
 function scoreClass(score, styles) {
   if (!score || score === 'E') return styles.scoreEven
@@ -152,7 +154,7 @@ export default function GolfLeaderboard() {
       <div className={styles.header}>
         <h1 className={styles.title}>Leaderboard</h1>
         <div className={styles.searchBox}>
-          <span>🔍</span>
+          <span><LuSearch /></span>
           <input
             placeholder="Search Player"
             value={search}
