@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { MapPin, Trophy, CheckCircle, Clock, DollarSign } from 'lucide-react'
 import styles from './my-teams.module.css'
 
 export default async function MyTeamsPage() {
@@ -37,7 +38,7 @@ export default async function MyTeamsPage() {
     <div className={styles.container}>
       <h1 className={styles.title}>My Teams</h1>
       {tournament && (
-        <p className={styles.tournament}>📍 {tournament.name} {tournament.year}</p>
+        <p className={styles.tournament}><MapPin size={14} /> {tournament.name} {tournament.year}</p>
       )}
 
       {teams?.length === 0 && (
@@ -57,15 +58,15 @@ export default async function MyTeamsPage() {
             </div>
             <div className={styles.badges}>
               {team.in_grand_pool && (
-                <span className={styles.grandPoolBadge}>🏆 Grand Pool</span>
+                <span className={styles.grandPoolBadge}><Trophy size={14} /> Grand Pool</span>
               )}
               {team.paid ? (
-                  <span className={styles.paidBadge}>✅ Paid</span>
+                  <span className={styles.paidBadge}><CheckCircle size={14} /> Paid</span>
                 ) : (
-                  <span className={styles.notPaidBadge}>⏳ Not Paid</span>
+                  <span className={styles.notPaidBadge}><Clock size={14} /> Not Paid</span>
                 )}
               <span className={styles.salary}>
-                💰 ${team.total_salary?.toLocaleString()}
+                <DollarSign size={14} />{team.total_salary?.toLocaleString()}
               </span>
             </div>
           </div>

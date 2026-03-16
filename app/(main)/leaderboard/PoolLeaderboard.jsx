@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight } from 'lucide-react'
 import styles from './pool-leaderboard.module.css'
 
 function formatScore(score) {
@@ -93,12 +94,12 @@ export default function PoolLeaderboard() {
             className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
             onClick={() => setView('list')}
             title="List view"
-          >☰</button>
+          ><List size={16} /></button>
           <button
             className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
             onClick={() => setView('card')}
             title="Card view"
-          >⊞</button>
+          ><LayoutGrid size={16} /></button>
         </div>
       </div>
 
@@ -108,7 +109,7 @@ export default function PoolLeaderboard() {
           className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('grandpool')}
         >
-          🏆 Grand Pool
+          <Trophy size={14} /> Grand Pool
           <span className={styles.tabCount}>{grandPoolTeams.length}</span>
         </button>
         {orgs.map(org => (
@@ -148,7 +149,7 @@ export default function PoolLeaderboard() {
                   {formatScore(team.todayScore)}
                 </span>
                 <span className={styles.colStat}>{team.cutCount}</span>
-                <span className={styles.colExpand}>{expandedTeams.has(team.id) ? '▼' : '▶'}</span>
+                <span className={styles.colExpand}>{expandedTeams.has(team.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
               </div>
 
               {expandedTeams.has(team.id) && (

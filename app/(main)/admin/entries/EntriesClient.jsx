@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ClipboardList, MapPin, Trophy } from 'lucide-react'
 import styles from './entries.module.css'
 
 export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, isSuperAdmin }) {
@@ -38,7 +39,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
     <div className={styles.container}>
       <a href="/admin" className={styles.back}>← Back to Admin</a>
       <div className={styles.titleRow}>
-        <h1 className={styles.title}>📋 Entries</h1>
+        <h1 className={styles.title}><ClipboardList size={24} /> Entries</h1>
         <div className={styles.stats}>
           <span className={styles.stat}>{allTeams.length} total teams</span>
           <span className={styles.statPaid}>{totalPaid} paid</span>
@@ -47,7 +48,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
       </div>
 
       {tournament && (
-        <p className={styles.tournament}>📍 {tournament.name} {tournament.year}</p>
+        <p className={styles.tournament}><MapPin size={14} /> {tournament.name} {tournament.year}</p>
       )}
 
       <div className={styles.tabs}>
@@ -63,7 +64,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
               className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
               onClick={() => setActiveOrg('grandpool')}
             >
-              🏆 Grand Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+              <Trophy size={14} /> Grand Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
             </button>
           </>
         )}

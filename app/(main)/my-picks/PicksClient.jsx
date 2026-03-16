@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Pencil, X, Lock, CheckCircle } from 'lucide-react'
 import styles from './picks.module.css'
 
 function sortSlots(slots) {
@@ -206,10 +207,10 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
                 <span className={styles.slotName}>{slot.golfer_name}</span>
                 <span className={styles.slotSalary}>${slot.salary.toLocaleString()}</span>
                 {!picksLocked && (
-                  <button className={styles.slotEdit} onClick={() => handleSlotClick(i)} title="Change player">✎</button>
+                  <button className={styles.slotEdit} onClick={() => handleSlotClick(i)} title="Change player"><Pencil size={14} /></button>
                 )}
                 {!picksLocked && (
-                  <button className={styles.slotRemove} onClick={() => handleRemove(i)} title="Remove">✕</button>
+                  <button className={styles.slotRemove} onClick={() => handleRemove(i)} title="Remove"><X size={14} /></button>
                 )}
               </>
             ) : (
@@ -227,14 +228,14 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
       </div>
 
       {picksLocked ? (
-        <div className={styles.locked}>🔒 Picks are locked</div>
+        <div className={styles.locked}><Lock size={14} /> Picks are locked</div>
       ) : (
         <button
           className={styles.submitBtn}
           onClick={handleSubmit}
           disabled={saving || picks.length !== maxPicks || !teamName}
         >
-          {saving ? 'Saving...' : saved ? '✅ Saved!' : editTeamId ? 'Update Team' : 'Submit Team'}
+          {saving ? 'Saving...' : saved ? <><CheckCircle size={14} /> Saved!</> : editTeamId ? 'Update Team' : 'Submit Team'}
         </button>
       )}
 
@@ -252,7 +253,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
             {activeSlot !== null ? `Picking for slot ${activeSlot + 1}` : 'Available Players'}
           </h2>
           {activeSlot !== null && (
-            <button className={styles.cancelBtn} onClick={cancelPick}>✕ Cancel</button>
+            <button className={styles.cancelBtn} onClick={cancelPick}><X size={14} /> Cancel</button>
           )}
         </div>
         <input

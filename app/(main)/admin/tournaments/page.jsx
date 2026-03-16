@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Trophy, Check, Lock, CircleDot } from 'lucide-react'
 import styles from './tournaments.module.css'
 
 export default function TournamentsPage() {
@@ -53,7 +54,7 @@ export default function TournamentsPage() {
   return (
     <div className={styles.container}>
       <a href="/admin" className={styles.back}>← Back to Admin</a>
-      <h1 className={styles.title}>🏆 Tournaments</h1>
+      <h1 className={styles.title}><Trophy size={24} /> Tournaments</h1>
 
       <div className={styles.card}>
         <h2>Create Tournament</h2>
@@ -75,7 +76,7 @@ export default function TournamentsPage() {
 
           {preview && (
             <div className={styles.preview}>
-              <strong>✅ {preview.name}</strong>
+              <strong><Check size={14} /> {preview.name}</strong>
               <span>{preview.year} · Starts: {new Date(preview.start_date).toLocaleDateString()}</span>
             </div>
           )}
@@ -119,7 +120,7 @@ export default function TournamentsPage() {
               </span>
             </div>
             <span className={t.picks_locked ? styles.locked : styles.open}>
-              {t.picks_locked ? '🔒 Locked' : '🟢 Open'}
+              {t.picks_locked ? <><Lock size={14} /> Locked</> : <><CircleDot size={14} /> Open</>}
             </span>
           </div>
         ))}

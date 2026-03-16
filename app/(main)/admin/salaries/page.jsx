@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { DollarSign, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import styles from './salaries.module.css'
 
 export default function SalariesPage() {
@@ -170,7 +171,7 @@ export default function SalariesPage() {
   return (
     <div className={styles.container}>
       <a href="/admin" className={styles.back}>← Back to Admin</a>
-      <h1 className={styles.title}>💰 Golfer Salaries</h1>
+      <h1 className={styles.title}><DollarSign size={24} /> Golfer Salaries</h1>
 
       {/* Step 1: Select Tournament */}
       <div className={styles.card}>
@@ -206,7 +207,7 @@ export default function SalariesPage() {
       {/* Matched */}
       {matched.length > 0 && (
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>✅ Matched ({matched.length})</h2>
+          <h2 className={styles.sectionTitle}><CheckCircle size={16} /> Matched ({matched.length})</h2>
           <div className={styles.golferList}>
             <div className={styles.matchedHeader}>
               <span>ESPN Player</span>
@@ -230,7 +231,7 @@ export default function SalariesPage() {
       {/* Unmatched */}
       {unmatched.length > 0 && (
         <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>❌ Unmatched ({unmatched.length})</h2>
+          <h2 className={styles.sectionTitle}><XCircle size={16} /> Unmatched ({unmatched.length})</h2>
           <div className={styles.golferList}>
             <div className={styles.unmatchedHeader}>
               <span>FanDuel Name</span>
@@ -259,12 +260,12 @@ export default function SalariesPage() {
                   {u.status === 'found' && (
                     <div className={styles.foundResult}>
                       <img src={u.resolved_headshot} className={styles.headshot} />
-                      <span className={styles.foundName}>✅ {u.resolved_name}</span>
+                      <span className={styles.foundName}><CheckCircle size={14} /> {u.resolved_name}</span>
                     </div>
                   )}
                   {u.status === 'notfound' && (
                     <div className={styles.notFoundResult}>
-                      <span className={styles.notFoundLabel}>⚠️ Amateur — enter details:</span>
+                      <span className={styles.notFoundLabel}><AlertTriangle size={14} /> Amateur — enter details:</span>
                       <input
                         type="text"
                         className={styles.idInput}
@@ -299,7 +300,7 @@ export default function SalariesPage() {
       {/* Save */}
       {readyToSave && (
         <button className={styles.saveBtn} onClick={handleSave} disabled={saving}>
-          {saving ? 'Saving...' : saved ? '✅ Saved!' : `Save Salaries`}
+          {saving ? 'Saving...' : saved ? <><CheckCircle size={14} /> Saved!</> : 'Save Salaries'}
         </button>
       )}
     </div>

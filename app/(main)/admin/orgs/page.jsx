@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Building2, Check, Link } from 'lucide-react'
 import styles from './orgs.module.css'
 
 function generateJoinCode() {
@@ -45,7 +46,7 @@ export default function OrgsPage() {
   return (
     <div className={styles.container}>
       <a href="/admin" className={styles.back}>← Back to Admin</a>
-      <h1 className={styles.title}>🏢 Orgs</h1>
+      <h1 className={styles.title}><Building2 size={24} /> Orgs</h1>
 
       <div className={styles.card}>
         <h2>Create Org</h2>
@@ -78,7 +79,7 @@ export default function OrgsPage() {
               className={styles.copyBtn}
               onClick={() => copyCode(org.join_code)}
             >
-              {copied === org.join_code ? '✅ Copied!' : '🔗 Copy Invite Link'}
+              {copied === org.join_code ? <><Check size={14} /> Copied!</> : <><Link size={14} /> Copy Invite Link</>}
             </button>
           </div>
         ))}
