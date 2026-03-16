@@ -20,7 +20,7 @@ export default function PoolLeaderboard() {
   const [activeTab, setActiveTab] = useState('grandpool')
   const [view, setView] = useState('list')
   const [expandedTeams, setExpandedTeams] = useState(new Set())
-  const [activeRound, setActiveRound] = useState('live')
+  const [error, setError] = useState(false)
 
   function toggleTeam(id) {
     setExpandedTeams(prev => {
@@ -31,51 +31,46 @@ export default function PoolLeaderboard() {
     })
   }
 
-  const [error, setError] = useState(false)
+  useEffect(() => {
+    let retries = 0
 
-    useEffect(() => {
-      let retries = 0
-
-      async function fetchData() {
-        try {
-          const url = activeRound === 'live'
-            ? '/api/pool-leaderboard'
-            : `/api/pool-leaderboard?round=${activeRound}`
-          const res = await fetch(url)
-          const d = await res.json()
-          if (d && d.scoredTeams) {
-            setData(d)
-            setError(false)
-          } else if (retries < 3) {
-            retries++
-            setTimeout(fetchData, 2000)
-          } else {
-            setError(true)
-          }
-        } catch (e) {
-          if (retries < 3) {
-            retries++
-            setTimeout(fetchData, 2000)
-          } else {
-            setError(true)
-          }
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/pool-leaderboard')
+        const d = await res.json()
+        if (d && d.scoredTeams) {
+          setData(d)
+          setError(false)
+        } else if (retries < 3) {
+          retries++
+          setTimeout(fetchData, 2000)
+        } else {
+          setError(true)
+        }
+      } catch (e) {
+        if (retries < 3) {
+          retries++
+          setTimeout(fetchData, 2000)
+        } else {
+          setError(true)
         }
       }
+    }
 
-      fetchData()
-      const interval = activeRound === 'live' ? setInterval(fetchData, 60000) : null
-      return () => { if (interval) clearInterval(interval) }
-    }, [activeRound])
+    fetchData()
+    const interval = setInterval(fetchData, 60000)
+    return () => clearInterval(interval)
+  }, [])
 
-    if (error) return (
-      <div className={styles.loading} onClick={() => { setError(false); setData(null) }}>
-        Failed to load. Tap to retry.
-      </div>
-    )
+  if (error) return (
+    <div className={styles.loading} onClick={() => { setError(false); setData(null) }}>
+      Failed to load. Tap to retry.
+    </div>
+  )
 
-    if (!data) return <div className={styles.loading}>Loading...</div>
+  if (!data) return <div className={styles.loading}>Loading...</div>
 
-  const { scoredTeams, orgs, completedRounds = [] } = data
+  const { scoredTeams, orgs } = data
 
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool)
   const activeTeams = activeTab === 'grandpool'
@@ -105,25 +100,6 @@ export default function PoolLeaderboard() {
             title="Card view"
           >⊞</button>
         </div>
-      </div>
-
-      {/* Round Tabs */}
-      <div className={styles.roundTabs}>
-        <button
-          className={`${styles.roundTab} ${activeRound === 'live' ? styles.activeRoundTab : ''}`}
-          onClick={() => setActiveRound('live')}
-        >
-          🔴 Live
-        </button>
-        {[1, 2, 3, 4].filter(r => completedRounds.includes(r)).map(r => (
-          <button
-            key={r}
-            className={`${styles.roundTab} ${activeRound === r ? styles.activeRoundTab : ''}`}
-            onClick={() => setActiveRound(r)}
-          >
-            R{r}
-          </button>
-        ))}
       </div>
 
       {/* Org Tabs */}

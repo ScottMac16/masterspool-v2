@@ -7,11 +7,8 @@ function parseScore(score) {
   return parseInt(score.replace('+', '')) || 0
 }
 
-export async function GET(req) {
+export async function GET() {
   const { userId } = await auth()
-  const { searchParams } = new URL(req.url)
-  const round = searchParams.get('round')
-
 
   const { data: tournament } = await supabaseAdmin
     .from('tournaments')
@@ -22,64 +19,19 @@ export async function GET(req) {
 
   if (!tournament) return Response.json({ error: 'No tournament' }, { status: 404 })
 
-    // If round specified, fetch from snapshots
-  if (round) {
-    const { data: snapshots } = await supabaseAdmin
-      .from('round_snapshots')
-      .select('*')
-      .eq('tournament_id', tournament.id)
-      .eq('round', round)
-
-    if (!snapshots?.length) return Response.json({ error: 'No snapshot for this round' }, { status: 404 })
-
-    const scoredTeams = snapshots.map(s => ({
-      id: s.team_id,
-      team_name: s.team_name,
-      user: null,
-      totalScore: s.total_score,
-      todayScore: s.today_score,
-      cutCount: s.cut_count,
-      golfers: s.golfers,
-      in_grand_pool: s.in_grand_pool,
-      org_id: s.org_id,
-      pool_id: s.pool_id,
-    })).sort((a, b) => a.totalScore - b.totalScore)
-
-    let orgs = []
-    if (userId) {
-      const { data: userOrgs } = await supabaseAdmin
-        .from('org_members')
-        .select('orgs(id, name)')
-        .eq('user_id', userId)
-      orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
-    }
-
-    // Get which rounds have snapshots
-    const { data: snapshotRounds } = await supabaseAdmin
-      .from('round_snapshots')
-      .select('round')
-      .eq('tournament_id', tournament.id)
-
-    const completedRounds = [...new Set(snapshotRounds?.map(s => s.round) || [])]
-
-    return Response.json({ scoredTeams, orgs, tournament, round: parseInt(round), completedRounds })
-  }
-
-
   const espnGolfers = await getLeaderboard(tournament.espn_event_id)
 
   const scoreMap = {}
   let worstScore = -999
   espnGolfers.forEach(g => {
-  const score = parseScore(g.score)
-  const today = parseScore(g.today)
-  scoreMap[g.id] = { score, today, thru: g.thru, status: g.status, position: g.position, displayValue: g.displayValue }
-  if (g.status !== 'STATUS_CUT' && score > worstScore) worstScore = score
+    const score = parseScore(g.score)
+    const today = parseScore(g.today)
+    scoreMap[g.id] = { score, today, thru: g.thru, status: g.status, position: g.position, displayValue: g.displayValue }
+    if (g.status !== 'STATUS_CUT' && score > worstScore) worstScore = score
   })
 
   const missedCutScore = worstScore + 1
 
-  // Get salary list sorted by salary descending
   const { data: salaries } = await supabaseAdmin
     .from('golfer_salaries')
     .select('*')
@@ -137,7 +89,7 @@ export async function GET(req) {
       const espn = scoreMap[g.id]
       const pct = totalTeams > 0 ? ((pickCount[g.id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
 
-      // Golfer missing from ESPN entirely = pre-tournament WD
+      // Missing from ESPN = pre-tournament WD
       if (!espn) {
         const replacement = findReplacement(g.id)
         if (replacement) {
@@ -145,25 +97,15 @@ export async function GET(req) {
           const repPct = totalTeams > 0 ? ((pickCount[replacement.golfer_espn_id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
           totalScore += repEspn.score
           todayScore += repEspn.today
-          return {
-            id: replacement.golfer_espn_id,
-            name: replacement.golfer_name,
-            score: repEspn.score,
-            today: repEspn.today,
-            thru: repEspn.thru,
-            missedCut: false,
-            position: repEspn.position,
-            pickPct: repPct,
-          }
+          return { id: replacement.golfer_espn_id, name: replacement.golfer_name, score: repEspn.score, today: repEspn.today, thru: repEspn.thru, missedCut: false, position: repEspn.position, pickPct: repPct }
         }
-        // No replacement found
         cutCount++
         totalScore += missedCutScore
         todayScore += missedCutScore
         return { ...g, score: missedCutScore, today: missedCutScore, thru: '—', missedCut: true, position: 'CUT', pickPct: pct }
       }
 
-      // STATUS_WD before teeing off
+      // WD before teeing off
       if (espn.status === 'STATUS_WD' && !espn.thru) {
         const replacement = findReplacement(g.id)
         if (replacement) {
@@ -171,16 +113,7 @@ export async function GET(req) {
           const repPct = totalTeams > 0 ? ((pickCount[replacement.golfer_espn_id] || 0) / totalTeams * 100).toFixed(1) : '0.0'
           totalScore += repEspn.score
           todayScore += repEspn.today
-          return {
-            id: replacement.golfer_espn_id,
-            name: replacement.golfer_name,
-            score: repEspn.score,
-            today: repEspn.today,
-            thru: repEspn.thru,
-            missedCut: false,
-            position: repEspn.position,
-            pickPct: repPct,
-          }
+          return { id: replacement.golfer_espn_id, name: replacement.golfer_name, score: repEspn.score, today: repEspn.today, thru: repEspn.thru, missedCut: false, position: repEspn.position, pickPct: repPct }
         }
       }
 
@@ -198,10 +131,8 @@ export async function GET(req) {
     })
 
     golferScores.sort((a, b) => {
-      // CUT/WD always go to bottom
       if (a.missedCut && !b.missedCut) return 1
       if (!a.missedCut && b.missedCut) return -1
-      // Sort by score (lower is better)
       return a.score - b.score
     })
 
@@ -233,13 +164,5 @@ export async function GET(req) {
     orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
   }
 
-  // Get which rounds have snapshots
-  const { data: snapshotRounds } = await supabaseAdmin
-    .from('round_snapshots')
-    .select('round')
-    .eq('tournament_id', tournament.id)
-
-  const completedRounds = [...new Set(snapshotRounds?.map(s => s.round) || [])]
-
-  return Response.json({ scoredTeams, orgs, tournament, missedCutScore, completedRounds })
+  return Response.json({ scoredTeams, orgs, tournament, missedCutScore })
 }

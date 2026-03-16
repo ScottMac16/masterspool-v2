@@ -3,7 +3,6 @@ import { isSuperAdmin } from '@/lib/admin'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
 import styles from './admin.module.css'
-import SnapshotTrigger from './SnapshotTrigger'
 
 export default async function AdminPage() {
   const { userId } = await auth()
@@ -41,7 +40,6 @@ export default async function AdminPage() {
               <p>Set golfer salaries per tournament</p>
               <a href="/admin/salaries" className={styles.btn}>Manage</a>
             </div>
-             <SnapshotTrigger />
           </>
         )}
 
