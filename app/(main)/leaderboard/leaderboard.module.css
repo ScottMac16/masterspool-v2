@@ -297,3 +297,10 @@
   color: white;
   border-radius: 4px;
 }
+
+.pickPct {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: center;
+  min-width: 45px;
+}

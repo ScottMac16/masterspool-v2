@@ -21,10 +21,6 @@ function holeScoreClass(scoreType) {
   }
 }
 
-const PARS = {
-  1: 4, 2: 5, 3: 4, 4: 3, 5: 4, 6: 3, 7: 4, 8: 5, 9: 4,
-  10: 4, 11: 4, 12: 3, 13: 5, 14: 4, 15: 5, 16: 3, 17: 4, 18: 4
-}
 
 export default function GolfLeaderboard() {
   const [golfers, setGolfers] = useState([])
@@ -33,6 +29,14 @@ export default function GolfLeaderboard() {
   const [scorecards, setScorecards] = useState({})
   const [activeRound, setActiveRound] = useState({})
   const [loadingId, setLoadingId] = useState(null)
+
+  const [pickPct, setPickPct] = useState({})
+
+  useEffect(() => {
+    fetch('/api/golf/pick-pct')
+      .then(r => r.json())
+      .then(d => { if (d.pickPct) setPickPct(d.pickPct) })
+  }, [])
 
   useEffect(() => {
     function fetchData() {
@@ -168,6 +172,7 @@ export default function GolfLeaderboard() {
         <span>TOTAL</span>
         <span>TODAY</span>
         <span>THRU</span>
+        <span>PICKED</span>
         <span></span>
       </div>
 
@@ -185,6 +190,11 @@ export default function GolfLeaderboard() {
             <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
             <span className={styles.today}>{g.today}</span>
             <span className={styles.thru}>{g.thru}</span>
+            {pickPct[g.id] ? (
+              <span className={styles.pickPct}>{pickPct[g.id]}%</span>
+            ) : (
+              <span className={styles.pickPct}>—</span>
+            )}
             <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
           </div>
           {expandedId === g.id && (
@@ -219,6 +229,11 @@ export default function GolfLeaderboard() {
                 <span className={styles.score}>{g.score}</span>
                 <span className={styles.today}>{g.today}</span>
                 <span className={styles.thru}>{g.thru}</span>
+                {pickPct[g.id] ? (
+                  <span className={styles.pickPct}>{pickPct[g.id]}%</span>
+                ) : (
+                  <span className={styles.pickPct}>—</span>
+                )}
                 <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
               </div>
               {expandedId === g.id && (
