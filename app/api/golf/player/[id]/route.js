@@ -6,7 +6,7 @@ export async function GET(req, { params }) {
   const { data: tournament } = await supabaseAdmin
     .from('tournaments')
     .select('espn_event_id')
-    .order('created_at', { ascending: false })
+    .eq('active', true)
     .limit(1)
     .single()
 

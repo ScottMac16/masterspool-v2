@@ -9,6 +9,7 @@ export default function TournamentsPage() {
   const [loading, setLoading] = useState(false)
   const [previewing, setPreviewing] = useState(false)
   const [preview, setPreview] = useState(null)
+  const [settingActive, setSettingActive] = useState(null)
   const [form, setForm] = useState({
     espn_event_id: '',
     salary_cap: 80000,
@@ -49,6 +50,22 @@ export default function TournamentsPage() {
     setForm({ espn_event_id: '', salary_cap: 80000, max_picks: 8 })
     setPreview(null)
     setLoading(false)
+  }
+
+  async function handleSetActive(tournamentId) {
+    setSettingActive(tournamentId)
+    const res = await fetch('/api/admin/tournaments/active', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tournament_id: tournamentId }),
+    })
+    if (res.ok) {
+      setTournaments(prev => prev.map(t => ({
+        ...t,
+        active: t.id === tournamentId
+      })))
+    }
+    setSettingActive(null)
   }
 
   return (
@@ -112,16 +129,30 @@ export default function TournamentsPage() {
         <h2>Existing Tournaments</h2>
         {tournaments.length === 0 && <p className={styles.empty}>No tournaments yet</p>}
         {tournaments.map(t => (
-          <div key={t.id} className={styles.tournamentRow}>
+          <div key={t.id} className={`${styles.tournamentRow} ${t.active ? styles.activeTournament : ''}`}>
             <div>
-              <strong>{t.name}</strong>
+              <div className={styles.tournamentName}>
+                {t.active && <span className={styles.activeBadge}>● ACTIVE</span>}
+                <strong>{t.name}</strong>
+              </div>
               <span className={styles.meta}>
                 {t.year} · Cap: ${t.salary_cap?.toLocaleString()} · Max Picks: {t.max_picks} · ESPN ID: {t.espn_event_id}
               </span>
             </div>
-            <span className={t.picks_locked ? styles.locked : styles.open}>
-              {t.picks_locked ? <><Lock size={14} /> Locked</> : <><CircleDot size={14} /> Open</>}
-            </span>
+            <div className={styles.tournamentActions}>
+              <span className={t.picks_locked ? styles.locked : styles.open}>
+                {t.picks_locked ? <><Lock size={14} /> Locked</> : <><CircleDot size={14} /> Open</>}
+              </span>
+              {!t.active && (
+                <button
+                  className={styles.setActiveBtn}
+                  onClick={() => handleSetActive(t.id)}
+                  disabled={settingActive === t.id}
+                >
+                  {settingActive === t.id ? 'Setting...' : 'Set Active'}
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

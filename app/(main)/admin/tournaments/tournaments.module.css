@@ -110,3 +110,46 @@
 .locked { color: #8b1a1a; font-size: 0.85rem; font-weight: 600; }
 .open { color: #1a4731; font-size: 0.85rem; font-weight: 600; }
 .empty { color: #999; font-size: 0.9rem; }
+
+
+.activeTournament {
+  border-left: 4px solid #1a4731;
+  background: #f0f7f4;
+}
+
+.tournamentName {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.activeBadge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #1a4731;
+  letter-spacing: 1px;
+}
+
+.tournamentActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.setActiveBtn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 2px solid #1a4731;
+  background: white;
+  color: #1a4731;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.setActiveBtn:hover {
+  background: #1a4731;
+  color: white;
+}
