@@ -34,7 +34,7 @@ export default function JoinClient() {
       <div className={styles.card}>
         <div className={styles.icon}><Flag size={40} /></div>
         <h1 className={styles.title}>Welcome to the Pool!</h1>
-        <p className={styles.subtitle}>Have an invite code? Enter it below. Otherwise you can jump straight into the Grand Pool.</p>
+        <p className={styles.subtitle}>Have an invite code? Enter it below. Otherwise you can jump straight into the SMAC Pool.</p>
 
         <div className={styles.codeSection}>
           <input
@@ -64,7 +64,7 @@ export default function JoinClient() {
           onClick={handleGrandPoolOnly}
           disabled={loading}
         >
-          <Trophy size={16} style={{marginRight: 6, verticalAlign: 'middle'}} /> Skip — just enter the Grand Pool
+          <Trophy size={16} style={{marginRight: 6, verticalAlign: 'middle'}} /> Skip — just enter the SMAC Pool
         </button>
       </div>
     </div>

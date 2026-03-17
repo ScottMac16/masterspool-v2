@@ -58,7 +58,7 @@ export default async function MyTeamsPage() {
             </div>
             <div className={styles.badges}>
               {team.in_grand_pool && (
-                <span className={styles.grandPoolBadge}><Trophy size={14} /> Grand Pool</span>
+                <span className={styles.grandPoolBadge}><Trophy size={14} /> SMAC Pool</span>
               )}
               {team.paid ? (
                   <span className={styles.paidBadge}><CheckCircle size={14} /> Paid</span>

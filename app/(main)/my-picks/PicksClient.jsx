@@ -187,7 +187,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
             onChange={e => setInGrandPool(e.target.checked)}
             disabled={picksLocked}
           />
-          <label htmlFor="grandpool">Enter Grand Pool</label>
+          <label htmlFor="grandpool">Enter SMAC Pool</label>
         </div>
       )}
 

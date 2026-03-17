@@ -24,7 +24,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
   }
 
   const grandPoolTeams = allTeams.filter(t =>
-    t.in_grand_pool || t.org_name === 'Grand Pool'
+    t.in_grand_pool || t.org_name === 'SMAC Pool'
   )
 
   const activeTeams = activeOrg === 'grandpool'
@@ -43,7 +43,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
         <div className={styles.stats}>
           <span className={styles.stat}>{allTeams.length} total teams</span>
           <span className={styles.statPaid}>{totalPaid} paid</span>
-          <span className={styles.statGrand}>{grandPoolTeams.length} grand pool</span>
+          <span className={styles.statGrand}>{grandPoolTeams.length} SMAC Pool</span>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
               className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
               onClick={() => setActiveOrg('grandpool')}
             >
-              <Trophy size={14} /> Grand Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+              <Trophy size={14} /> SMAC Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
             </button>
           </>
         )}

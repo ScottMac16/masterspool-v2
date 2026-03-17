@@ -109,7 +109,7 @@ export default function PoolLeaderboard() {
           className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('grandpool')}
         >
-          <Trophy size={14} /> Grand Pool
+          <Trophy size={14} /> SMAC Pool
           <span className={styles.tabCount}>{grandPoolTeams.length}</span>
         </button>
         {orgs.map(org => (
