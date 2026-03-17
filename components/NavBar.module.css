@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   background: #1a4731;
-  padding: 0 24px;
+  padding: 10px 24px;
   height: 56px;
   position: sticky;
   top: 0;
@@ -11,11 +11,17 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoSvg{
+  height: 56px;
+  width: auto;
   color: #c9a84c;
-  font-weight: 800;
-  font-size: 1.1rem;
-  text-decoration: none;
-  letter-spacing: 1px;
+  fill: currentColor;
+  margin: auto;
 }
 
 .left {
