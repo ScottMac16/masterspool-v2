@@ -126,7 +126,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
     return true
   })
 
-  const CapBar = () => (
+  const capBar = (
     <div className={styles.capBar}>
       <div className={styles.capInfo}>
         <span>Salary Cap</span>
@@ -144,12 +144,17 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
         />
       </div>
       <div className={styles.capCount}>{picks.length} / {maxPicks} players</div>
+      {picks.length < maxPicks && (
+        <div className={styles.capAvg}>
+          ${Math.floor(remaining / (maxPicks - picks.length)).toLocaleString()} avg per remaining pick
+        </div>
+      )}
     </div>
   )
 
-  const SlotPanel = () => (
+  const slotPanel = (
     <div className={styles.right}>
-      <CapBar />
+      {capBar}
 
       <div className={styles.field}>
         <label>Team Name</label>
@@ -245,7 +250,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
     </div>
   )
 
-  const PlayerPanel = () => (
+  const playerPanel = (
     <div className={styles.left}>
       <div className={styles.leftHeader}>
         <div className={styles.leftTitleRow}>
@@ -308,13 +313,13 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
     <div className={styles.page}>
       {/* Desktop: side by side */}
       <div className={styles.desktopLayout}>
-        <PlayerPanel />
-        <SlotPanel />
+        {playerPanel}
+        {slotPanel}
       </div>
 
       {/* Mobile: single panel */}
       <div className={styles.mobileLayout}>
-        {mobileView === 'players' ? <PlayerPanel /> : <SlotPanel />}
+        {mobileView === 'players' ? playerPanel : slotPanel}
       </div>
     </div>
   )
