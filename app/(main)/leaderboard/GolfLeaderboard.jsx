@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
-import { LuSearch } from "react-icons/lu";
+import { Search } from 'lucide-react'
 
 
 function scoreClass(score, styles) {
@@ -154,7 +154,7 @@ export default function GolfLeaderboard() {
       <div className={styles.header}>
         <h1 className={styles.title}>Leaderboard</h1>
         <div className={styles.searchBox}>
-          <span><LuSearch /></span>
+          <span><Search size={10}/></span>
           <input
             placeholder="Search Player"
             value={search}
