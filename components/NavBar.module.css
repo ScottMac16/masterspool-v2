@@ -8,6 +8,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-wrap: wrap;
 }
 
 .logo {
@@ -25,14 +26,17 @@
 }
 
 .left {
+  height: 100%;
   display: flex;
   align-items: center;
 }
 
 .right {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 16px;
+  height: 100%;
 }
 
 .link {
@@ -65,4 +69,103 @@
 
 .signOut:hover {
   background: rgba(255,255,255,0.25);
+}
+
+/* Hamburger button — hidden on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.barOpen1 {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.barOpen2 {
+  opacity: 0;
+}
+
+.barOpen3 {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile dropdown */
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  background: #1a4731;
+  padding: 8px 0 12px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.mobileLink {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 24px;
+}
+
+.mobileLink:hover {
+  color: white;
+  background: rgba(255,255,255,0.05);
+}
+
+.mobileAdminLink {
+  color: #c9a84c;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 24px;
+}
+
+.mobileSignOut {
+  background: none;
+  color: rgba(255,255,255,0.75);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: left;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+.mobileSignOut:hover {
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .right {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
+  }
+
+  .nav {
+    height: auto;
+    min-height: 56px;
+    align-items: center;
+  }
 }
