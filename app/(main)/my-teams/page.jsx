@@ -10,10 +10,10 @@ export default async function MyTeamsPage() {
   const { data: tournament } = await supabaseAdmin
     .from('tournaments')
     .select('*')
-    .order('created_at', { ascending: false })
+    .eq('active', true)
     .limit(1)
     .single()
-
+    
   // Get all pools for this tournament
   const { data: pools } = await supabaseAdmin
     .from('pools')
