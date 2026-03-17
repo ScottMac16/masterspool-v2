@@ -23,12 +23,12 @@ export default async function EntriesPage() {
     orgs = adminOrgs
   }
 
-  const { data: tournament } = await supabaseAdmin
-    .from('tournaments')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single()
+const { data: tournament } = await supabaseAdmin
+  .from('tournaments')
+  .select('*')
+  .eq('active', true)
+  .limit(1)
+  .single()
 
   const { data: pools } = await supabaseAdmin
     .from('pools')
