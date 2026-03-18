@@ -21,13 +21,9 @@ export default function LeaderboardPage() {
 
   function onTouchMove(e) {
     setTouchEnd(e.targetTouches[0].clientX)
-    
     // Hide while scrolling
     setTabsVisible(false)
     if (hideTimer.current) clearTimeout(hideTimer.current)
-    
-    // Reappear 500ms after scroll stops
-    hideTimer.current = setTimeout(() => setTabsVisible(true), 500)
   }
 
   function onTouchEnd() {
@@ -35,7 +31,12 @@ export default function LeaderboardPage() {
     const distance = touchStart - touchEnd
     if (distance > 50) setActivePanel(1)
     if (distance < -50) setActivePanel(0)
+    
+    // Show tabs when finger lifts
+    setTabsVisible(true)
   }
+
+
 
   function onMouseDown(e) {
     setTouchStart(e.clientX)
