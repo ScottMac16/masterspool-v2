@@ -21,17 +21,13 @@ export default function LeaderboardPage() {
 
   function onTouchMove(e) {
     setTouchEnd(e.targetTouches[0].clientX)
-    const currentY = e.targetTouches[0].clientY
-    const diffY = touchStartY.current - currentY
-
-    if (diffY > 10) {
-      setTabsVisible(false)
-      if (hideTimer.current) clearTimeout(hideTimer.current)
-    } else if (diffY < -10) {
-      setTabsVisible(true)
-      if (hideTimer.current) clearTimeout(hideTimer.current)
-      hideTimer.current = setTimeout(() => setTabsVisible(false), 2000)
-    }
+    
+    // Hide while scrolling
+    setTabsVisible(false)
+    if (hideTimer.current) clearTimeout(hideTimer.current)
+    
+    // Reappear 500ms after scroll stops
+    hideTimer.current = setTimeout(() => setTabsVisible(true), 500)
   }
 
   function onTouchEnd() {
