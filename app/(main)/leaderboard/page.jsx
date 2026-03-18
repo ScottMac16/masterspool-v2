@@ -3,7 +3,7 @@
 import GolfLeaderboard from './GolfLeaderboard'
 import PoolLeaderboard from './PoolLeaderboard'
 import styles from './combined.module.css'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 export default function LeaderboardPage() {
   const [activePanel, setActivePanel] = useState(0)
@@ -12,6 +12,26 @@ export default function LeaderboardPage() {
   const [tabsVisible, setTabsVisible] = useState(true)
   const touchStartY = useRef(null)
   const hideTimer = useRef(null)
+
+  useEffect(() => {
+    function handleTouchMove() {
+      setTabsVisible(false)
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+    }
+
+    function handleTouchEnd() {
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+      hideTimer.current = setTimeout(() => setTabsVisible(true), 300)
+    }
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: true })
+    document.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+    return () => {
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [])
 
   function onTouchStart(e) {
     setTouchStart(e.targetTouches[0].clientX)
