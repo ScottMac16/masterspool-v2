@@ -1,16 +1,40 @@
 .wrapper {
+  position: relative;
   width: 100%;
   background-color: #1a4731;
-  min-height: 100vh;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
+  height: 100vh;
+  padding: 0 20px;
+  
+  overflow-y: scroll;
+
 }
 
 .header {
+  position: sticky;
   display: flex;
-  align-items: center;
+  top: 0px;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  padding: 10px 0;
+  background-color: #1a4731;
+  margin-bottom: 10px;
+  box-shadow: 0 5px 10px rgba(1,1,1,1)
+
+}
+
+.searchHeader{
+  display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+
+  width: 100%;
+}
+
+.leaderboardList{
+  padding-bottom: 50px;
+  width: 100%;
+
+ 
 }
 
 .title {

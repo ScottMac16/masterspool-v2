@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
 import { Search } from 'lucide-react'
+import { mockLeaderboard } from '@/lib/mock-data'
 
 
 function scoreClass(score, styles) {
@@ -44,7 +45,8 @@ export default function GolfLeaderboard() {
     function fetchData() {
       fetch('/api/golf')
         .then(r => r.json())
-        .then(setGolfers)
+        .then(d => setGolfers(Array.isArray(d) && d.length ? d : mockLeaderboard))
+        .catch(() => setGolfers(mockLeaderboard))
     }
     fetchData()
     const interval = setInterval(fetchData, 60000)
@@ -152,104 +154,109 @@ export default function GolfLeaderboard() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Leaderboard</h1>
-        <div className={styles.searchBox}>
-          <span><Search size={10}/></span>
-          <input
-            placeholder="Search Player"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-          {search && (
-            <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
-          )}
-        </div>
-      </div>
-
-      <div className={styles.columnHeaders}>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span>TOTAL</span>
-        <span>TODAY</span>
-        <span>THRU</span>
-        <span>PICKED</span>
-        <span></span>
-      </div>
-
-      {active.map((g) => (
-        <div key={g.id}>
-          <div
-            className={styles.row}
-            style={{ cursor: 'pointer' }}
-            onClick={() => togglePlayer(g.id)}
-          >
-            <span className={styles.position}>{g.position}</span>
-            <img className={styles.headshot} src={g.headshot} alt={g.name} />
-            <img className={styles.flag} src={g.flag} alt={g.country} />
-            <span className={styles.name}>{g.name}</span>
-            <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
-            <span className={styles.today}>{g.today}</span>
-            <span className={styles.thru}>{g.thru}</span>
-            {pickPct[g.id] ? (
-              <span className={styles.pickPct}>{pickPct[g.id]}%</span>
-            ) : (
-              <span className={styles.pickPct}>—</span>
-            )}
-            <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
-          </div>
-          {expandedId === g.id && (
-            <div className={styles.scorecardWrap}>
-              {loadingId === g.id
-                ? <div className={styles.loadingScore}>Loading...</div>
-                : renderScorecard(g.id)
-              }
-            </div>
-          )}
-        </div>
-      ))}
-
-      {cut.length > 0 && (
-        <>
-          <div className={styles.row} style={{ background: '#8b1a1a', borderRadius: '8px', marginTop: '8px' }}>
-            <span></span><span></span><span></span>
-            <span style={{ color: 'white', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '1px' }}>— CUT —</span>
-            <span></span><span></span><span></span><span></span>
-          </div>
-          {cut.map((g) => (
-            <div key={g.id}>
-              <div
-                className={`${styles.row} ${styles.cutRow}`}
-                style={{ cursor: 'pointer' }}
-                onClick={() => togglePlayer(g.id)}
-              >
-                <span className={styles.position}>{g.position}</span>
-                <img className={styles.headshot} src={g.headshot} alt={g.name} />
-                <img className={styles.flag} src={g.flag} alt={g.country} />
-                <span className={styles.name}>{g.name}</span>
-                <span className={styles.score}>{g.score}</span>
-                <span className={styles.today}>{g.today}</span>
-                <span className={styles.thru}>{g.thru}</span>
-                {pickPct[g.id] ? (
-                  <span className={styles.pickPct}>{pickPct[g.id]}%</span>
-                ) : (
-                  <span className={styles.pickPct}>—</span>
-                )}
-                <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
-              </div>
-              {expandedId === g.id && (
-                <div className={styles.scorecardWrap}>
-                  {loadingId === g.id
-                    ? <div className={styles.loadingScore}>Loading...</div>
-                    : renderScorecard(g.id)
-                  }
-                </div>
+        <div className={styles.searchHeader}>
+            <h1 className={styles.title}>Leaderboard</h1>
+            <div className={styles.searchBox}>
+              <span><Search size={10}/></span>
+              <input
+                placeholder="Search Player"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              {search && (
+                <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
               )}
             </div>
-          ))}
-        </>
-      )}
+        </div>
+
+        <div className={styles.columnHeaders}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span>TOTAL</span>
+          <span>TODAY</span>
+          <span>THRU</span>
+          <span>PICKED</span>
+          <span></span>
+        </div>
+      </div>
+
+      
+      <div className={styles.leaderboardList}>
+        {active.map((g) => (
+          <div key={g.id}>
+            <div
+              className={styles.row}
+              style={{ cursor: 'pointer' }}
+              onClick={() => togglePlayer(g.id)}
+            >
+              <span className={styles.position}>{g.position}</span>
+              <img className={styles.headshot} src={g.headshot} alt={g.name} />
+              <img className={styles.flag} src={g.flag} alt={g.country} />
+              <span className={styles.name}>{g.name}</span>
+              <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
+              <span className={styles.today}>{g.today}</span>
+              <span className={styles.thru}>{g.thru}</span>
+              {pickPct[g.id] ? (
+                <span className={styles.pickPct}>{pickPct[g.id]}%</span>
+              ) : (
+                <span className={styles.pickPct}>—</span>
+              )}
+              <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
+            </div>
+            {expandedId === g.id && (
+              <div className={styles.scorecardWrap}>
+                {loadingId === g.id
+                  ? <div className={styles.loadingScore}>Loading...</div>
+                  : renderScorecard(g.id)
+                }
+              </div>
+            )}
+          </div>
+        ))}
+
+        {cut.length > 0 && (
+          <>
+            <div className={styles.row} style={{ background: '#8b1a1a', borderRadius: '8px', marginTop: '8px' }}>
+              <span></span><span></span><span></span>
+              <span style={{ color: 'white', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '1px' }}>— CUT —</span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+            {cut.map((g) => (
+              <div key={g.id}>
+                <div
+                  className={`${styles.row} ${styles.cutRow}`}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => togglePlayer(g.id)}
+                >
+                  <span className={styles.position}>{g.position}</span>
+                  <img className={styles.headshot} src={g.headshot} alt={g.name} />
+                  <img className={styles.flag} src={g.flag} alt={g.country} />
+                  <span className={styles.name}>{g.name}</span>
+                  <span className={styles.score}>{g.score}</span>
+                  <span className={styles.today}>{g.today}</span>
+                  <span className={styles.thru}>{g.thru}</span>
+                  {pickPct[g.id] ? (
+                    <span className={styles.pickPct}>{pickPct[g.id]}%</span>
+                  ) : (
+                    <span className={styles.pickPct}>—</span>
+                  )}
+                  <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
+                </div>
+                {expandedId === g.id && (
+                  <div className={styles.scorecardWrap}>
+                    {loadingId === g.id
+                      ? <div className={styles.loadingScore}>Loading...</div>
+                      : renderScorecard(g.id)
+                    }
+                  </div>
+                )}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     </div>
   )
 }

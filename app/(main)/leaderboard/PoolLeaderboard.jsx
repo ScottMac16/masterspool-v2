@@ -1,5 +1,6 @@
 'use client'
 
+import { mockPoolData } from '@/lib/mock-data'
 import { useState, useEffect } from 'react'
 import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight } from 'lucide-react'
 import styles from './pool-leaderboard.module.css'
@@ -33,30 +34,30 @@ export default function PoolLeaderboard() {
   }
 
   useEffect(() => {
-    let retries = 0
+  let retries = 0
 
-    async function fetchData() {
-      try {
-        const res = await fetch('/api/pool-leaderboard')
-        const d = await res.json()
-        if (d && d.scoredTeams) {
-          setData(d)
-          setError(false)
-        } else if (retries < 3) {
-          retries++
-          setTimeout(fetchData, 2000)
-        } else {
-          setError(true)
-        }
-      } catch (e) {
-        if (retries < 3) {
-          retries++
-          setTimeout(fetchData, 2000)
-        } else {
-          setError(true)
-        }
+  async function fetchData() {
+    try {
+      const res = await fetch('/api/pool-leaderboard')
+      const d = await res.json()
+      if (d && d.scoredTeams) {
+        setData(d)
+        setError(false)
+      } else if (retries < 3) {
+        retries++
+        setTimeout(fetchData, 2000)
+      } else {
+        setData(mockPoolData)
+      }
+    } catch (e) {
+      if (retries < 3) {
+        retries++
+        setTimeout(fetchData, 2000)
+      } else {
+        setData(mockPoolData)
       }
     }
+  }
 
     fetchData()
     const interval = setInterval(fetchData, 60000)

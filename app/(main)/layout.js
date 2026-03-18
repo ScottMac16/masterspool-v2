@@ -1,10 +1,13 @@
 import NavBar from '@/components/NavBar'
+import styles from './layout.module.css'
 
 export default function MainLayout({ children }) {
   return (
     <>
       <NavBar />
-      {children}
+      <div className={styles.mainBody}>
+        {children}
+      </div>
     </>
   )
 }
