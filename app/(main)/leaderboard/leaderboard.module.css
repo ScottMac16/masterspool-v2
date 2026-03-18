@@ -8,6 +8,7 @@
   overflow-y: scroll;
 
   scrollbar-gutter: stable;
+  padding-bottom: 25vh;
 
 }
 
@@ -127,13 +128,15 @@
   
 }
 
+.headshotWrap{
+position: relative;
+}
 .headshot {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   background: rgb(232, 232, 232);
-  position: relative;
   border: 1px solid rgb(251, 251, 251);
 }
 
@@ -142,8 +145,8 @@
   width: 20px;
   height: 20px;
   object-fit: cover;
-  bottom: -5;
-  right: -10;
+  bottom: 0;
+  right: 12;
   border-radius: 50%;
   background-color: white;
   border: 1px solid rgb(251, 251, 251);

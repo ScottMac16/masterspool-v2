@@ -1,8 +1,15 @@
 .wrapper {
-  background: #f5f0e8;
+  background: #ffffff;
 
   width: 100%;
   padding: 20px;
+  height: 100vh;
+    
+  overflow: hidden;
+  overflow-y: scroll;
+
+  scrollbar-gutter: stable;
+  padding-bottom: 25vh;
 }
 
 .listView, .cardGrid{
