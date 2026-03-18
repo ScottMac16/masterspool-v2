@@ -171,13 +171,9 @@ export default function GolfLeaderboard() {
 
         <div className={styles.columnHeaders}>
           <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
           <span>TOTAL</span>
           <span>TODAY</span>
           <span>THRU</span>
-          <span>PICKED</span>
           <span></span>
         </div>
       </div>
@@ -192,17 +188,20 @@ export default function GolfLeaderboard() {
               onClick={() => togglePlayer(g.id)}
             >
               <span className={styles.position}>{g.position}</span>
-              <img className={styles.headshot} src={g.headshot} alt={g.name} />
-              <img className={styles.flag} src={g.flag} alt={g.country} />
+              <div className={styles.headshot} >
+                <img className={styles.headshot} src={g.headshot} alt={g.name} />
+                <img className={styles.flag} src={g.flag} alt={g.country} />
+              </div>
+              
               <span className={styles.name}>{g.name}</span>
               <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
               <span className={styles.today}>{g.today}</span>
               <span className={styles.thru}>{g.thru}</span>
-              {pickPct[g.id] ? (
+              {/* {pickPct[g.id] ? (
                 <span className={styles.pickPct}>{pickPct[g.id]}%</span>
               ) : (
                 <span className={styles.pickPct}>—</span>
-              )}
+              )} */}
               <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
             </div>
             {expandedId === g.id && (

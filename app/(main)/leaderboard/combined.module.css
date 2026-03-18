@@ -13,10 +13,6 @@
   align-items: flex-start;
 }
 
-.panel{
-  overflow: scroll;
-  height: 100%;
-}
 .panel:first-child {
   flex: 1 1 475px;  /* can grow and shrink, but anchored around 475px */
   max-width: 500px;
@@ -37,7 +33,7 @@
 /* Mobile: swipe panels */
 @media (max-width: 799px) {
   .mobileTabs {
-    display: flex;
+    display: none;
     flex: 1;
     background: #1a4731;
     position: fixed;

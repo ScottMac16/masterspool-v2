@@ -1,41 +1,51 @@
 .wrapper {
   position: relative;
   width: 100%;
-  background-color: #1a4731;
+  background-color: #1E5344;
   height: 100vh;
-  padding: 0 20px;
   
+  overflow: hidden;
   overflow-y: scroll;
 
+  scrollbar-gutter: stable;
+
 }
+
+.wrapper{
+  scrollbar-color: #c9a84c #1E5344 ;
+}
+
 
 .header {
   position: sticky;
   display: flex;
-  top: 0px;
+  flex-direction: column;
+  top: 0;
   left: 0;
   right: 0;
-  flex-direction: column;
-  padding: 10px 0;
-  background-color: #1a4731;
-  margin-bottom: 10px;
-  box-shadow: 0 5px 10px rgba(1,1,1,1)
-
+  
+  padding: 10px 5px 0px 20px;
+  background-color: #1E5344;
+  z-index: 2;
 }
 
 .searchHeader{
   display: flex;
   justify-content: space-between;
-
   width: 100%;
+
 }
 
 .leaderboardList{
-  padding-bottom: 50px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px 50px 10px;
 
  
 }
+
+
 
 .title {
   color: white;
@@ -78,25 +88,28 @@
 
 .columnHeaders {
   display: grid;
-  grid-template-columns: 30px 60px 60px 1fr 60px 60px 60px 30px;
+  grid-template-columns: auto 12% repeat(2, 8%) 20px;
   padding: 4px 12px;
-  color: rgba(255,255,255,0.6);
-  font-size: 0.7rem;
+  color: white;
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-top: 20px;
+  text-align: center;
+
 }
 
 .row {
   display: grid;
-  grid-template-columns: 30px 60px 60px 1fr 60px 60px 60px 30px;
+  grid-template-columns: 20px 65px auto 12% repeat(2, 8%) 20px;
   align-items: center;
-  background: white;
+  background: #184337;
   border-radius: 8px;
   padding: 8px 12px;
   margin-bottom: 4px;
   transition: background 0.15s;
+  
 }
 
 .row:hover {
@@ -108,61 +121,60 @@
 }
 
 .position {
-  font-size: 0.8rem;
-  color: #666;
-  font-weight: 600;
+  font-size: 0.65rem;
+  color: white;
+  text-align: left;
+  
 }
 
 .headshot {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  background: #eee;
+  background: rgb(232, 232, 232);
+  position: relative;
+  border: 1px solid rgb(251, 251, 251);
 }
 
 .flag {
-  width: 24px;
-  height: 16px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
   object-fit: cover;
-  border-radius: 2px;
+  bottom: -5;
+  right: -10;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid rgb(251, 251, 251);
+
 }
 
 .name {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 0.75rem;
+  letter-spacing: 0.4px;
+  color: white;
 }
 
 .score {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #c9a84c;
   text-align: center;
 }
 
-.scoreUnder {
-  color: #c0392b;
-}
 
-.scoreOver {
-  color: #1a1a1a;
-}
-
-.scoreEven {
-  color: #1a4731;
-}
 
 .today {
-  font-size: 0.85rem;
+  font-size: 0.65rem;
   text-align: center;
-  color: #444;
+  color: #ffffff;
 }
 
 .thru {
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   text-align: center;
-  color: #888;
+  color: #ffffff;
 }
 
 .cutLabel {
@@ -327,4 +339,17 @@
   color: #888;
   text-align: center;
   min-width: 45px;
+}
+
+
+@media screen and (max-width: 725px) {
+  .searchHeader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+
+
+  }
 }
