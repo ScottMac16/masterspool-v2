@@ -91,7 +91,7 @@ export default function LeaderboardPage() {
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
+
       >
         <div className={styles.panel}>
           <GolfLeaderboard />
