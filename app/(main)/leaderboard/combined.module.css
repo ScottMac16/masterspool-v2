@@ -4,56 +4,68 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-
-
 }
 
-.swipeContainer{
+.mobileTabs {
+  display: none;
+}
+
+.swipeContainer {
   display: flex;
   align-items: flex-start;
+  width: 100%;
 }
 
 .panel:first-child {
-  flex: 1 1 475px;  /* can grow and shrink, but anchored around 475px */
+  flex: 1 1 475px;
   max-width: 500px;
 }
 
 .panel:last-child {
-  flex: 2;  /* grows twice as fast, takes the majority of space */
+  flex: 2;
 }
 
-@media (min-width: 800px) {
-    .mobileTabs {
-      display: none;
-    }
-
-}
-
-
-/* Mobile: swipe panels */
 @media (max-width: 799px) {
   .mobileTabs {
-    display: none;
-    flex: 1;
-    background: #1a4731;
+    display: flex;
     position: fixed;
-    top: 60px;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65%;
+    padding: 5px 0;
+    background: rgba(24, 67, 55, 0.765);
+    border-radius: 50px;
     z-index: 10;
-
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    
+    
   }
 
   .mobileTab {
     display: flex;
     flex: 1;
+    align-items: center;
+    justify-content: center;
     padding: 12px;
     border: none;
     background: transparent;
     color: rgba(255,255,255,0.6);
-    font-weight: 700;
-    font-size: 0.9rem;
     cursor: pointer;
     border-bottom: 3px solid transparent;
-    transition: all 0.15s;
+    transition: all 0.2s;
+
+  }
+
+  .mobileTab svg path {
+    fill: rgba(255,255,255,0.6);
+    transition: fill 0.2s;
+  }
+
+  .activeMobileTab svg path {
+    fill: white;
   }
 
   .activeMobileTab {
@@ -65,10 +77,12 @@
     display: flex;
     width: 200%;
     transition: transform 0.3s ease;
+    overflow: hidden;
   }
 
   .panel {
     width: 50%;
     min-width: 50%;
+    overflow-y: auto;
   }
 }
