@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic'
+
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getLeaderboard } from '@/lib/golf-api'
-
 function parseScore(score) {
   if (!score || score === 'E') return 0
   return parseInt(score.replace('+', '')) || 0

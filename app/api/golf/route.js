@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getLeaderboard } from '@/lib/golf-api'
 import { supabaseAdmin } from '@/lib/supabase'
 
