@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
-import { Search } from 'lucide-react'
+import { Search, Star } from 'lucide-react'
+import { FaCanadianMapleLeaf } from "react-icons/fa6";
 import { mockLeaderboard } from '@/lib/mock-data'
 
 function scoreClass(score, styles) {
@@ -32,6 +33,15 @@ export default function GolfLeaderboard() {
   const [loadingId, setLoadingId] = useState(null)
   const [pickPct, setPickPct] = useState({})
   const [parMaps, setParMaps] = useState({})
+  const [favorites, setFavorites] = useState(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const saved = localStorage.getItem('golf-favorites')
+      return new Set(saved ? JSON.parse(saved) : [])
+    } catch { return new Set() }
+  })
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [showCanadiansOnly, setShowCanadiansOnly] = useState(false)
 
   useEffect(() => {
     fetch('/api/golf/pick-pct')
@@ -69,9 +79,22 @@ export default function GolfLeaderboard() {
     }
   }
 
-  const filtered = golfers.filter(g =>
-    g.name?.toLowerCase().includes(search.toLowerCase())
-  )
+  function toggleFavorite(id) {
+    setFavorites(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      localStorage.setItem('golf-favorites', JSON.stringify([...next]))
+      return next
+    })
+  }
+
+  const filtered = golfers.filter(g => {
+    if (!g.name?.toLowerCase().includes(search.toLowerCase())) return false
+    if (showFavoritesOnly && !favorites.has(g.id)) return false
+    if (showCanadiansOnly && !g.country?.toLowerCase().includes('canada')) return false
+    return true
+  })
 
   const isCut = (g) => g.status === 'STATUS_CUT' || g.status === 'STATUS_WD'
 
@@ -113,16 +136,25 @@ export default function GolfLeaderboard() {
 
   return (
     <div className={styles.scorecard}>
-      <div className={styles.roundTabs}>
-        {rounds.map((r, i) => (
-          <button
-            key={i}
-            className={`${styles.roundTab} ${(activeRound[golferId] ?? rounds.length - 1) === i ? styles.activeRoundTab : ''}`}
-            onClick={e => { e.stopPropagation(); setActiveRound(prev => ({ ...prev, [golferId]: i })) }}
-          >
-            R{r.period}
-          </button>
-        ))}
+      <div className={styles.scorecardTopRow}>
+        <div className={styles.roundTabs}>
+          {rounds.map((r, i) => (
+            <button
+              key={i}
+              className={`${styles.roundTab} ${(activeRound[golferId] ?? rounds.length - 1) === i ? styles.activeRoundTab : ''}`}
+              onClick={e => { e.stopPropagation(); setActiveRound(prev => ({ ...prev, [golferId]: i })) }}
+            >
+              R{r.period}
+            </button>
+          ))}
+        </div>
+        <button
+          className={styles.favStarBtn}
+          onClick={e => { e.stopPropagation(); toggleFavorite(golferId) }}
+          title={favorites.has(golferId) ? 'Remove from favourites' : 'Add to favourites'}
+        >
+          <Star size={16} fill={favorites.has(golferId) ? '#c9a84c' : 'none'} color={favorites.has(golferId) ? '#c9a84c' : '#aaa'} />
+        </button>
       </div>
 
       <div className={styles.scorecardTable}>
@@ -170,16 +202,32 @@ export default function GolfLeaderboard() {
       <div className={styles.header}>
         <div className={styles.searchHeader}>
           <h1 className={styles.title}>Leaderboard</h1>
-          <div className={styles.searchBox}>
-            <span><Search size={10}/></span>
-            <input
-              placeholder="Search Player"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-            {search && (
-              <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
-            )}
+          <div className={styles.searchRow}>
+            <div className={styles.searchBox}>
+              <span><Search size={10}/></span>
+              <input
+                placeholder="Search Player"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              {search && (
+                <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
+              )}
+            </div>
+            <button
+              className={`${styles.filterBtn} ${showCanadiansOnly ? styles.filterBtnActive : ''}`}
+              onClick={() => setShowCanadiansOnly(v => !v)}
+              title="Show Canadians only"
+            >
+              <FaCanadianMapleLeaf size={14} fill={showCanadiansOnly ? '#c9a84c' : 'white'} color={showCanadiansOnly ? '#c9a84c' : 'white'} />
+            </button>
+            <button
+              className={`${styles.filterBtn} ${showFavoritesOnly ? styles.filterBtnActiveGold : ''}`}
+              onClick={() => setShowFavoritesOnly(v => !v)}
+              title="Show favourites only"
+            >
+              <Star size={14} fill={showFavoritesOnly ? '#c9a84c' : 'none'} color={showFavoritesOnly ? '#c9a84c' : 'white'} />
+            </button>
           </div>
         </div>
         <div className={styles.columnHeaders}>
