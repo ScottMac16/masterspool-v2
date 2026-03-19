@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase'
+import { getCourseHoles } from '@/lib/golf-api'
 
 export async function GET(req, { params }) {
   const { id } = await params
@@ -11,10 +12,13 @@ export async function GET(req, { params }) {
     .single()
 
   const eventId = tournament?.espn_event_id
-  const url = `https://sports.core.api.espn.com/v2/sports/golf/leagues/pga/events/${eventId}/competitions/${eventId}/competitors/${id}/linescores?lang=en&region=us`
 
-  const res = await fetch(url, { next: { revalidate: 60 } })
-  const data = await res.json()
+  const [linescoresRes, parMap] = await Promise.all([
+    fetch(`https://sports.core.api.espn.com/v2/sports/golf/leagues/pga/events/${eventId}/competitions/${eventId}/competitors/${id}/linescores?lang=en&region=us`, { next: { revalidate: 60 } }),
+    getCourseHoles(eventId)
+  ])
 
-  return Response.json(data)
+  const data = await linescoresRes.json()
+
+  return Response.json({ ...data, parMap })
 }
