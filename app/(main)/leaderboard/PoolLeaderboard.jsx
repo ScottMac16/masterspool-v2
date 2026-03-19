@@ -43,6 +43,7 @@ export default function PoolLeaderboard() {
       if (d && d.scoredTeams) {
         setData(d)
         setError(false)
+        retries = 0 // reset retries on success
       } else if (retries < 3) {
         retries++
         setTimeout(fetchData, 2000)
@@ -59,10 +60,22 @@ export default function PoolLeaderboard() {
     }
   }
 
-    fetchData()
-    const interval = setInterval(fetchData, 60000)
-    return () => clearInterval(interval)
-  }, [])
+  fetchData()
+  const interval = setInterval(fetchData, 60000)
+
+  function handleVisibilityChange() {
+    if (document.visibilityState === 'visible') {
+      retries = 0
+      fetchData()
+    }
+  }
+  document.addEventListener('visibilitychange', handleVisibilityChange)
+
+  return () => {
+    clearInterval(interval)
+    document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }
+}, [])
 
   if (error) return (
     <div className={styles.loading} onClick={() => { setError(false); setData(null) }}>

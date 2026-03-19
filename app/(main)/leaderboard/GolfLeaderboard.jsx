@@ -50,16 +50,27 @@ export default function GolfLeaderboard() {
   }, [])
 
   useEffect(() => {
-    function fetchData() {
-      fetch('/api/golf')
-        .then(r => r.json())
-        .then(d => setGolfers(Array.isArray(d) && d.length ? d : mockLeaderboard))
-        .catch(() => setGolfers(mockLeaderboard))
-    }
-    fetchData()
-    const interval = setInterval(fetchData, 60000)
-    return () => clearInterval(interval)
-  }, [])
+      function fetchData() {
+        fetch('/api/golf')
+          .then(r => r.json())
+          .then(d => setGolfers(Array.isArray(d) && d.length ? d : mockLeaderboard))
+          .catch(() => setGolfers(mockLeaderboard))
+      }
+
+      fetchData()
+      const interval = setInterval(fetchData, 60000)
+
+      // Refetch immediately when tab becomes visible again
+      function handleVisibilityChange() {
+        if (document.visibilityState === 'visible') fetchData()
+      }
+      document.addEventListener('visibilitychange', handleVisibilityChange)
+
+      return () => {
+        clearInterval(interval)
+        document.removeEventListener('visibilitychange', handleVisibilityChange)
+      }
+    }, [])
 
   async function togglePlayer(id) {
     if (expandedId === id) {
