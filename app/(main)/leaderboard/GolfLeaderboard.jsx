@@ -192,7 +192,7 @@ export default function GolfLeaderboard() {
             <span className={styles.scOut}>OUT</span>
           </div>
 
-                  <div className={styles.scRow + ' ' + styles.scParRow}>
+          <div className={styles.scRow + ' ' + styles.scParRow}>
           <span className={styles.scLabel}>PAR</span>
           {front.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
           <span className={styles.scOut}>{frontPar}</span>
