@@ -1,7 +1,7 @@
 .wrapper {
   position: relative;
   width: 100%;
-  background-color: #1E5344;
+  background-color: #1D5345;
   height: 100vh;
   
   overflow: hidden;
@@ -252,11 +252,14 @@ position: relative;
 }
 
 .scorecardWrap {
-  background: white;
+  background: #2E6556;
   border-radius: 0 0 8px 8px;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
   overflow-x: auto;
   padding: 12px;
+  margin-top: -10px;
+  box-shadow: 0 10px 20px rgba(1,1,1,0.2);
+
 }
 
 .noData {
@@ -299,26 +302,36 @@ position: relative;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-width: 600px;
 }
+
 
 .scRow {
   display: grid;
-  grid-template-columns: 50px repeat(9, 1fr) 40px repeat(9, 1fr) 40px 40px;
   align-items: center;
+  grid-template-columns: 50px repeat(9, 1fr) 40px;
   gap: 2px;
+  
+
 }
+
+.scNineHoles{
+  margin-top: 10px;
+}
+
+
 
 .scHeader {
   font-size: 0.7rem;
   font-weight: 700;
-  color: #888;
+  color: #2E6556;
+  background: #dcdcdc;
   letter-spacing: 1px;
+  padding: 5px;
 }
 
 .scParRow {
   font-size: 0.8rem;
-  color: #555;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -330,7 +343,7 @@ position: relative;
 .scLabel {
   font-size: 0.7rem;
   font-weight: 700;
-  color: #888;
+  color: #ffffff;
   letter-spacing: 1px;
 }
 
@@ -341,7 +354,6 @@ position: relative;
 .scOut, .scIn {
   text-align: center;
   font-weight: 800;
-  background: #f5f0e8;
   border-radius: 4px;
   padding: 2px 0;
 }
@@ -349,7 +361,7 @@ position: relative;
 .scTotal {
   text-align: center;
   font-weight: 800;
-  background: #1a4731;
+  /* background: #1a4731; */
   color: white;
   border-radius: 4px;
   padding: 2px 0;
@@ -364,6 +376,7 @@ position: relative;
   margin: 0 auto;
   border-radius: 50%;
   font-size: 0.8rem;
+  color: white;
 }
 
 .eagle {
@@ -373,28 +386,37 @@ position: relative;
 }
 
 .birdie {
-  background: #c0392b;
-  color: white;
   border-radius: 50%;
+  border: 0.75px solid white;
+  color: white;
+  
 }
 
 .bogey {
-  background: #3498db;
   color: white;
-  border-radius: 4px;
+
+  outline: 1px solid #ffffff;
+
+  outline-offset: -2px;
+
+  border-radius: 0;
 }
 
 .doubleBogey {
-  background: #2c3e50;
+
   color: white;
-  border-radius: 4px;
-  outline: 2px solid #2c3e50;
+  outline: 1px solid #ffffff;
+  border: 1px solid white;
+  outline-offset: -3px;
+  border-radius: 0;
 }
 
 .tripleBogey {
-  background: #000;
   color: white;
-  border-radius: 4px;
+  outline: 1px solid #ffffff;
+  border: 1px solid white;
+  outline-offset: -3px;
+  border-radius: 0;
 }
 
 .pickPct {

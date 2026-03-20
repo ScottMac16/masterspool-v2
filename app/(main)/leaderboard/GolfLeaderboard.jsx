@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
 import { Search, Star } from 'lucide-react'
 import { FaCanadianMapleLeaf } from "react-icons/fa6";
-import { mockLeaderboard } from '@/lib/mock-data'
+import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
 
 function scoreClass(score, styles) {
   if (!score || score === 'E') return styles.scoreEven
@@ -73,22 +73,37 @@ export default function GolfLeaderboard() {
     }, [])
 
   async function togglePlayer(id) {
-    if (expandedId === id) {
-      setExpandedId(null)
-      return
+      if (expandedId === id) {
+        setExpandedId(null)
+        return
+      }
+      setExpandedId(id)
+      if (!scorecards[id]) {
+        setLoadingId(id)
+        try {
+          const res = await fetch(`/api/golf/player/${id}`)
+          const data = await res.json()
+          const rounds = (data.items || []).filter(r => r.linescores?.length > 0)
+          if (rounds.length > 0) {
+            setScorecards(prev => ({ ...prev, [id]: rounds }))
+            setParMaps(prev => ({ ...prev, [id]: data.parMap || {} }))
+            setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
+          } else {
+            // fallback to mock
+            const rounds = mockScorecard.items.filter(r => r.linescores?.length > 0)
+            setScorecards(prev => ({ ...prev, [id]: rounds }))
+            setParMaps(prev => ({ ...prev, [id]: mockScorecard.parMap }))
+            setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
+          }
+        } catch {
+          const rounds = mockScorecard.items.filter(r => r.linescores?.length > 0)
+          setScorecards(prev => ({ ...prev, [id]: rounds }))
+          setParMaps(prev => ({ ...prev, [id]: mockScorecard.parMap }))
+          setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
+        }
+        setLoadingId(null)
+      }
     }
-    setExpandedId(id)
-    if (!scorecards[id]) {
-      setLoadingId(id)
-      const res = await fetch(`/api/golf/player/${id}`)
-      const data = await res.json()
-      const rounds = (data.items || []).filter(r => r.linescores?.length > 0)
-      setScorecards(prev => ({ ...prev, [id]: rounds }))
-      setParMaps(prev => ({ ...prev, [id]: data.parMap || {} }))
-      setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
-      setLoadingId(null)
-    }
-  }
 
   function toggleFavorite(id) {
     setFavorites(prev => {
@@ -169,23 +184,21 @@ export default function GolfLeaderboard() {
       </div>
 
       <div className={styles.scorecardTable}>
-        <div className={styles.scRow + ' ' + styles.scHeader}>
-          <span className={styles.scLabel}>HOLE</span>
-          {front.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
-          <span className={styles.scOut}>OUT</span>
-          {back.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
-          <span className={styles.scIn}>IN</span>
-          <span className={styles.scTotal}>TOT</span>
-        </div>
 
-        <div className={styles.scRow + ' ' + styles.scParRow}>
+        <div className = {styles.frontNine + ' ' + styles.scNineHoles}>
+          <div className={styles.scRow + ' ' + styles.scHeader}>
+            <span className={styles.scLabel}>HOLE</span>
+            {front.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
+            <span className={styles.scOut}>OUT</span>
+          </div>
+
+                  <div className={styles.scRow + ' ' + styles.scParRow}>
           <span className={styles.scLabel}>PAR</span>
           {front.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
           <span className={styles.scOut}>{frontPar}</span>
-          {back.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
-          <span className={styles.scIn}>{backPar}</span>
-          <span className={styles.scTotal}>{frontPar + backPar}</span>
         </div>
+
+
 
         <div className={styles.scRow + ' ' + styles.scScoreRow}>
           <span className={styles.scLabel}>SCORE</span>
@@ -195,14 +208,41 @@ export default function GolfLeaderboard() {
             </span>
           ))}
           <span className={styles.scOut}>{frontPlayed ? frontScore : ''}</span>
+          </div>
+
+        </div>
+
+        <div className = {styles.backNine + ' ' + styles.scNineHoles}>
+         <div className={styles.scRow + ' ' + styles.scHeader}>
+           <span className={styles.scLabel}>HOLE</span>
+          {back.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
+          <span className={styles.scIn}>IN</span>
+         </div>
+
+        <div className={styles.scRow + ' ' + styles.scParRow}>
+          <span className={styles.scLabel}>PAR</span>
+          {back.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
+          <span className={styles.scIn}>{backPar}</span>
+        </div>
+
+
+        <div className={styles.scRow + ' ' + styles.scScoreRow}>
+          <span className={styles.scLabel}>SCORE</span>
           {back.map(h => (
             <span key={h.period} className={`${styles.scCell} ${h.value !== null ? styles.scScore : ''} ${holeScoreClass(h.scoreType?.name)}`}>
               {h.value !== null ? h.value : ''}
             </span>
           ))}
           <span className={styles.scIn}>{backPlayed ? backScore : ''}</span>
-          <span className={styles.scTotal}>{frontPlayed ? frontScore + backScore : ''}</span>
         </div>
+
+        </div>
+
+
+
+
+
+
       </div>
     </div>
   )
