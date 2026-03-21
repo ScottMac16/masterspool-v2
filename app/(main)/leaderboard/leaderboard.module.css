@@ -25,17 +25,29 @@
   left: 0;
   right: 0;
   
-  padding: 10px 5px 0px 20px;
+  padding: 10px 5px;
   background-color: #1E5344;
   z-index: 2;
 }
 
 .searchHeader{
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 0 10px;
 }
+
+
+
+.searchHeader div{
+  display: flex;
+  width: 100%;
+  gap: 5px;
+}
+
+
 
 .searchRow {
   display: flex;
@@ -110,9 +122,10 @@
 
 .title {
   color: white;
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 2px;
+  margin: 10px auto;
   text-transform: uppercase;
 }
 
@@ -149,27 +162,31 @@
 
 .columnHeaders {
   display: grid;
-  grid-template-columns: auto 12% repeat(2, 8%) 20px;
-  padding: 4px 12px;
+  grid-template-columns: 30px 65px auto 12% repeat(2, 8%) 20px;
+  padding: 8px 12px;
   color: white;
-  font-size: 0.5rem;
+  font-size: 0.43rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
-  margin-top: 20px;
+  margin-top: 10px;
+  gap: 5px;
   text-align: center;
+  margin-bottom: -10px;
 
 }
 
+
 .row {
   display: grid;
-  grid-template-columns: 20px 65px auto 12% repeat(2, 8%) 20px;
+  grid-template-columns: 30px 65px auto 12% repeat(2, 8%) 20px;
   align-items: center;
   background: #184337;
   border-radius: 8px;
   padding: 8px 12px;
   margin-bottom: 4px;
   transition: background 0.15s;
+  gap: 5px;
   
 }
 
@@ -278,24 +295,30 @@ position: relative;
 
 .roundTabs {
   display: flex;
+  align-items: center;
   gap: 6px;
   margin-bottom: 10px;
+    font-weight: 500;
+  font-size: 0.65rem;
+    color: #fff;
 }
 
 .roundTab {
-  padding: 4px 12px;
-  border-radius: 12px;
-  border: 2px solid #1a4731;
-  background: white;
-  color: #1a4731;
-  font-weight: 700;
-  font-size: 0.8rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  color: white;
+
   cursor: pointer;
+  background: transparent;
 }
 
 .activeRoundTab {
-  background: #1a4731;
-  color: white;
+  color: #2E6556;
+  background: white;
+  border: 1px solid white;
+  font-weight: 700;
 }
 
 .scorecardTable {
@@ -309,8 +332,8 @@ position: relative;
   display: grid;
   align-items: center;
   grid-template-columns: 50px repeat(9, 1fr) 40px;
-  gap: 2px;
-  
+  text-align: center;
+    min-height: 25px;
 
 }
 
@@ -321,30 +344,49 @@ position: relative;
 
 
 .scHeader {
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.6rem;
+  font-weight: 800;
   color: #2E6556;
   background: #dcdcdc;
   letter-spacing: 1px;
-  padding: 5px;
+  padding: 5px 0;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.scHeader:first-child{
+  border-radius-top-right: 30px;
 }
 
 .scParRow {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: #ffffff;
   font-weight: 600;
+
 }
 
 .scScoreRow {
-  font-size: 0.85rem;
+  font-size: 0.6rem;
   font-weight: 700;
 }
 
 .scLabel {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 1px;
+  text-align: left;
+   padding-left: 5px;
+}
+
+.scLabelHole {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #2E6556;
+  letter-spacing: 1px;
+  text-align: left;
+  padding-left: 5px;
+  
 }
 
 .scCell {
@@ -356,11 +398,16 @@ position: relative;
   font-weight: 800;
   border-radius: 4px;
   padding: 2px 0;
+  color: white;
+}
+
+.scHeader > .scOut, .scHeader > .scIn {
+   color: #2E6556;
 }
 
 .scTotal {
   text-align: center;
-  font-weight: 800;
+  font-weight: 700;
   /* background: #1a4731; */
   color: white;
   border-radius: 4px;
@@ -375,14 +422,18 @@ position: relative;
   justify-content: center;
   margin: 0 auto;
   border-radius: 50%;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: white;
+  font-weight: 700;
 }
 
 .eagle {
-  background: #ffd700;
-  color: #333;
+  color: white;
   border-radius: 50%;
+  outline: 1px solid #ffffff;
+  border: 1px solid white;
+  outline-offset: -3px;
+
 }
 
 .birdie {
@@ -417,6 +468,7 @@ position: relative;
   border: 1px solid white;
   outline-offset: -3px;
   border-radius: 0;
+  background: #ffffff3f
 }
 
 .pickPct {

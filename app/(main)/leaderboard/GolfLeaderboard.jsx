@@ -163,31 +163,43 @@ export default function GolfLeaderboard() {
   return (
     <div className={styles.scorecard}>
       <div className={styles.scorecardTopRow}>
-        <div className={styles.roundTabs}>
-          {rounds.map((r, i) => (
-            <button
-              key={i}
-              className={`${styles.roundTab} ${(activeRound[golferId] ?? rounds.length - 1) === i ? styles.activeRoundTab : ''}`}
-              onClick={e => { e.stopPropagation(); setActiveRound(prev => ({ ...prev, [golferId]: i })) }}
-            >
-              R{r.period}
-            </button>
-          ))}
-        </div>
-        <button
+
+        <div>
+         <button
           className={styles.favStarBtn}
           onClick={e => { e.stopPropagation(); toggleFavorite(golferId) }}
           title={favorites.has(golferId) ? 'Remove from favourites' : 'Add to favourites'}
         >
           <Star size={16} fill={favorites.has(golferId) ? '#c9a84c' : 'none'} color={favorites.has(golferId) ? '#c9a84c' : '#aaa'} />
         </button>
+
+
+          <div className={styles.roundTabs}>
+            <span>ROUND</span>
+            {rounds.map((r, i) => (
+              <button
+                key={i}
+                className={`${styles.roundTab} ${(activeRound[golferId] ?? rounds.length - 1) === i ? styles.activeRoundTab : ''}`}
+                onClick={e => { e.stopPropagation(); setActiveRound(prev => ({ ...prev, [golferId]: i })) }}
+              >
+                {r.period}
+              </button>
+            ))}
+          </div>
+
+          <div>
+
+
+          </div>
+        </div>
+       
       </div>
 
       <div className={styles.scorecardTable}>
 
         <div className = {styles.frontNine + ' ' + styles.scNineHoles}>
           <div className={styles.scRow + ' ' + styles.scHeader}>
-            <span className={styles.scLabel}>HOLE</span>
+            <span className={styles.scLabelHole}>HOLE</span>
             {front.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
             <span className={styles.scOut}>OUT</span>
           </div>
@@ -197,8 +209,6 @@ export default function GolfLeaderboard() {
           {front.map(h => <span key={h.period} className={styles.scCell}>{h.par}</span>)}
           <span className={styles.scOut}>{frontPar}</span>
         </div>
-
-
 
         <div className={styles.scRow + ' ' + styles.scScoreRow}>
           <span className={styles.scLabel}>SCORE</span>
@@ -210,11 +220,11 @@ export default function GolfLeaderboard() {
           <span className={styles.scOut}>{frontPlayed ? frontScore : ''}</span>
           </div>
 
-        </div>
+      </div>
 
         <div className = {styles.backNine + ' ' + styles.scNineHoles}>
          <div className={styles.scRow + ' ' + styles.scHeader}>
-           <span className={styles.scLabel}>HOLE</span>
+          <span className={styles.scLabelHole}>HOLE</span>
           {back.map(h => <span key={h.period} className={styles.scCell}>{h.period}</span>)}
           <span className={styles.scIn}>IN</span>
          </div>
@@ -253,6 +263,9 @@ export default function GolfLeaderboard() {
       <div className={styles.header}>
         <div className={styles.searchHeader}>
           <h1 className={styles.title}>Leaderboard</h1>
+          <div>
+   
+            
           <div className={styles.searchRow}>
             <div className={styles.searchBox}>
               <span><Search size={10}/></span>
@@ -265,23 +278,27 @@ export default function GolfLeaderboard() {
                 <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
               )}
             </div>
-            <button
-              className={`${styles.filterBtn} ${showCanadiansOnly ? styles.filterBtnActive : ''}`}
-              onClick={() => setShowCanadiansOnly(v => !v)}
-              title="Show Canadians only"
-            >
-              <FaCanadianMapleLeaf size={14} fill={showCanadiansOnly ? '#c9a84c' : 'white'} color={showCanadiansOnly ? '#c9a84c' : 'white'} />
-            </button>
-            <button
+          </div>
+
+                 <button
               className={`${styles.filterBtn} ${showFavoritesOnly ? styles.filterBtnActiveGold : ''}`}
               onClick={() => setShowFavoritesOnly(v => !v)}
               title="Show favourites only"
             >
               <Star size={14} fill={showFavoritesOnly ? '#c9a84c' : 'none'} color={showFavoritesOnly ? '#c9a84c' : 'white'} />
             </button>
+               <button
+              className={`${styles.filterBtn} ${showCanadiansOnly ? styles.filterBtnActive : ''}`}
+              onClick={() => setShowCanadiansOnly(v => !v)}
+              title="Show Canadians only"
+            >
+              <FaCanadianMapleLeaf size={14} fill={showCanadiansOnly ? '#c9a84c' : 'white'} color={showCanadiansOnly ? '#c9a84c' : 'white'} />
+            </button>
           </div>
         </div>
         <div className={styles.columnHeaders}>
+          <span></span>
+          <span></span>
           <span></span>
           <span>TOTAL</span>
           <span>TODAY</span>
@@ -307,7 +324,7 @@ export default function GolfLeaderboard() {
               <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
               <span className={styles.today}>{g.today}</span>
               <span className={styles.thru}>{g.thru}</span>
-              <span style={{ color: '#aaa', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
+              <span style={{ color: '#c9a84c', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
             </div>
             {expandedId === g.id && (
               <div className={styles.scorecardWrap}>
