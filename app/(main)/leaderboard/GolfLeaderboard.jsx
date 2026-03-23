@@ -187,11 +187,11 @@ export default function GolfLeaderboard() {
             ))}
           </div>
 
-              {pickPct[golferId] && (
-      <div className={styles.pickPct}>
-        {pickPct[golferId]}% picked
-      </div>
-    )}
+          {pickPct[golferId] && (
+            <div className={styles.pickPct}>
+              {pickPct[golferId] ?? 0}% picked
+            </div>
+            )}
 
           <div>
 
