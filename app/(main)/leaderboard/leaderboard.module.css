@@ -354,9 +354,9 @@ position: relative;
   margin-bottom: 5px;
 }
 
-.scHeader:first-child{
-  border-radius-top-right: 30px;
-}
+/* .scHeader:first-child{
+  border-top-right-radius: 30px;
+} */
 
 .scParRow {
   font-size: 0.6rem;
