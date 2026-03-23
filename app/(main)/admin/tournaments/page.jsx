@@ -68,6 +68,20 @@ export default function TournamentsPage() {
     setSettingActive(null)
   }
 
+  async function handleToggleLock(tournamentId, currentLocked) {
+    const res = await fetch('/api/admin/tournaments/lock', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tournament_id: tournamentId, picks_locked: !currentLocked }),
+    })
+    if (res.ok) {
+      setTournaments(prev => prev.map(t => ({
+        ...t,
+        picks_locked: t.id === tournamentId ? !currentLocked : t.picks_locked
+      })))
+    }
+  }
+
   return (
     <div className={styles.container}>
       <a href="/admin" className={styles.back}>← Back to Admin</a>
@@ -139,10 +153,13 @@ export default function TournamentsPage() {
                 {t.year} · Cap: ${t.salary_cap?.toLocaleString()} · Max Picks: {t.max_picks} · ESPN ID: {t.espn_event_id}
               </span>
             </div>
-            <div className={styles.tournamentActions}>
-              <span className={t.picks_locked ? styles.locked : styles.open}>
+           <div className={styles.tournamentActions}>
+              <button
+                className={t.picks_locked ? styles.locked : styles.open}
+                onClick={() => handleToggleLock(t.id, t.picks_locked)}
+              >
                 {t.picks_locked ? <><Lock size={14} /> Locked</> : <><CircleDot size={14} /> Open</>}
-              </span>
+              </button>
               {!t.active && (
                 <button
                   className={styles.setActiveBtn}

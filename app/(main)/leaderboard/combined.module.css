@@ -94,4 +94,11 @@
     opacity: 0;
     pointer-events: none;
   }
+
+    .swipeContainer[data-panel="0"] {
+    transform: translateX(0%);
+  }
+  .swipeContainer[data-panel="1"] {
+    transform: translateX(-50%);
+  }
 }

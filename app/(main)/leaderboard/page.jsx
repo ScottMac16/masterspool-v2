@@ -84,7 +84,7 @@ export default function LeaderboardPage() {
       {/* Swipe container */}
       <div
         className={styles.swipeContainer}
-        style={{ transform: `translateX(-${activePanel * 50}%)` }}
+        data-panel={activePanel}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
