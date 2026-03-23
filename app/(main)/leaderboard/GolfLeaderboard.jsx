@@ -187,6 +187,12 @@ export default function GolfLeaderboard() {
             ))}
           </div>
 
+              {pickPct[golferId] && (
+      <div className={styles.pickPct}>
+        {pickPct[golferId]}% picked
+      </div>
+    )}
+
           <div>
 
 

@@ -142,7 +142,7 @@
 .searchBox input {
   border: none;
   outline: none;
-  font-size: 0.85rem;
+  font-size: 14px;
   width: 100%;
 }
 
@@ -472,11 +472,13 @@ position: relative;
 }
 
 .pickPct {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 0.65rem;
+  color: #ffffff;
   text-align: center;
   min-width: 45px;
 }
+
+
 
 
 @media screen and (max-width: 725px) {
