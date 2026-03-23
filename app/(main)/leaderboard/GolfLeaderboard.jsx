@@ -115,6 +115,8 @@ export default function GolfLeaderboard() {
     })
   }
 
+      console.log('pickPct', pickPct)
+
   const filtered = golfers.filter(g => {
     if (!g.name?.toLowerCase().includes(search.toLowerCase())) return false
     if (showFavoritesOnly && !favorites.has(g.id)) return false
@@ -190,6 +192,7 @@ export default function GolfLeaderboard() {
           {pickPct[golferId] && (
             <div className={styles.pickPct}>
               {pickPct[golferId] ?? 0}% picked
+          
             </div>
             )}
 
