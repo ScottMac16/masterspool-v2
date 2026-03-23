@@ -189,12 +189,10 @@ export default function GolfLeaderboard() {
             ))}
           </div>
 
-          {pickPct[golferId] && (
-            <div className={styles.pickPct}>
-               {(parseFloat(pickPct[golferId]) || 0).toFixed(2)}% picked
-          
-            </div>
-            )}
+           
+           <div className={styles.pickPct}>
+            {(parseFloat(pickPct[golferId]) || 0).toFixed(2)}% picked
+          </div>
 
           <div>
 
