@@ -1,8 +1,10 @@
+import { auth } from '@clerk/nextjs/server'
 import { isSuperAdmin } from '@/lib/admin'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export async function POST(req) {
-  if (!await isSuperAdmin()) {
+  const { userId } = await auth()
+  if (!isSuperAdmin(userId)) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
