@@ -193,7 +193,7 @@ export default function GolfLeaderboard() {
 
 
         <div className={styles.scTopRowRightSide}>
-           picked:
+           picked
            <div className={styles.pickPct}>
             {(parseFloat(pickPct[golferId]) || 0).toFixed(2)}% 
           </div>
@@ -275,7 +275,7 @@ export default function GolfLeaderboard() {
             
           <div className={styles.searchRow}>
             <div className={styles.searchBox}>
-              <span><Search size={10}/></span>
+              <span><Search size={14}/></span>
               <input
                 placeholder="Search Player"
                 value={search}
