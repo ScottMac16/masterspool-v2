@@ -166,7 +166,7 @@ export default function GolfLeaderboard() {
     <div className={styles.scorecard}>
       <div className={styles.scorecardTopRow}>
 
-        <div>
+        <div className={styles.scTopRowLeftSide}>
          <button
           className={styles.favStarBtn}
           onClick={e => { e.stopPropagation(); toggleFavorite(golferId) }}
@@ -174,7 +174,7 @@ export default function GolfLeaderboard() {
         >
           <Star size={16} fill={favorites.has(golferId) ? '#c9a84c' : 'none'} color={favorites.has(golferId) ? '#c9a84c' : '#aaa'} />
         </button>
-
+        
 
           <div className={styles.roundTabs}>
             <span>ROUND</span>
@@ -189,16 +189,16 @@ export default function GolfLeaderboard() {
             ))}
           </div>
 
-           
-           <div className={styles.pickPct}>
-            {(parseFloat(pickPct[golferId]) || 0).toFixed(2)}% picked
-          </div>
-
-          <div>
-
-
-          </div>
         </div>
+
+
+        <div className={styles.scTopRowRightSide}>
+           picked:
+           <div className={styles.pickPct}>
+            {(parseFloat(pickPct[golferId]) || 0).toFixed(2)}% 
+          </div>
+          
+          </div>
        
       </div>
 

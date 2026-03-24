@@ -84,13 +84,36 @@
 
 .scorecardTopRow {
   display: flex;
+
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
+
+
+
+.scTopRowRightSide{
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: white;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  gap: 2px;
+}
+
 .scorecardTopRow .roundTabs {
   margin-bottom: 0;
+}
+
+.pickPct {
+  font-size: 0.9rem;
+  color: #ffffff;
+  text-align: center;
+  min-width: 45px;
 }
 
 .favStarBtn {
@@ -328,6 +351,8 @@ position: relative;
 }
 
 
+
+
 .scRow {
   display: grid;
   align-items: center;
@@ -471,12 +496,7 @@ position: relative;
   background: #ffffff3f
 }
 
-.pickPct {
-  font-size: 0.65rem;
-  color: #ffffff;
-  text-align: center;
-  min-width: 45px;
-}
+
 
 
 
