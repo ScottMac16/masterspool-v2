@@ -94,6 +94,8 @@ export default function GolfLeaderboard() {
       }
     }
 
+
+  
   function toggleFavorite(id) {
     setFavorites(prev => {
       const next = new Set(prev)
