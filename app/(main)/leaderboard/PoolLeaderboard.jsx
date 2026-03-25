@@ -102,53 +102,62 @@ export default function PoolLeaderboard() {
 
       {/* Header */}
       <div className={styles.header}>
-        <h1 className={styles.title}>POOL LEADERBOARD</h1>
-        <div className={styles.viewToggle}>
-          <button
-            className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
-            onClick={() => setView('list')}
-            title="List view"
-          ><List size={16} /></button>
-          <button
-            className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
-            onClick={() => setView('card')}
-            title="Card view"
-          ><LayoutGrid size={16} /></button>
-        </div>
+          <h1 className={styles.title}>POOL LEADERBOARD</h1>
+          <div className={styles.headerTop}>
+
+            
+     
+            <div className={styles.viewToggle}>
+              <button
+                className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
+                onClick={() => setView('list')}
+                title="List view"
+              ><List size={16} /></button>
+              <button
+                className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
+                onClick={() => setView('card')}
+                title="Card view"
+              ><LayoutGrid size={16} /></button>
+            </div>
+          </div>
+
+          <div className={styles.headerBottom}>
+            <div className={styles.tabs}>
+              <button
+                className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('grandpool')}
+              >
+                <Trophy size={14} /> SMAC Pool
+                <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+              </button>
+              {orgs.map(org => (
+                <button
+                  key={org.id}
+                  className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
+                  onClick={() => setActiveTab(org.id)}
+                >
+                  {org.name}
+                  <span className={styles.tabCount}>
+                    {scoredTeams.filter(t => t.org_id === org.id).length}
+                  </span>
+                </button>
+              ))}
+              </div>
+          </div>
       </div>
 
       {/* Org Tabs */}
-      <div className={styles.tabs}>
-        <button
-          className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
-          onClick={() => setActiveTab('grandpool')}
-        >
-          <Trophy size={14} /> SMAC Pool
-          <span className={styles.tabCount}>{grandPoolTeams.length}</span>
-        </button>
-        {orgs.map(org => (
-          <button
-            key={org.id}
-            className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(org.id)}
-          >
-            {org.name}
-            <span className={styles.tabCount}>
-              {scoredTeams.filter(t => t.org_id === org.id).length}
-            </span>
-          </button>
-        ))}
-      </div>
+     
 
       {/* List View */}
       {view === 'list' && (
         <div className={styles.listView}>
           <div className={styles.listHeader}>
-            <span className={styles.colPos}>POS</span>
+            <span className={styles.colTeam}>POS</span>
             <span className={styles.colTeam}>TEAM NAME</span>
-            <span className={styles.colStat}>TOTAL</span>
-            <span className={styles.colStat}>TODAY</span>
-            <span className={styles.colStat}>CUT</span>
+            <span>TOTAL</span>
+            <span>TODAY</span>
+            <span>CUT</span>
             <span className={styles.colExpand}></span>
           </div>
           {rankedTeams.map(team => (

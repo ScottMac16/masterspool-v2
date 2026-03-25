@@ -2,7 +2,7 @@
   background: #ffffff;
 
   width: 100%;
-  padding: 20px;
+  padding: 15px 0px 0 0;
   height: 100vh;
     
   overflow: hidden;
@@ -10,7 +10,14 @@
 
   scrollbar-gutter: stable;
   padding-bottom: 25vh;
+  position: relative;
 }
+
+
+.wrapper{
+  scrollbar-color: #c9a84c white ;
+}
+
 
 .listView, .cardGrid{
   width: 100%;
@@ -19,16 +26,44 @@
 
 .header {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
+  
+  position: sticky;
+  top: 0;
+  left: 0;
+
+  width: 100%;
   margin-bottom: 16px;
+  z-index: 5;
+  gap: 10px;
+  background: white;
+
+  padding: 15px 20px 0 20px;
+}
+
+
+.headerTop{
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerBottom{
+
+  display: flex;
+
+  align-items: center;
 }
 
 .title {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: #1a4731;
+  text-align: center;
 }
 
 .loading {
@@ -92,121 +127,148 @@
   border-radius: 10px;
   padding: 1px 6px;
   font-size: 0.75rem;
+  display: none;
 }
 
 /* List View */
-.listView { display: flex; flex-direction: column; gap: 2px; }
+.listView { display: flex; flex-direction: column; gap: 2px; padding: 0 15px;}
 
 .listHeader {
   display: grid;
   grid-template-columns: 40px 1fr 70px 70px 50px 30px;
   padding: 6px 16px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #888;
+  font-size: 0.55rem;
   letter-spacing: 1px;
+  position: sticky;
+  text-align: center;
+  top: 110px;
+  background: white;
+
+  margin-bottom: 10px;
 }
 
 .listRow {
   display: grid;
   grid-template-columns: 40px 1fr 70px 70px 50px 30px;
   align-items: center;
-  background: #1a4731;
+  background: #116957;
   border-radius: 6px;
   padding: 14px 16px;
   color: white;
   margin-bottom: 2px;
+  z-index: 2;
+
+}
+.listRow:hover{
+  cursor: pointer;
+  background: #0d5245ba;
 }
 
-.colPos { font-weight: 800; font-size: 1rem; }
-.colTeam { font-weight: 700; font-size: 0.95rem; }
-.colStat { text-align: center; font-weight: 700; font-size: 0.9rem; }
-.colExpand { text-align: right; opacity: 0.4; font-size: 0.7rem; }
+
+
+
+.colPos { font-weight: 800; font-size: 0.7rem; }
+.colTeam { font-weight: 700; font-size: 0.8rem; }
+.colStat { text-align: center; font-weight: 700; font-size: 0.75rem; }
+.colExpand { text-align: right; opacity: 0.4; font-size: 0.75rem; }
+
+.listHeader .colPos { font-size: 0.55rem; text-align: left; font-weight: 500;}
+.listHeader .colTeam { font-size: 0.55rem; text-align: left; font-weight: 500;}
 
 /* Card View */
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 16px;
+  padding: 20px;
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
+  background: #F1F1F1;
+  border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid rgb(197, 197, 197);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  
 }
 
 .cardHeader {
-  background: #1a4731;
+  background: #116957;
   color: white;
   display: grid;
-  grid-template-columns: 40px 1fr 70px 70px 50px;
+  grid-template-columns: 35px 1fr 50px 50px 50px;
   align-items: center;
-  padding: 12px 16px;
-  gap: 8px;
+  padding: 18px 10px;
+  gap: 5px;
+  font-size: 0.7rem;
+  text-align: center;
 }
 
-.cardRank { font-weight: 800; font-size: 1.1rem; }
-.cardTeamName { font-weight: 700; font-size: 0.95rem; }
-.cardTotal { text-align: center; font-weight: 800; font-size: 1rem; }
+.cardRank  { text-align: left;} 
+
+.cardTeamName { font-weight: 700; font-size: 0.75rem; text-align: left;} 
+
+/* .cardTotal { text-align: center; font-weight: 800; font-size: 1rem; }
 .cardToday { text-align: center; font-size: 0.85rem; font-weight: 600; }
-.cardCuts { text-align: center; font-size: 0.85rem; opacity: 0.8; }
+.cardCuts { text-align: center; font-size: 0.85rem; opacity: 0.8; } */
 
 .cardGolferHeader {
   display: grid;
-  grid-template-columns: 50px 1fr 55px 55px 55px 60px;
+  grid-template-columns: 35px 1fr 55px 55px 55px 60px;
   padding: 6px 16px;
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.5rem;
+  text-transform: uppercase;
   color: #aaa;
   letter-spacing: 1px;
   border-bottom: 1px solid #f0f0f0;
+  padding: 5px 0;
+  margin: 0;
+  
+
 }
 
 .cardGolferRow {
   display: grid;
-  grid-template-columns: 50px 1fr 55px 55px 55px 60px;
+  grid-template-columns: 50px 1fr repeat(4, 40px);
   align-items: center;
   padding: 7px 16px;
   border-bottom: 1px solid #f5f5f5;
-  font-size: 0.85rem;
+  background: white;
+  font-size: 0.7rem;
+  color: #116957;
+
 }
 
 .cardGolferRow:last-child { border-bottom: none; }
 
-.cgPos { color: #888; font-size: 0.8rem; }
-.cgName { font-weight: 600; color: #111; }
+/* .cgPos { font-size: 0.8rem; } */
+.cgName { font-weight: 600; }
 .cgStat { text-align: center; font-weight: 600; }
 
-.cutGolfer { background: #fff5f5; }
-.cutGolfer .cgName { color: #c0392b; }
-.cutGolfer .cgPos { color: #c0392b; }
+.cutGolfer { background: #b6b6b6; }
+.cutGolfer .cgName { color: #5c5c5c; }
+.cutGolfer .cgPos { color: #5c5c5c; }
 
 /* Score colors */
-.under { color: #1a6b3c; }
+/* .under { color: #1a6b3c; }
 .over { color: #c0392b; }
-.even { color: #333; }
-
-/* Override for dark backgrounds */
-.listRow .under { color: #7fffb0; }
-.listRow .over { color: #ff9999; }
-.listRow .even { color: white; }
-.cardHeader .under { color: #7fffb0; }
-.cardHeader .over { color: #ff9999; }
-.cardHeader .even { color: white; }
+.even { color: #333; } */
 
 
-.listItem {
-  background: #1a4731;
-  border-radius: 6px;
-  margin-bottom: 2px;
-  overflow: hidden;
-}
 
 .expandedGolfers {
-  background: white;
-  padding: 4px 0;
+  background: #F1F1F1;
+  margin-bottom: 10px;
+  padding: 0 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 1;
 }
 
 .roundTabs {
