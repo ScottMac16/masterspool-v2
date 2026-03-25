@@ -2,7 +2,7 @@
 
 import { mockPoolData } from '@/lib/mock-data'
 import { useState, useEffect } from 'react'
-import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight } from 'lucide-react'
+import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight, Search } from 'lucide-react'
 import styles from './pool-leaderboard.module.css'
 
 function formatScore(score) {
@@ -23,6 +23,7 @@ export default function PoolLeaderboard() {
   const [view, setView] = useState('list')
   const [expandedTeams, setExpandedTeams] = useState(new Set())
   const [error, setError] = useState(false)
+  const [teamSearch, setTeamSearch] = useState('')
 
   function toggleTeam(id) {
     setExpandedTeams(prev => {
@@ -34,48 +35,48 @@ export default function PoolLeaderboard() {
   }
 
   useEffect(() => {
-  let retries = 0
+    let retries = 0
 
-  async function fetchData() {
-    try {
-      const res = await fetch('/api/pool-leaderboard')
-      const d = await res.json()
-      if (d && d.scoredTeams) {
-        setData(d)
-        setError(false)
-        retries = 0 // reset retries on success
-      } else if (retries < 3) {
-        retries++
-        setTimeout(fetchData, 2000)
-      } else {
-        setData(mockPoolData)
-      }
-    } catch (e) {
-      if (retries < 3) {
-        retries++
-        setTimeout(fetchData, 2000)
-      } else {
-        setData(mockPoolData)
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/pool-leaderboard')
+        const d = await res.json()
+        if (d && d.scoredTeams) {
+          setData(d)
+          setError(false)
+          retries = 0
+        } else if (retries < 3) {
+          retries++
+          setTimeout(fetchData, 2000)
+        } else {
+          setData(mockPoolData)
+        }
+      } catch (e) {
+        if (retries < 3) {
+          retries++
+          setTimeout(fetchData, 2000)
+        } else {
+          setData(mockPoolData)
+        }
       }
     }
-  }
 
-  fetchData()
-  const interval = setInterval(fetchData, 60000)
+    fetchData()
+    const interval = setInterval(fetchData, 60000)
 
-  function handleVisibilityChange() {
-    if (document.visibilityState === 'visible') {
-      retries = 0
-      fetchData()
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        retries = 0
+        fetchData()
+      }
     }
-  }
-  document.addEventListener('visibilitychange', handleVisibilityChange)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
-  return () => {
-    clearInterval(interval)
-    document.removeEventListener('visibilitychange', handleVisibilityChange)
-  }
-}, [])
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
 
   if (error) return (
     <div className={styles.loading} onClick={() => { setError(false); setData(null) }}>
@@ -97,57 +98,71 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
+  const filteredTeams = teamSearch
+    ? rankedTeams.filter(t => t.team_name.toLowerCase().includes(teamSearch.toLowerCase()))
+    : rankedTeams
+
   return (
     <div className={styles.wrapper}>
 
-      {/* Header */}
       <div className={styles.header}>
-          <h1 className={styles.title}>POOL LEADERBOARD</h1>
-          <div className={styles.headerTop}>
+        <h1 className={styles.title}>POOL LEADERBOARD</h1>
+        <div className={styles.headerTop}>
+          <div className={styles.searchBox}>
+            <Search size={12} />
+            <input
+              placeholder="Search teams..."
+              value={teamSearch}
+              onChange={e => setTeamSearch(e.target.value)}
+            />
+            {teamSearch && (
+              <button className={styles.clearBtn} onClick={() => setTeamSearch('')}>✕</button>
+            )}
+          </div>
+          <div className={styles.viewToggle}>
+            <button
+              className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
+              onClick={() => setView('list')}
+              title="List view"
+            ><List size={16} /></button>
+            <button
+              className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
+              onClick={() => setView('card')}
+              title="Card view"
+            ><LayoutGrid size={16} /></button>
+          </div>
+        </div>
 
-            
-     
-            <div className={styles.viewToggle}>
-              <button
-                className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
-                onClick={() => setView('list')}
-                title="List view"
-              ><List size={16} /></button>
-              <button
-                className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
-                onClick={() => setView('card')}
-                title="Card view"
-              ><LayoutGrid size={16} /></button>
+        <div className={styles.headerBottom}>
+          {teamSearch && (
+            <div className={styles.filterPill}>
+              Filter Search: {teamSearch.toUpperCase()}
+              <button onClick={() => setTeamSearch('')}>✕</button>
             </div>
-          </div>
-
-          <div className={styles.headerBottom}>
-            <div className={styles.tabs}>
+          )}
+          <div className={styles.tabs}>
+            <button
+              className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
+              onClick={() => setActiveTab('grandpool')}
+            >
+              <Trophy size={14} /> SMAC Pool
+              <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+            </button>
+            {orgs.map(org => (
               <button
-                className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
-                onClick={() => setActiveTab('grandpool')}
+                key={org.id}
+                className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab(org.id)}
               >
-                <Trophy size={14} /> SMAC Pool
-                <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+                {org.name}
+                <span className={styles.tabCount}>
+                  {scoredTeams.filter(t => t.org_id === org.id).length}
+                </span>
               </button>
-              {orgs.map(org => (
-                <button
-                  key={org.id}
-                  className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
-                  onClick={() => setActiveTab(org.id)}
-                >
-                  {org.name}
-                  <span className={styles.tabCount}>
-                    {scoredTeams.filter(t => t.org_id === org.id).length}
-                  </span>
-                </button>
-              ))}
-              </div>
+            ))}
           </div>
+        </div>
       </div>
-
-      {/* Org Tabs */}
-     
 
       {/* List View */}
       {view === 'list' && (
@@ -160,7 +175,7 @@ export default function PoolLeaderboard() {
             <span>CUT</span>
             <span className={styles.colExpand}></span>
           </div>
-          {rankedTeams.map(team => (
+          {filteredTeams.map(team => (
             <div key={team.id} className={styles.listItem}>
               <div className={styles.listRow} onClick={() => toggleTeam(team.id)}>
                 <span className={styles.colPos}>{team.rank}</span>
@@ -209,7 +224,7 @@ export default function PoolLeaderboard() {
       {/* Card View */}
       {view === 'card' && (
         <div className={styles.cardGrid}>
-          {rankedTeams.map(team => (
+          {filteredTeams.map(team => (
             <div key={team.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardRank}>{team.rank}</span>
@@ -248,7 +263,6 @@ export default function PoolLeaderboard() {
           ))}
         </div>
       )}
-
     </div>
   )
 }
