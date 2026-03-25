@@ -9,7 +9,8 @@ export default function NavBar() {
   const isSuperAdmin = user?.id === process.env.NEXT_PUBLIC_SUPER_ADMIN_ID
   const [isOrgAdmin, setIsOrgAdmin] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [picksLocked, setPicksLocked] = useState(null)
+  const [picksLocked, setPicksLocked] = useState(false)
+  
 
   useEffect(() => {
     fetch('/api/tournament-status')

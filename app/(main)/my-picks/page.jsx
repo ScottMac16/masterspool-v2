@@ -24,6 +24,10 @@ export default async function MyPicksPage({ searchParams }) {
     )
   }
 
+  if (tournament.picks_locked) {
+  redirect('/leaderboard')
+}
+
   // Get orgs the user belongs to
   const { data: memberships } = await supabaseAdmin
     .from('org_members')
@@ -61,9 +65,6 @@ export default async function MyPicksPage({ searchParams }) {
 
   const orgs = memberships?.map(m => m.orgs) || []
 
-  console.log('Orgs:', orgs)
-console.log('Memberships:', memberships)
-console.log('userId:', userId)
 
   return (
     <PicksClient
