@@ -72,16 +72,16 @@
 }
 
 .filterBtn:hover {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.344);
+  border: 1px solid white;
 }
+
 
 .filterBtnActive {
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.509);
+  border: 1px solid white;
 }
 
-.filterBtnActiveGold {
-  background: rgba(201,168,76,0.25);
-}
 
 .scorecardTopRow {
   display: flex;
@@ -215,7 +215,7 @@
 }
 
 .row:hover {
-  background: #f5f0e8;
+  background: #1d5a4a;
 }
 
 .cutRow {
@@ -246,8 +246,8 @@ position: relative;
   width: 20px;
   height: 20px;
   object-fit: cover;
-  bottom: 0;
-  right: 12;
+  bottom: 2;
+  right: 15;
   border-radius: 50%;
   background-color: white;
   border: 1px solid rgb(251, 251, 251);

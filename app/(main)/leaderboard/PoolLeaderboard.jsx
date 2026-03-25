@@ -109,7 +109,7 @@ export default function PoolLeaderboard() {
         <h1 className={styles.title}>POOL LEADERBOARD</h1>
         <div className={styles.headerTop}>
           <div className={styles.searchBox}>
-            <Search size={12} />
+            <Search size={14} />
             <input
               placeholder="Search teams..."
               value={teamSearch}

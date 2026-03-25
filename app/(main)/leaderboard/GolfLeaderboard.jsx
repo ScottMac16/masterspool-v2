@@ -289,18 +289,25 @@ export default function GolfLeaderboard() {
           </div>
 
                  <button
-              className={`${styles.filterBtn} ${showFavoritesOnly ? styles.filterBtnActiveGold : ''}`}
+              className={`${styles.filterBtn} ${showFavoritesOnly ? styles.filterBtnActive : ''}`}
               onClick={() => setShowFavoritesOnly(v => !v)}
               title="Show favourites only"
             >
-              <Star size={14} fill={showFavoritesOnly ? '#c9a84c' : 'none'} color={showFavoritesOnly ? '#c9a84c' : 'white'} />
+              <Star size={14} fill={showFavoritesOnly ? '#ffffff' : 'none'} color={showFavoritesOnly ? 'white' : 'white'} />
             </button>
                <button
               className={`${styles.filterBtn} ${showCanadiansOnly ? styles.filterBtnActive : ''}`}
               onClick={() => setShowCanadiansOnly(v => !v)}
               title="Show Canadians only"
             >
-              <FaCanadianMapleLeaf size={14} fill={showCanadiansOnly ? '#c9a84c' : 'white'} color={showCanadiansOnly ? '#c9a84c' : 'white'} />
+             <FaCanadianMapleLeaf 
+                size={14} 
+                fill={showCanadiansOnly ? '#ffffff' : 'none'}
+                style={{ 
+                  stroke: 'white', 
+                  strokeWidth: '25px'
+                }} 
+              />
             </button>
           </div>
         </div>
