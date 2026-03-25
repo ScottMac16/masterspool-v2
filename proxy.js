@@ -4,6 +4,8 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/webhooks(.*)',
+  '/api/join',
+  '/api/tournament-status',
   '/join(.*)',
   '/pool-leaderboard(.*)',
   '/leaderboard(.*)',

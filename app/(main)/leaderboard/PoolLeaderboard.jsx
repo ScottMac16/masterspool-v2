@@ -134,12 +134,14 @@ export default function PoolLeaderboard() {
         </div>
 
         <div className={styles.headerBottom}>
+          <div>
           {teamSearch && (
             <div className={styles.filterPill}>
               Filter Search: {teamSearch.toUpperCase()}
               <button onClick={() => setTeamSearch('')}>✕</button>
             </div>
           )}
+          </div>
           <div className={styles.tabs}>
             <button
               className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}

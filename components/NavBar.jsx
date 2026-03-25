@@ -4,12 +4,19 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from './NavBar.module.css'
 
-
 export default function NavBar() {
   const { user } = useUser()
   const isSuperAdmin = user?.id === process.env.NEXT_PUBLIC_SUPER_ADMIN_ID
   const [isOrgAdmin, setIsOrgAdmin] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [picksLocked, setPicksLocked] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/tournament-status')
+      .then(r => r.json())
+      .then(d => setPicksLocked(d.picks_locked))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     if (!user || isSuperAdmin) return
@@ -26,7 +33,6 @@ export default function NavBar() {
   return (
     <nav className={styles.nav}>
       <div className={styles.left}>
-
         <Link href="/leaderboard" className={styles.logo} onClick={() => setMenuOpen(false)}>
           <svg className={styles.logoSvg} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 237.3 153.3">
             <path d="M65.6,103l-6,6h-9.1l-4.2-5.5.7-5.1-9.9,10.6h-8.7l-5.7-7.5.4-28.4,10.7,5.7-.2,20.3,3.5,4,8.9-8.7v-26.4l-3.1-3.1-8.7,8.7-11.8-6.9v-28l-2.2-2.2-6.2-.4,11.3-10.2,7.8,8.9v5.5l14.2-14.4,9.3,8.7v8.2l-10.5,9.8v-13.3l-3.5-2.4-9.1,8-.2,23.1,13.8-13.6s8.7,8,9.6,11.3c.9,3.3,1.1,33.5,1.1,33.5,0,0,.9,4.2,7.8,4Z"/>
@@ -46,14 +52,19 @@ export default function NavBar() {
             <rect x="20" y="115.5" width="105.3" height="15.6"/>
           </svg>
         </Link>
-
       </div>
 
       {/* Desktop nav */}
       <div className={styles.right}>
-        <Link href="/leaderboard" className={styles.link}>Leaderboard</Link>
-        <Link href="/my-picks" className={styles.link}>My Picks</Link>
-        <Link href="/my-teams" className={styles.link}>My Teams</Link>
+        {picksLocked && (
+          <Link href="/leaderboard" className={styles.link}>Leaderboard</Link>
+        )}
+        {!picksLocked && (
+          <>
+            <Link href="/my-picks" className={styles.link}>My Picks</Link>
+            <Link href="/my-teams" className={styles.link}>My Teams</Link>
+          </>
+        )}
         {showAdmin && (
           <Link href="/admin" className={styles.adminLink}>Admin</Link>
         )}
@@ -76,9 +87,15 @@ export default function NavBar() {
 
       {menuOpen && (
         <div className={styles.mobileMenu}>
-          <Link href="/leaderboard" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Leaderboard</Link>
-          <Link href="/my-picks" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>My Picks</Link>
-          <Link href="/my-teams" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>My Teams</Link>
+          {picksLocked && (
+            <Link href="/leaderboard" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>Leaderboard</Link>
+          )}
+          {!picksLocked && (
+            <>
+              <Link href="/my-picks" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>My Picks</Link>
+              <Link href="/my-teams" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>My Teams</Link>
+            </>
+          )}
           {showAdmin && (
             <Link href="/admin" className={styles.mobileAdminLink} onClick={() => setMenuOpen(false)}>Admin</Link>
           )}

@@ -278,7 +278,7 @@ export default function GolfLeaderboard() {
             <div className={styles.searchBox}>
               <span><Search size={14}/></span>
               <input
-                placeholder="Search Player"
+                placeholder="Search Player..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
