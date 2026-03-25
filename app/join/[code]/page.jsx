@@ -2,12 +2,21 @@
 
 import { useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 
 export default function JoinCodePage() {
   const router = useRouter()
   const { code } = useParams()
+  const { isLoaded, isSignedIn } = useUser()
 
   useEffect(() => {
+    if (!isLoaded) return
+
+    if (!isSignedIn) {
+      router.push(`/sign-up?redirect_url=/join/${code}`)
+      return
+    }
+
     async function join() {
       const res = await fetch('/api/join', {
         method: 'POST',
@@ -22,7 +31,7 @@ export default function JoinCodePage() {
       }
     }
     join()
-  }, [code])
+  }, [isLoaded, isSignedIn, code])
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f0e8' }}>
