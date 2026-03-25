@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
 import { Search, Star } from 'lucide-react'
 import { FaCanadianMapleLeaf } from "react-icons/fa6";
-import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
+// import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
 
 function scoreClass(score, styles) {
   if (!score || score === 'E') return styles.scoreEven
@@ -53,8 +53,8 @@ export default function GolfLeaderboard() {
       function fetchData() {
         fetch('/api/golf')
           .then(r => r.json())
-          .then(d => setGolfers(Array.isArray(d) && d.length ? d : mockLeaderboard))
-          .catch(() => setGolfers(mockLeaderboard))
+          .then(d => setGolfers(Array.isArray(d) && d.length ? d : []))
+          .catch(() => setGolfers())
       }
 
       fetchData()
@@ -84,27 +84,18 @@ export default function GolfLeaderboard() {
           const res = await fetch(`/api/golf/player/${id}`)
           const data = await res.json()
           const rounds = (data.items || []).filter(r => r.linescores?.length > 0)
-          if (rounds.length > 0) {
-            setScorecards(prev => ({ ...prev, [id]: rounds }))
-            setParMaps(prev => ({ ...prev, [id]: data.parMap || {} }))
-            setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
-          } else {
-            // fallback to mock
-            const rounds = mockScorecard.items.filter(r => r.linescores?.length > 0)
-            setScorecards(prev => ({ ...prev, [id]: rounds }))
-            setParMaps(prev => ({ ...prev, [id]: mockScorecard.parMap }))
-            setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
-          }
-        } catch {
-          const rounds = mockScorecard.items.filter(r => r.linescores?.length > 0)
           setScorecards(prev => ({ ...prev, [id]: rounds }))
-          setParMaps(prev => ({ ...prev, [id]: mockScorecard.parMap }))
+          setParMaps(prev => ({ ...prev, [id]: data.parMap || {} }))
           setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
+        } catch {
+          setScorecards(prev => ({ ...prev, [id]: [] }))
         }
         setLoadingId(null)
       }
     }
 
+
+  
   function toggleFavorite(id) {
     setFavorites(prev => {
       const next = new Set(prev)
@@ -115,7 +106,6 @@ export default function GolfLeaderboard() {
     })
   }
 
-      console.log('pickPct', pickPct)
 
   const filtered = golfers.filter(g => {
     if (!g.name?.toLowerCase().includes(search.toLowerCase())) return false
