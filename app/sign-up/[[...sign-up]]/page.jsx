@@ -10,6 +10,9 @@ export default function SignUpPage() {
   return (
     <div className={styles.container}>
       <SignUp
+        afterSignUpUrl={redirectUrl || '/join'}
+        forceRedirectUrl={redirectUrl || '/join'}
+        
         appearance={{
           variables: {
             colorPrimary: '#1a4731',
