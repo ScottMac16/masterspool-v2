@@ -1,18 +1,22 @@
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { redirect } from 'next/navigation'
 import { MapPin, Trophy, CheckCircle, Clock, DollarSign } from 'lucide-react'
 import styles from './my-teams.module.css'
 
 export default async function MyTeamsPage() {
   const { userId } = await auth()
 
-  // Get latest tournament
   const { data: tournament } = await supabaseAdmin
     .from('tournaments')
     .select('*')
     .eq('active', true)
     .limit(1)
     .single()
+
+  if (tournament?.picks_locked) {
+    redirect('/leaderboard')
+  }
     
   // Get all pools for this tournament
   const { data: pools } = await supabaseAdmin
