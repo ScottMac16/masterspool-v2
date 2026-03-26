@@ -8,7 +8,7 @@ import styles from './combined.module.css'
 
 export default function LeaderboardPage() {
   const router = useRouter()
-  const [activePanel, setActivePanel] = useState(0)
+  const [activePanel, setActivePanel] = useState(1)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
 
