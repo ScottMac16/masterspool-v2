@@ -52,12 +52,12 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
       <div className={styles.tabs}>
         {isSuperAdmin && (
           <>
-            {/* <button
+            <button
               className={`${styles.tab} ${activeOrg === 'all' ? styles.activeTab : ''}`}
               onClick={() => setActiveOrg('all')}
             >
               All <span className={styles.tabCount}>{allTeams.length}</span>
-            </button> */}
+            </button>
             <button
               className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
               onClick={() => setActiveOrg('grandpool')}

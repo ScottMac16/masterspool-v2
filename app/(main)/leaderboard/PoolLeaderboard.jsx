@@ -91,7 +91,7 @@ export default function PoolLeaderboard() {
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool && t.paid_grand_pool)
   const activeTeams = activeTab === 'grandpool'
     ? grandPoolTeams
-    : scoredTeams.filter(t => t.org_id === activeTab)
+    : scoredTeams.filter(t => t.org_id === activeTab && t.paid)
 
   const rankedTeams = activeTeams.map((t, i, arr) => {
     const rank = arr.findIndex(a => a.totalScore === t.totalScore) + 1
@@ -148,7 +148,9 @@ export default function PoolLeaderboard() {
               onClick={() => setActiveTab('grandpool')}
             >
               <Trophy size={14} /> SMAC Pool
-              <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+              <span className={styles.tabCount}>
+                {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
+              </span>
             </button>
             {orgs.map(org => (
               <button
