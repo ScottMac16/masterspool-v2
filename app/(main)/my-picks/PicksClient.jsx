@@ -213,6 +213,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
                   src={`https://a.espncdn.com/i/headshots/golf/players/full/${slot.golfer_espn_id}.png`}
                   className={styles.slotHeadshot}
                   alt={slot.golfer_name}
+                  onError={e => { e.target.onerror = null; e.target.src = '/placeholder-golfer.png' }}
                 />
                 <span className={styles.slotName}>{slot.golfer_name}</span>
                 <span className={styles.slotSalary}>${slot.salary.toLocaleString()}</span>
@@ -298,10 +299,11 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
             >
               <div className={styles.golferInfo}>
                 <img
-                  src={`https://a.espncdn.com/i/headshots/golf/players/full/${g.golfer_espn_id}.png`}
-                  alt={g.golfer_name}
-                  className={styles.headshot}
-                />
+                    src={`https://a.espncdn.com/i/headshots/golf/players/full/${g.golfer_espn_id}.png`}
+                    alt={g.golfer_name}
+                    className={styles.headshot}
+                    onError={e => { e.target.onerror = null; e.target.src = '/placeholder-golfer.png' }}
+                  />
                 <span className={styles.golferName}>{g.golfer_name}</span>
               </div>
               <div className={styles.golferRight}>
