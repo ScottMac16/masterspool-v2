@@ -332,12 +332,12 @@ export default function GolfLeaderboard() {
             >
               <span className={styles.position}>{g.position}</span>
               <div className={styles.headshotWrap}>
-                <img 
-                  className={styles.headshot} 
-                  src={g.headshot} 
-                  alt={g.name}
-                  onError={e => { e.target.src = '/placeholder-golfer.png' }}
-                />
+                  <img 
+                    className={styles.headshot} 
+                    src={g.headshot || '/placeholder-golfer.png'}
+                    alt={g.name}
+                    onError={e => { e.target.onerror = null; e.target.src = '/placeholder-golfer.png' }}
+                  />
                 <img className={styles.flag} src={g.flag} alt={g.country} />
               </div>
               <span className={styles.name}>{g.name}</span>
