@@ -151,10 +151,12 @@ export async function GET() {
       org_id: org?.id,
       org_name: org?.name,
       paid: team.paid,
+      paid_grand_pool: team.paid_grand_pool,
     }
   }) || []
 
-  scoredTeams.sort((a, b) => a.totalScore - b.totalScore)
+  const paidScoredTeams = scoredTeams.filter(t => t.paid)
+  paidScoredTeams.sort((a, b) => a.totalScore - b.totalScore)
 
   let orgs = []
   if (userId) {
@@ -165,5 +167,5 @@ export async function GET() {
     orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
   }
 
-  return Response.json({ scoredTeams, orgs, tournament, missedCutScore })
+  return Response.json({ scoredTeams: paidScoredTeams, orgs, tournament, missedCutScore })
 }

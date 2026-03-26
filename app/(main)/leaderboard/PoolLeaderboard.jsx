@@ -88,7 +88,7 @@ export default function PoolLeaderboard() {
 
   const { scoredTeams, orgs } = data
 
-  const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool)
+  const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool && t.paid_grand_pool)
   const activeTeams = activeTab === 'grandpool'
     ? grandPoolTeams
     : scoredTeams.filter(t => t.org_id === activeTab)

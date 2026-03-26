@@ -10,30 +10,28 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
   )
   const [paidMap, setPaidMap] = useState(() => {
     const map = {}
-    allTeams.forEach(t => { map[t.id] = t.paid })
+    allTeams.forEach(t => { map[t.id] = { paid: t.paid, paid_grand_pool: t.paid_grand_pool } })
     return map
   })
 
-  async function togglePaid(teamId, value) {
-    setPaidMap(prev => ({ ...prev, [teamId]: value }))
+  async function togglePaid(teamId, field, value) {
+    setPaidMap(prev => ({ ...prev, [teamId]: { ...prev[teamId], [field]: value } }))
     await fetch('/api/admin/entries', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ team_id: teamId, paid: value }),
+      body: JSON.stringify({ team_id: teamId, [field]: value }),
     })
   }
 
-  const grandPoolTeams = allTeams.filter(t =>
-    t.in_grand_pool || t.org_name === 'SMAC Pool'
-  )
-
+  const grandPoolTeams = allTeams.filter(t => t.in_grand_pool)
   const activeTeams = activeOrg === 'grandpool'
     ? grandPoolTeams
     : activeOrg === 'all'
     ? allTeams
     : teamsByOrg[activeOrg] || []
 
-  const totalPaid = Object.values(paidMap).filter(Boolean).length
+  const totalPaid = Object.values(paidMap).filter(m => m.paid).length
+  const totalGrandPaid = Object.values(paidMap).filter(m => m.paid_grand_pool).length
 
   return (
     <div className={styles.container}>
@@ -42,8 +40,8 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
         <h1 className={styles.title}><ClipboardList size={24} /> Entries</h1>
         <div className={styles.stats}>
           <span className={styles.stat}>{allTeams.length} total teams</span>
-          <span className={styles.statPaid}>{totalPaid} paid</span>
-          <span className={styles.statGrand}>{grandPoolTeams.length} SMAC Pool</span>
+          <span className={styles.statPaid}>{totalPaid} org paid</span>
+          <span className={styles.statGrand}>{grandPoolTeams.length} SMAC Pool · {totalGrandPaid} paid</span>
         </div>
       </div>
 
@@ -108,12 +106,23 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
                 <td className={styles.email}>{team.users?.email}</td>
                 <td className={styles.orgName}>{team.org_name}</td>
                 <td className={styles.center}>
-                  <input
-                    type="checkbox"
-                    checked={paidMap[team.id] || false}
-                    onChange={e => togglePaid(team.id, e.target.checked)}
-                    className={styles.checkbox}
-                  />
+                  {activeOrg === 'grandpool' ? (
+                    team.in_grand_pool ? (
+                      <input
+                        type="checkbox"
+                        checked={paidMap[team.id]?.paid_grand_pool || false}
+                        onChange={e => togglePaid(team.id, 'paid_grand_pool', e.target.checked)}
+                        className={styles.checkbox}
+                      />
+                    ) : <span style={{ color: '#aaa', fontSize: '0.7rem' }}>N/A</span>
+                  ) : (
+                    <input
+                      type="checkbox"
+                      checked={paidMap[team.id]?.paid || false}
+                      onChange={e => togglePaid(team.id, 'paid', e.target.checked)}
+                      className={styles.checkbox}
+                    />
+                  )}
                 </td>
               </tr>
             ))}
