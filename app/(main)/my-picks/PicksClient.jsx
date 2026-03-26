@@ -172,7 +172,12 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
           <label>Pool</label>
           <select
             value={selectedOrg}
-            onChange={e => setSelectedOrg(e.target.value)}
+            onChange={e => {
+              setSelectedOrg(e.target.value)
+              if (e.target.value === '00000000-0000-0000-0000-000000000001') {
+                setInGrandPool(true)
+              }
+            }}
             className={styles.input}
             disabled={picksLocked || !!editTeamId}
           >
@@ -183,7 +188,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
         </div>
       )}
 
-      {!isGrandPoolOnly && (
+      {!isGrandPoolOnly && selectedOrg !== '00000000-0000-0000-0000-000000000001' && (
         <div className={styles.grandPool}>
           <input
             type="checkbox"
