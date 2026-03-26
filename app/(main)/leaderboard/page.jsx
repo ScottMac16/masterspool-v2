@@ -1,14 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import GolfLeaderboard from './GolfLeaderboard'
 import PoolLeaderboard from './PoolLeaderboard'
 import styles from './combined.module.css'
 
 export default function LeaderboardPage() {
+  const router = useRouter()
   const [activePanel, setActivePanel] = useState(0)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/tournament-status')
+      .then(r => r.json())
+      .then(d => {
+        if (!d.picks_locked) router.replace('/my-teams')
+      })
+      .catch(() => {})
+  }, [])
 
   function onTouchStart(e) {
     setTouchStart(e.targetTouches[0].clientX)
@@ -46,8 +57,6 @@ export default function LeaderboardPage() {
 
   return (
     <div className={styles.container}>
-
-      {/* Mobile tab switcher */}
       <div className={styles.mobileTabs}>
         <button
           className={`${styles.mobileTab} ${activePanel === 0 ? styles.activeMobileTab : ''}`}
@@ -81,7 +90,6 @@ export default function LeaderboardPage() {
         </button>
       </div>
 
-      {/* Swipe container */}
       <div
         className={styles.swipeContainer}
         data-panel={activePanel}
@@ -100,7 +108,6 @@ export default function LeaderboardPage() {
           <PoolLeaderboard />
         </div>
       </div>
-
     </div>
   )
 }
