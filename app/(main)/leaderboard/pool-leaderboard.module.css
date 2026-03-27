@@ -367,12 +367,12 @@
 
 .myTeamRow {
   border-left: 3px solid #c9a84c;
-  background: rgba(201, 168, 76, 0.08);
+  /* background: rgba(201, 168, 76, 0.08); */
 }
 
 .myTeamCard {
-  border: 1px solid #c9a84c;
-  background: rgba(201, 168, 76, 0.08);
+  border: 2px solid #c9a84c;
+  /* background: rgba(201, 168, 76, 0.08); */
 }
 
 .starBtn {
