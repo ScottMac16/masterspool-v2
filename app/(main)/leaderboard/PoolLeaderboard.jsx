@@ -25,6 +25,7 @@ export default function PoolLeaderboard() {
   const [error, setError] = useState(false)
   const [teamSearch, setTeamSearch] = useState('')
   const [showFavouritesOnly, setShowFavouritesOnly] = useState(false)
+  const [showMyTeamsOnly, setShowMyTeamsOnly] = useState(false)
   const [favourites, setFavourites] = useState(() => {
     if (typeof window === 'undefined') return new Set()
     try {
@@ -32,8 +33,6 @@ export default function PoolLeaderboard() {
       return new Set(saved ? JSON.parse(saved) : [])
     } catch { return new Set() }
   })
-
-  const [showMyTeamsOnly, setShowMyTeamsOnly] = useState(false)
 
   function toggleFavourite(e, id) {
     e.stopPropagation()
@@ -99,6 +98,16 @@ export default function PoolLeaderboard() {
     }
   }, [])
 
+  // Set default tab based on whether user is in grand pool
+  useEffect(() => {
+    if (!data) return
+    const { scoredTeams, orgs, currentUserId } = data
+    const inGrandPool = scoredTeams.some(t => t.user_id === currentUserId && t.in_grand_pool && t.paid_grand_pool)
+    if (!inGrandPool && orgs.length > 0) {
+      setActiveTab(orgs[0]?.id)
+    }
+  }, [data])
+
   if (error) return (
     <div className={styles.loading} onClick={() => { setError(false); setData(null) }}>
       Failed to load. Tap to retry.
@@ -109,30 +118,29 @@ export default function PoolLeaderboard() {
 
   const { scoredTeams, orgs, currentUserId } = data
 
-  console.log('orgs:', orgs)
-console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
-
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool && t.paid_grand_pool)
+  const userInGrandPool = scoredTeams.some(t => t.user_id === currentUserId && t.in_grand_pool && t.paid_grand_pool)
+  const visibleOrgs = orgs.filter(org => scoredTeams.some(t => t.org_id === org.id && t.paid))
+  const showTabs = userInGrandPool && visibleOrgs.length > 0
+
   const activeTeams = activeTab === 'grandpool'
     ? grandPoolTeams
-    : scoredTeams.filter(t => t.org_id === activeTab && t.paid === true)
+    : scoredTeams.filter(t => t.org_id === activeTab && t.paid)
 
   const rankedTeams = activeTeams.map((t, i, arr) => {
     const rank = arr.findIndex(a => a.totalScore === t.totalScore) + 1
     return { ...t, rank }
   })
 
-
   const filteredTeams = rankedTeams.filter(t => {
-      if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
-      if (showFavouritesOnly && !favourites.has(t.id)) return false
-      if (showMyTeamsOnly && t.user_id !== currentUserId) return false
-      return true
-    })
+    if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
+    if (showFavouritesOnly && !favourites.has(t.id)) return false
+    if (showMyTeamsOnly && t.user_id !== currentUserId) return false
+    return true
+  })
 
   return (
     <div className={styles.wrapper}>
-
       <div className={styles.header}>
         <h1 className={styles.title}>POOL LEADERBOARD</h1>
 
@@ -149,25 +157,20 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
             )}
           </div>
           <div className={styles.headerButtons}>
-
-
-              <button
-              className={`${styles.filterBtn} ${showMyTeamsOnly ? styles.filterBtnActiveGold : ''} ${styles.viewBtn} `}
+            <button
+              className={`${styles.viewBtn} ${showMyTeamsOnly ? styles.activeView : ''}`}
               onClick={() => setShowMyTeamsOnly(v => !v)}
               title="Show my teams only"
             >
               <User size={14} color={showMyTeamsOnly ? '#c9a84c' : 'white'} />
             </button>
             <button
-              className={`${styles.filterBtn} ${showFavouritesOnly ? styles.filterBtnActiveGold : ''} ${styles.viewBtn} `}
+              className={`${styles.viewBtn} ${showFavouritesOnly ? styles.activeView : ''}`}
               onClick={() => setShowFavouritesOnly(v => !v)}
               title="Show favourites only"
             >
               <Star size={14} fill={showFavouritesOnly ? '#c9a84c' : 'none'} color={showFavouritesOnly ? '#c9a84c' : 'white'} />
             </button>
-
-
-
             <div className={styles.viewToggle}>
               <button
                 className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
@@ -184,15 +187,13 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
         </div>
 
         <div className={styles.headerBottom}>
-          <div>
-            {teamSearch && (
-              <div className={styles.filterPill}>
-                Filter Search: {teamSearch.toUpperCase()}
-                <button onClick={() => setTeamSearch('')}>✕</button>
-              </div>
-            )}
-          </div>
-          {orgs.length > 0 && (
+          {teamSearch && (
+            <div className={styles.filterPill}>
+              Filter Search: {teamSearch.toUpperCase()}
+              <button onClick={() => setTeamSearch('')}>✕</button>
+            </div>
+          )}
+          {showTabs && (
             <div className={styles.tabs}>
               <button
                 className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
@@ -201,20 +202,18 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
                 <Trophy size={14} /> SMAC Pool
                 <span className={styles.tabCount}>{grandPoolTeams.length}</span>
               </button>
-                  {orgs
-                    .filter(org => scoredTeams.some(t => t.org_id === org.id && t.paid === true))
-                    .map(org => (
-                  <button
-                    key={org.id}
-                    className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
-                    onClick={() => setActiveTab(org.id)}
-                  >
-                    {org.name}
-                    <span className={styles.tabCount}>
-                      {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
-                    </span>
-                  </button>
-                ))}
+              {visibleOrgs.map(org => (
+                <button
+                  key={org.id}
+                  className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
+                  onClick={() => setActiveTab(org.id)}
+                >
+                  {org.name}
+                  <span className={styles.tabCount}>
+                    {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
+                  </span>
+                </button>
+              ))}
             </div>
           )}
         </div>
@@ -224,7 +223,7 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
       {view === 'list' && (
         <div className={styles.listView}>
           <div className={styles.listHeader}>
-            <span className={styles.colTeam}>POS</span>
+            <span className={styles.colPos}>POS</span>
             <span className={styles.colTeam}>TEAM NAME</span>
             <span>TOTAL</span>
             <span>TODAY</span>
@@ -233,9 +232,19 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
           </div>
           {filteredTeams.map(team => (
             <div key={team.id} className={styles.listItem}>
-              <div className={`${styles.listRow} ${team.user_id === currentUserId ? styles.myTeamRow : ''}`} onClick={() => toggleTeam(team.id)}>
+              <div
+                className={`${styles.listRow} ${team.user_id === currentUserId ? styles.myTeamRow : ''}`}
+                onClick={() => toggleTeam(team.id)}
+              >
                 <span className={styles.colPos}>{team.rank}</span>
                 <span className={styles.colTeam}>
+                  <button
+                    className={styles.starBtn}
+                    onClick={e => toggleFavourite(e, team.id)}
+                    title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
+                  >
+                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                  </button>
                   {team.team_name}
                 </span>
                 <span className={`${styles.colStat} ${scoreClass(team.totalScore, styles)}`}>
@@ -245,21 +254,15 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
                   {formatScore(team.todayScore)}
                 </span>
                 <span className={styles.colStat}>{team.cutCount}</span>
-                <span className={styles.colExpand}>{expandedTeams.has(team.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
+                <span className={styles.colExpand}>
+                  {expandedTeams.has(team.id) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </span>
               </div>
 
               {expandedTeams.has(team.id) && (
                 <div className={styles.expandedGolfers}>
                   <div className={styles.cardGolferHeader}>
-                    <span className={styles.cgPos}>
-                      <button
-                          className={styles.starBtn}
-                          onClick={e => toggleFavourite(e, team.id)}
-                          title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
-                        >
-                          <Star size={16} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
-                      </button>
-                    </span>
+                    <span className={styles.cgPos}></span>
                     <span className={styles.cgName}></span>
                     <span className={styles.cgStat}>Total</span>
                     <span className={styles.cgStat}>Today</span>
@@ -294,7 +297,16 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
             <div key={team.id} className={`${styles.card} ${team.user_id === currentUserId ? styles.myTeamCard : ''}`}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardRank}>{team.rank}</span>
-                <span className={styles.cardTeamName}>{team.team_name}</span>
+                <span className={styles.cardTeamName}>
+                  <button
+                    className={styles.starBtn}
+                    onClick={e => toggleFavourite(e, team.id)}
+                    title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
+                  >
+                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                  </button>
+                  {team.team_name}
+                </span>
                 <span className={`${styles.cardTotal} ${scoreClass(team.totalScore, styles)}`}>
                   {formatScore(team.totalScore)}
                 </span>
@@ -304,15 +316,7 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
                 <span className={styles.cardCuts}>{team.cutCount}</span>
               </div>
               <div className={styles.cardGolferHeader}>
-                <span className={styles.cgPos}>
-                  <button
-                    className={styles.starBtn}
-                    onClick={e => toggleFavourite(e, team.id)}
-                    title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
-                  >
-                    <Star size={16} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
-                </button>
-                </span>
+                <span className={styles.cgPos}></span>
                 <span className={styles.cgName}></span>
                 <span className={styles.cgStat}>Total</span>
                 <span className={styles.cgStat}>Today</span>
