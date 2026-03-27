@@ -131,6 +131,7 @@ export default function PoolLeaderboard() {
 
       <div className={styles.header}>
         <h1 className={styles.title}>POOL LEADERBOARD</h1>
+        
         <div className={styles.headerTop}>
           <div className={styles.searchBox}>
             <Search size={14} />
@@ -252,7 +253,7 @@ export default function PoolLeaderboard() {
                           onClick={e => toggleFavourite(e, team.id)}
                           title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
                         >
-                          <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                          <Star size={16} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
                       </button>
                     </span>
                     <span className={styles.cgName}></span>
@@ -289,15 +290,7 @@ export default function PoolLeaderboard() {
             <div key={team.id} className={`${styles.card} ${team.user_id === currentUserId ? styles.myTeamCard : ''}`}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardRank}>{team.rank}</span>
-                <span className={styles.cardTeamName}>
-                  <button
-                    className={styles.starBtn}
-                    onClick={e => toggleFavourite(e, team.id)}
-                  >
-                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
-                  </button>
-                  {team.team_name}
-                </span>
+                <span className={styles.cardTeamName}>{team.team_name}</span>
                 <span className={`${styles.cardTotal} ${scoreClass(team.totalScore, styles)}`}>
                   {formatScore(team.totalScore)}
                 </span>
@@ -313,7 +306,7 @@ export default function PoolLeaderboard() {
                     onClick={e => toggleFavourite(e, team.id)}
                     title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
                   >
-                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                    <Star size={16} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
                 </button>
                 </span>
                 <span className={styles.cgName}></span>
