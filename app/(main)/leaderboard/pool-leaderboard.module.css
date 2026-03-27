@@ -111,6 +111,7 @@
   margin-bottom: 16px;
 
   align-items: center;
+  width: 100%;
 }
 
 .tab {
@@ -415,6 +416,13 @@
 
     align-items: flex-start;
 
+  }
+
+
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
   }
 
 }
