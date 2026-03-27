@@ -120,18 +120,18 @@ export default function PoolLeaderboard() {
   })
 
   const filteredTeams = rankedTeams.filter(t => {
-    if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
-    if (showFavouritesOnly && !favourites.has(t.id)) return false
-    if (showMyTeamsOnly && team.user_id !== currentUserId) return false
-    return true
-  })
+      if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
+      if (showFavouritesOnly && !favourites.has(t.id)) return false
+      if (showMyTeamsOnly && t.user_id !== currentUserId) return false
+      return true
+    })
 
   return (
     <div className={styles.wrapper}>
 
       <div className={styles.header}>
         <h1 className={styles.title}>POOL LEADERBOARD</h1>
-        
+
         <div className={styles.headerTop}>
           <div className={styles.searchBox}>
             <Search size={14} />
