@@ -231,13 +231,6 @@ export default function PoolLeaderboard() {
               <div className={`${styles.listRow} ${team.user_id === currentUserId ? styles.myTeamRow : ''}`} onClick={() => toggleTeam(team.id)}>
                 <span className={styles.colPos}>{team.rank}</span>
                 <span className={styles.colTeam}>
-                  <button
-                    className={styles.starBtn}
-                    onClick={e => toggleFavourite(e, team.id)}
-                    title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
-                  >
-                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
-                  </button>
                   {team.team_name}
                 </span>
                 <span className={`${styles.colStat} ${scoreClass(team.totalScore, styles)}`}>
@@ -253,7 +246,15 @@ export default function PoolLeaderboard() {
               {expandedTeams.has(team.id) && (
                 <div className={styles.expandedGolfers}>
                   <div className={styles.cardGolferHeader}>
-                    <span className={styles.cgPos}></span>
+                    <span className={styles.cgPos}>
+                      <button
+                          className={styles.starBtn}
+                          onClick={e => toggleFavourite(e, team.id)}
+                          title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
+                        >
+                          <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                      </button>
+                    </span>
                     <span className={styles.cgName}></span>
                     <span className={styles.cgStat}>Total</span>
                     <span className={styles.cgStat}>Today</span>
@@ -306,7 +307,15 @@ export default function PoolLeaderboard() {
                 <span className={styles.cardCuts}>{team.cutCount}</span>
               </div>
               <div className={styles.cardGolferHeader}>
-                <span className={styles.cgPos}></span>
+                <span className={styles.cgPos}>
+                  <button
+                    className={styles.starBtn}
+                    onClick={e => toggleFavourite(e, team.id)}
+                    title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
+                  >
+                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                </button>
+                </span>
                 <span className={styles.cgName}></span>
                 <span className={styles.cgStat}>Total</span>
                 <span className={styles.cgStat}>Today</span>
