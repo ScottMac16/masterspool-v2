@@ -142,7 +142,6 @@ export default function PoolLeaderboard() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h1 className={styles.title}>POOL LEADERBOARD</h1>
 
           {showTabs && (
             <div className={styles.tabs}>
@@ -167,6 +166,11 @@ export default function PoolLeaderboard() {
               ))}
             </div>
           )}
+
+          
+        <h1 className={styles.title}>POOL LEADERBOARD</h1>
+
+ 
 
         <div className={styles.headerTop}>
           <div className={styles.searchBox}>
