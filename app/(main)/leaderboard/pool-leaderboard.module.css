@@ -104,23 +104,22 @@
 }
 
 .tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+
   gap: 8px;
   margin-bottom: 16px;
-  flex-wrap: wrap;
+
   align-items: center;
-  margin: auto;
-  margin-right: 0px;
 }
 
 .tab {
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 5px 15px;
+  border-radius: 50px;
   border: 2px solid #1a4731;
   background: white;
   color: #1a4731;
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.55rem;
   cursor: pointer;
   display: flex;
   align-items: center;
