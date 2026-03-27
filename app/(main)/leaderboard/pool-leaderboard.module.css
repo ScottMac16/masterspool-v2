@@ -420,6 +420,10 @@
 
   }
 
+  .tab {
+    flex: 1 1 calc(100% / 3); /* tablet: 3 per row */
+  }
+
 
 
 
