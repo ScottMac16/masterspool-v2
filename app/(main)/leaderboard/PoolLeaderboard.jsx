@@ -115,7 +115,7 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool && t.paid_grand_pool)
   const activeTeams = activeTab === 'grandpool'
     ? grandPoolTeams
-    : scoredTeams.filter(t => t.org_id === activeTab && t.paid)
+    : scoredTeams.filter(t => t.org_id === activeTab && t.paid === true)
 
   const rankedTeams = activeTeams.map((t, i, arr) => {
     const rank = arr.findIndex(a => a.totalScore === t.totalScore) + 1
@@ -202,7 +202,7 @@ console.log('scoredTeams org_ids:', scoredTeams.map(t => t.org_id))
                 <span className={styles.tabCount}>{grandPoolTeams.length}</span>
               </button>
                   {orgs
-                    .filter(org => scoredTeams.some(t => t.org_id === org.id && t.paid))
+                    .filter(org => scoredTeams.some(t => t.org_id === org.id && t.paid === true))
                     .map(org => (
                   <button
                     key={org.id}
