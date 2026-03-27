@@ -142,7 +142,7 @@ export default function PoolLeaderboard() {
             </div>
           )}
           </div>
-          {orgs.length > 0 && (
+            {orgs.length > 0 && (
               <div className={styles.tabs}>
                 <button
                   className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
@@ -151,18 +151,20 @@ export default function PoolLeaderboard() {
                   <Trophy size={14} /> SMAC Pool
                   <span className={styles.tabCount}>{grandPoolTeams.length}</span>
                 </button>
-                {orgs.map(org => (
-                  <button
-                    key={org.id}
-                    className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
-                    onClick={() => setActiveTab(org.id)}
-                  >
-                    {org.name}
-                    <span className={styles.tabCount}>
-                      {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
-                    </span>
-                  </button>
-                ))}
+                {orgs
+                  .filter(org => scoredTeams.some(t => t.org_id === org.id))
+                  .map(org => (
+                    <button
+                      key={org.id}
+                      className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
+                      onClick={() => setActiveTab(org.id)}
+                    >
+                      {org.name}
+                      <span className={styles.tabCount}>
+                        {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
+                      </span>
+                    </button>
+                  ))}
               </div>
             )}
         </div>
