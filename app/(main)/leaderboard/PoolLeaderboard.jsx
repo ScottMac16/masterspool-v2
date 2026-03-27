@@ -122,7 +122,7 @@ export default function PoolLeaderboard() {
   const filteredTeams = rankedTeams.filter(t => {
     if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
     if (showFavouritesOnly && !favourites.has(t.id)) return false
-    if (showMyTeamsOnly && t.user?.id !== currentUserId) return false
+    if (showMyTeamsOnly && team.user_id !== currentUserId) return false
     return true
   })
 
@@ -228,7 +228,7 @@ export default function PoolLeaderboard() {
           </div>
           {filteredTeams.map(team => (
             <div key={team.id} className={styles.listItem}>
-              <div className={`${styles.listRow} ${team.user?.id === currentUserId ? styles.myTeamRow : ''}`} onClick={() => toggleTeam(team.id)}>
+              <div className={`${styles.listRow} ${team.user_id === currentUserId ? styles.myTeamRow : ''}`} onClick={() => toggleTeam(team.id)}>
                 <span className={styles.colPos}>{team.rank}</span>
                 <span className={styles.colTeam}>
                   <button
@@ -285,7 +285,7 @@ export default function PoolLeaderboard() {
       {view === 'card' && (
         <div className={styles.cardGrid}>
           {filteredTeams.map(team => (
-            <div key={team.id} className={`${styles.card} ${team.user?.id === currentUserId ? styles.myTeamCard : ''}`}>
+            <div key={team.id} className={`${styles.card} ${team.user_id === currentUserId ? styles.myTeamCard : ''}`}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardRank}>{team.rank}</span>
                 <span className={styles.cardTeamName}>
