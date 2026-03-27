@@ -147,14 +147,14 @@ export default function PoolLeaderboard() {
 
 
               <button
-              className={`${styles.filterBtn} ${showMyTeamsOnly ? styles.filterBtnActive : ''}`}
+              className={`${styles.filterBtn} ${showMyTeamsOnly ? styles.filterBtnActiveGold : ''} ${styles.viewBtn} `}
               onClick={() => setShowMyTeamsOnly(v => !v)}
               title="Show my teams only"
             >
               <User size={14} color={showMyTeamsOnly ? '#c9a84c' : 'white'} />
             </button>
             <button
-              className={`${styles.filterBtn} ${showFavouritesOnly ? styles.filterBtnActiveGold : ''}`}
+              className={`${styles.filterBtn} ${showFavouritesOnly ? styles.filterBtnActiveGold : ''} ${styles.viewBtn} `}
               onClick={() => setShowFavouritesOnly(v => !v)}
               title="Show favourites only"
             >

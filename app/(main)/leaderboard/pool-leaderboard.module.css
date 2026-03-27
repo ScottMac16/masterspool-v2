@@ -85,7 +85,7 @@
   align-items: center;
   justify-content: center;
   background: none;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
@@ -391,18 +391,10 @@
   gap: 8px;
 }
 
-.filterBtn {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 8px;
-  padding: 6px 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
+
 
 .filterBtnActiveGold {
-  border-color: #c9a84c;
+  border: #c9a84c 1px solid;
 }
 
 @media screen and (max-width: 725px) {

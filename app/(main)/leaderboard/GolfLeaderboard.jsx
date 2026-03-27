@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
-import { Search, Star } from 'lucide-react'
+import { Search, Star, ChevronDown, ChevronRight} from 'lucide-react'
 import { FaCanadianMapleLeaf } from "react-icons/fa6";
 import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
 
@@ -325,11 +325,14 @@ export default function GolfLeaderboard() {
       <div className={styles.leaderboardList}>
         {filtered.map((g) => (
           <div key={g.id}>
-            <div
-              className={`${styles.row} ${isCut(g) ? styles.cutRow : ''}`}
-              style={{ cursor: 'pointer' }}
-              onClick={() => togglePlayer(g.id)}
-            >
+              <div
+                  className={`${styles.row} ${isCut(g) ? styles.cutRow : ''}`}
+                  onClick={() => togglePlayer(g.id)}
+                  style={{
+                    border: favorites.has(g.id) ? '1px solid #c9a84c' : '1px solid transparent',
+                    cursor: 'pointer'
+                  }}
+                >
               <span className={styles.position}>{g.position}</span>
               <div className={styles.headshotWrap}>
                   <img 
@@ -344,15 +347,23 @@ export default function GolfLeaderboard() {
               <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
               <span className={styles.today}>{g.today}</span>
               <span className={styles.thru}>{g.thru}</span>
-              <span style={{ color: '#c9a84c', fontSize: '0.7rem' }}>{expandedId === g.id ? '▲' : '▼'}</span>
-            </div>
-            {expandedId === g.id && (
-              <div className={styles.scorecardWrap}>
-                {loadingId === g.id
-                  ? <div className={styles.loadingScore}>Loading...</div>
-                  : renderScorecard(g.id)
-                }
+              <span style={{ color: '#c9a84c', fontSize: '0.7rem' }}>{expandedId === g.id ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
               </div>
+              {expandedId === g.id && (
+                <div className={styles.scorecardWrap}
+                    style={{
+                    borderBottom: favorites.has(g.id) ? '1px solid #c9a84c' : '1px solid transparent',
+                    borderLeft: favorites.has(g.id) ? '1px solid #c9a84c' : '1px solid transparent',
+                    borderRight: favorites.has(g.id) ? '1px solid #c9a84c' : '1px solid transparent',
+                    borderTop: '0px solid transparent'
+                  }}
+                
+                >
+                  {loadingId === g.id
+                    ? <div className={styles.loadingScore}>Loading...</div>
+                    : renderScorecard(g.id)
+                  }
+                </div>
             )}
           </div>
         ))}
