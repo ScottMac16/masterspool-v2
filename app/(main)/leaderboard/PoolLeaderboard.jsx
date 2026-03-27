@@ -2,7 +2,7 @@
 
 import { mockPoolData } from '@/lib/mock-data'
 import { useState, useEffect } from 'react'
-import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight, Search, Star } from 'lucide-react'
+import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight, Search, Star, User } from 'lucide-react'
 import styles from './pool-leaderboard.module.css'
 
 function formatScore(score) {
