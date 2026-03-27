@@ -119,6 +119,9 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
+  console.log('currentUserId:', currentUserId)
+console.log('team user_ids:', rankedTeams.map(t => t.user_id))  
+
   const filteredTeams = rankedTeams.filter(t => {
       if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
       if (showFavouritesOnly && !favourites.has(t.id)) return false
