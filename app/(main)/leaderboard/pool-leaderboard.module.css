@@ -365,7 +365,45 @@
   font-size: 0.8rem;
 }
 
+.myTeamRow {
+  border-left: 3px solid #c9a84c;
+  background: rgba(201, 168, 76, 0.08);
+}
 
+.myTeamCard {
+  border: 1px solid #c9a84c;
+  background: rgba(201, 168, 76, 0.08);
+}
+
+.starBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px 0 0;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.filterBtnActiveGold {
+  border-color: #c9a84c;
+}
 
 @media screen and (max-width: 725px) {
   .headerTop{

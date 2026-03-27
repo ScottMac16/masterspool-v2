@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
+import DeleteTeamButton from './DeleteTeamButton'
 import { MapPin, Trophy, CheckCircle, Clock, DollarSign } from 'lucide-react'
 import styles from './my-teams.module.css'
 
@@ -95,9 +96,12 @@ export default async function MyTeamsPage() {
             </div>
 
             {!tournament?.picks_locked && (
-              <a href={`/my-picks?edit=${team.id}`} className={styles.editBtn}>
-                Edit Team
-              </a>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                <a href={`/my-picks?edit=${team.id}`} className={styles.editBtn}>
+                  Edit Team
+                </a>
+                <DeleteTeamButton teamId={team.id} />
+              </div>
             )}
           </div>
         ))}

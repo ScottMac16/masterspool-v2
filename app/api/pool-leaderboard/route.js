@@ -167,5 +167,5 @@ export async function GET() {
     orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
   }
 
-  return Response.json({ scoredTeams, orgs, tournament, missedCutScore })
+  return Response.json({ scoredTeams, orgs, tournament, missedCutScore, currentUserId: userId})
 }

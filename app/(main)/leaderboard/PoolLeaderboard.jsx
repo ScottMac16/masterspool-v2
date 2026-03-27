@@ -2,7 +2,7 @@
 
 import { mockPoolData } from '@/lib/mock-data'
 import { useState, useEffect } from 'react'
-import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight, Search } from 'lucide-react'
+import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight, Search, Star } from 'lucide-react'
 import styles from './pool-leaderboard.module.css'
 
 function formatScore(score) {
@@ -24,6 +24,25 @@ export default function PoolLeaderboard() {
   const [expandedTeams, setExpandedTeams] = useState(new Set())
   const [error, setError] = useState(false)
   const [teamSearch, setTeamSearch] = useState('')
+  const [showFavouritesOnly, setShowFavouritesOnly] = useState(false)
+  const [favourites, setFavourites] = useState(() => {
+    if (typeof window === 'undefined') return new Set()
+    try {
+      const saved = localStorage.getItem('pool-favourites')
+      return new Set(saved ? JSON.parse(saved) : [])
+    } catch { return new Set() }
+  })
+
+  function toggleFavourite(e, id) {
+    e.stopPropagation()
+    setFavourites(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      localStorage.setItem('pool-favourites', JSON.stringify([...next]))
+      return next
+    })
+  }
 
   function toggleTeam(id) {
     setExpandedTeams(prev => {
@@ -86,7 +105,7 @@ export default function PoolLeaderboard() {
 
   if (!data) return <div className={styles.loading}>Loading...</div>
 
-  const { scoredTeams, orgs } = data
+  const { scoredTeams, orgs, currentUserId } = data
 
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool && t.paid_grand_pool)
   const activeTeams = activeTab === 'grandpool'
@@ -98,9 +117,11 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
-  const filteredTeams = teamSearch
-    ? rankedTeams.filter(t => t.team_name.toLowerCase().includes(teamSearch.toLowerCase()))
-    : rankedTeams
+  const filteredTeams = rankedTeams.filter(t => {
+    if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
+    if (showFavouritesOnly && !favourites.has(t.id)) return false
+    return true
+  })
 
   return (
     <div className={styles.wrapper}>
@@ -119,54 +140,63 @@ export default function PoolLeaderboard() {
               <button className={styles.clearBtn} onClick={() => setTeamSearch('')}>✕</button>
             )}
           </div>
-          <div className={styles.viewToggle}>
+          <div className={styles.headerButtons}>
             <button
-              className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
-              onClick={() => setView('list')}
-              title="List view"
-            ><List size={16} /></button>
-            <button
-              className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
-              onClick={() => setView('card')}
-              title="Card view"
-            ><LayoutGrid size={16} /></button>
+              className={`${styles.filterBtn} ${showFavouritesOnly ? styles.filterBtnActiveGold : ''}`}
+              onClick={() => setShowFavouritesOnly(v => !v)}
+              title="Show favourites only"
+            >
+              <Star size={14} fill={showFavouritesOnly ? '#c9a84c' : 'none'} color={showFavouritesOnly ? '#c9a84c' : 'white'} />
+            </button>
+            <div className={styles.viewToggle}>
+              <button
+                className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
+                onClick={() => setView('list')}
+                title="List view"
+              ><List size={16} /></button>
+              <button
+                className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
+                onClick={() => setView('card')}
+                title="Card view"
+              ><LayoutGrid size={16} /></button>
+            </div>
           </div>
         </div>
 
         <div className={styles.headerBottom}>
           <div>
-          {teamSearch && (
-            <div className={styles.filterPill}>
-              Filter Search: {teamSearch.toUpperCase()}
-              <button onClick={() => setTeamSearch('')}>✕</button>
-            </div>
-          )}
-          </div>
-            {orgs.length > 0 && (
-              <div className={styles.tabs}>
-                <button
-                  className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
-                  onClick={() => setActiveTab('grandpool')}
-                >
-                  <Trophy size={14} /> SMAC Pool
-                  <span className={styles.tabCount}>{grandPoolTeams.length}</span>
-                </button>
-                {orgs
-                  .filter(org => scoredTeams.some(t => t.org_id === org.id))
-                  .map(org => (
-                    <button
-                      key={org.id}
-                      className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
-                      onClick={() => setActiveTab(org.id)}
-                    >
-                      {org.name}
-                      <span className={styles.tabCount}>
-                        {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
-                      </span>
-                    </button>
-                  ))}
+            {teamSearch && (
+              <div className={styles.filterPill}>
+                Filter Search: {teamSearch.toUpperCase()}
+                <button onClick={() => setTeamSearch('')}>✕</button>
               </div>
             )}
+          </div>
+          {orgs.length > 0 && (
+            <div className={styles.tabs}>
+              <button
+                className={`${styles.tab} ${activeTab === 'grandpool' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('grandpool')}
+              >
+                <Trophy size={14} /> SMAC Pool
+                <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+              </button>
+              {orgs
+                .filter(org => scoredTeams.some(t => t.org_id === org.id))
+                .map(org => (
+                  <button
+                    key={org.id}
+                    className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
+                    onClick={() => setActiveTab(org.id)}
+                  >
+                    {org.name}
+                    <span className={styles.tabCount}>
+                      {scoredTeams.filter(t => t.org_id === org.id && t.paid).length}
+                    </span>
+                  </button>
+                ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -183,9 +213,18 @@ export default function PoolLeaderboard() {
           </div>
           {filteredTeams.map(team => (
             <div key={team.id} className={styles.listItem}>
-              <div className={styles.listRow} onClick={() => toggleTeam(team.id)}>
+              <div className={`${styles.listRow} ${team.user?.id === currentUserId ? styles.myTeamRow : ''}`} onClick={() => toggleTeam(team.id)}>
                 <span className={styles.colPos}>{team.rank}</span>
-                <span className={styles.colTeam}>{team.team_name}</span>
+                <span className={styles.colTeam}>
+                  <button
+                    className={styles.starBtn}
+                    onClick={e => toggleFavourite(e, team.id)}
+                    title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
+                  >
+                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                  </button>
+                  {team.team_name}
+                </span>
                 <span className={`${styles.colStat} ${scoreClass(team.totalScore, styles)}`}>
                   {formatScore(team.totalScore)}
                 </span>
@@ -231,10 +270,18 @@ export default function PoolLeaderboard() {
       {view === 'card' && (
         <div className={styles.cardGrid}>
           {filteredTeams.map(team => (
-            <div key={team.id} className={styles.card}>
+            <div key={team.id} className={`${styles.card} ${team.user?.id === currentUserId ? styles.myTeamCard : ''}`}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardRank}>{team.rank}</span>
-                <span className={styles.cardTeamName}>{team.team_name}</span>
+                <span className={styles.cardTeamName}>
+                  <button
+                    className={styles.starBtn}
+                    onClick={e => toggleFavourite(e, team.id)}
+                  >
+                    <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                  </button>
+                  {team.team_name}
+                </span>
                 <span className={`${styles.cardTotal} ${scoreClass(team.totalScore, styles)}`}>
                   {formatScore(team.totalScore)}
                 </span>
