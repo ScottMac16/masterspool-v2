@@ -143,6 +143,7 @@ export async function GET() {
       id: team.id,
       team_name: team.team_name,
       user: team.users,
+      user_id: team.user_id,
       totalScore,
       todayScore,
       cutCount,
