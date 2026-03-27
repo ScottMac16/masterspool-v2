@@ -119,8 +119,6 @@ export default function PoolLeaderboard() {
     return { ...t, rank }
   })
 
-  console.log('currentUserId:', currentUserId)
-console.log('team user_ids:', rankedTeams.map(t => t.user_id))  
 
   const filteredTeams = rankedTeams.filter(t => {
       if (teamSearch && !t.team_name.toLowerCase().includes(teamSearch.toLowerCase())) return false
@@ -200,9 +198,9 @@ console.log('team user_ids:', rankedTeams.map(t => t.user_id))
                 <Trophy size={14} /> SMAC Pool
                 <span className={styles.tabCount}>{grandPoolTeams.length}</span>
               </button>
-              {orgs
-                .filter(org => scoredTeams.some(t => t.org_id === org.id))
-                .map(org => (
+                  {orgs
+                    .filter(org => scoredTeams.some(t => t.org_id === org.id && t.paid))
+                    .map(org => (
                   <button
                     key={org.id}
                     className={`${styles.tab} ${activeTab === org.id ? styles.activeTab : ''}`}
