@@ -1,13 +1,21 @@
 .page {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 10px 25px;
+
+    scrollbar-gutter: stable;
+  scrollbar-color: #c9a84c white ;
+
+
+
 }
 
 .desktopLayout {
   display: flex;
   gap: 24px;
   align-items: flex-start;
+
+
 }
 
 .mobileLayout {
@@ -22,10 +30,13 @@
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   overflow: hidden;
+
+  scrollbar-gutter: stable;
+  scrollbar-color: #c9a84c white ;
 }
 
 .leftHeader {
-  padding: 16px;
+  padding: 10px 5px;
   border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
@@ -38,6 +49,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  gap: 10px;
 }
 
 .leftTitle {
@@ -51,10 +63,13 @@
   background: none;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 4px 10px;
+  padding: 8px;
   font-size: 0.8rem;
   cursor: pointer;
   color: #666;
+  height: 100%;
+  display: flex;
+
 }
 
 .search {
@@ -64,18 +79,20 @@
   border-radius: 8px;
   font-size: 0.9rem;
   box-sizing: border-box;
+
 }
 
 .golferList {
-  overflow-y: auto;
-  max-height: calc(100vh - 220px);
+  overflow-y: scroll;
+  height: calc(100vh - 230px);
+  min-height: 300px;
 }
 
 .golferHeader {
   display: flex;
   justify-content: space-between;
   padding: 8px 16px;
-  font-size: 0.75rem;
+  font-size: 0.55rem;
   font-weight: 700;
   color: #888;
   letter-spacing: 1px;
@@ -153,13 +170,17 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+    scrollbar-gutter: stable;
+  scrollbar-color: #c9a84c white ;
 }
 
 /* ── Cap Bar ── */
 .capBar {
-  background: #f5f0e8;
+  background: #f4f4f4;
   border-radius: 10px;
-  padding: 12px 14px;
+  padding: 10px 14px;
+  margin: 0 auto 10px auto;
+  border: 1px solid #ddd;
 }
 
 .capInfo {
@@ -183,10 +204,17 @@
   transition: width 0.3s;
 }
 
+.capStats{
+  display: flex;
+  justify-content: space-between;
+}
+
 .capCount {
   font-size: 0.75rem;
   color: #888;
   text-align: right;
+  display: flex;
+  align-items: center;
 }
 
 .over {

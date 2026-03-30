@@ -143,18 +143,20 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
           }}
         />
       </div>
+      <div className={styles.capStats}>
       <div className={styles.capCount}>{picks.length} / {maxPicks} players</div>
       {picks.length < maxPicks && (
         <div className={styles.capAvg}>
-          ${Math.floor(remaining / (maxPicks - picks.length)).toLocaleString()} avg per remaining pick
+          ${Math.floor(remaining / (maxPicks - picks.length)).toLocaleString()} avg / pick
         </div>
       )}
+      </div>
     </div>
   )
 
   const slotPanel = (
     <div className={styles.right}>
-      {capBar}
+
 
       <div className={styles.field}>
         <label>Team Name</label>
@@ -260,25 +262,24 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
     <div className={styles.left}>
       <div className={styles.leftHeader}>
         <div className={styles.leftTitleRow}>
-          <h2 className={styles.leftTitle}>
-            {activeSlot !== null ? `Picking for slot ${activeSlot + 1}` : 'Available Players'}
-          </h2>
-          {activeSlot !== null && (
-            <button className={styles.cancelBtn} onClick={cancelPick}><X size={14} /> Cancel</button>
-          )}
-        </div>
-        <input
+           <input
           className={styles.search}
           placeholder="Search player..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
+        
+          {activeSlot !== null && (
+            <button className={styles.cancelBtn} onClick={cancelPick}><X size={14} /></button>
+          )}
+        </div>
+       
       </div>
 
       <div className={styles.golferList}>
         <div className={styles.golferHeader}>
-          <span>Player</span>
-          <span>Salary</span>
+          <span>PLAYER</span>
+          <span>SALARY</span>
         </div>
         {filtered.map(g => {
           const slotSalary = activeSlot !== null && slots[activeSlot] ? slots[activeSlot].salary : 0
@@ -318,6 +319,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
 
   return (
     <div className={styles.page}>
+      {capBar}
       {/* Desktop: side by side */}
       <div className={styles.desktopLayout}>
         {playerPanel}
