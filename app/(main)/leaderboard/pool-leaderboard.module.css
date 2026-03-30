@@ -221,9 +221,13 @@
   gap: 5px;
   font-size: 0.7rem;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.cardRank  { text-align: left;} 
+
+
+.cardRank  { text-align: center; z-index: 1; margin-left: -15px; font-weight: 600;} 
 
 .cardTeamName { font-weight: 700; font-size: 0.75rem; text-align: left;} 
 
@@ -370,20 +374,32 @@
   font-size: 0.8rem;
 }
 
-.myTeamRow, .myTeamCard > .cardHeader{
+.myTeamRow, .myTeamCard .cardHeader{
   position: relative;
   overflow: hidden;
 }
 
-.myTeamRow::after, .myTeamCard > .cardHeader::after{
+.myTeamRow::after{
   position: absolute;
   content: "";
   left: 0;
   top: 0;
   bottom: 0;
-  width: 45px;
+  width: 40px;
   background: #C8A74B;
   z-index: -1;
+}
+
+
+.myTeamCard  .cardHeader::after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  background: #C8A74B;
+  z-index: 0;
 }
 
 
