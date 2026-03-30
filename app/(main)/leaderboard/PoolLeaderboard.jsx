@@ -1,6 +1,6 @@
 'use client'
 
-import { mockPoolData } from '@/lib/mock-data'
+// import { mockPoolData } from '@/lib/mock-data'
 import { useState, useEffect } from 'react'
 import { Trophy, List, LayoutGrid, ChevronDown, ChevronRight, Search, Star, User } from 'lucide-react'
 import styles from './pool-leaderboard.module.css'
@@ -69,14 +69,14 @@ export default function PoolLeaderboard() {
           retries++
           setTimeout(fetchData, 2000)
         } else {
-          setData(mockPoolData)
+          setError(true)
         }
       } catch (e) {
         if (retries < 3) {
           retries++
           setTimeout(fetchData, 2000)
         } else {
-          setData(mockPoolData)
+          setError(true)
         }
       }
     }
@@ -115,6 +115,13 @@ export default function PoolLeaderboard() {
   )
 
   if (!data) return <div className={styles.loading}>Loading...</div>
+
+  if (data && !data.scoredTeams) return (
+  <div className={styles.loading}>
+    <p>Please sign in to view pool standings.</p>
+    <a href="/sign-in" style={{ color: '#c9a84c', marginTop: '8px', display: 'block' }}>Sign In →</a>
+  </div>
+)
 
   const { scoredTeams, orgs, currentUserId } = data
 

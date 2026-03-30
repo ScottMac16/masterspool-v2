@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
 import { Search, Star, ChevronDown, ChevronRight, ChevronLeft} from 'lucide-react'
 import { FaCanadianMapleLeaf } from "react-icons/fa6";
-import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
+// import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
 
 function scoreClass(score, styles) {
   if (!score || score === 'E') return styles.scoreEven
@@ -54,8 +54,8 @@ export default function GolfLeaderboard({ minimized, onToggle }) {
       function fetchData() {
         fetch('/api/golf')
           .then(r => r.json())
-          .then(d => setGolfers(Array.isArray(d) && d.length ? d : mockLeaderboard))
-          .catch(() => setGolfers(mockLeaderboard))
+          .then(d => setGolfers(Array.isArray(d) && d.length ? d : []))
+          .catch(() => setGolfers([]))
       }
 
       fetchData()
@@ -98,10 +98,7 @@ async function togglePlayer(id) {
             setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
           }
         } catch {
-          const rounds = mockScorecard.items.filter(r => r.linescores?.length > 0)
-          setScorecards(prev => ({ ...prev, [id]: rounds }))
-          setParMaps(prev => ({ ...prev, [id]: mockScorecard.parMap }))
-          setActiveRound(prev => ({ ...prev, [id]: rounds.length - 1 }))
+            setScorecards(prev => ({ ...prev, [id]: [] }))
         }
         setLoadingId(null)
       }
