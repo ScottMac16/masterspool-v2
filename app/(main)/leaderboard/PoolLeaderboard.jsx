@@ -261,7 +261,7 @@ export default function PoolLeaderboard() {
                 <span className={styles.colTeam}>
                   {team.team_name}
                 </span>
-                <span className={`${styles.colStat} ${styles.totScore}}`}>
+                <span className={styles.totScore}>
                   {formatScore(team.totalScore)}
                 </span>
                 <span className={styles.colStat}>
@@ -296,7 +296,7 @@ export default function PoolLeaderboard() {
                     <div key={i} className={`${styles.cardGolferRow} ${g.missedCut ? styles.cutGolfer : ''}`}>
                       <span className={styles.cgPos}>{g.position}</span>
                       <span className={styles.cgName}>{g.name}</span>
-                      <span className={`${styles.colStat} ${styles.totScore}}`}>
+                      <span className={styles.totScore}>
                         {formatScore(g.score)}
                       </span>
                       <span className={`${styles.cgStat} ${scoreClass(g.today, styles)}`}>
