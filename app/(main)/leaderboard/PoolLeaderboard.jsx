@@ -254,9 +254,9 @@ export default function PoolLeaderboard() {
           {filteredTeams.map(team => (
             <div key={team.id} className={styles.listItem}>
               <div
-                className={`${styles.listRow} ${team.user_id === currentUserId ? styles.myTeamRow : ''}`}
-                onClick={() => toggleTeam(team.id)}
-              >
+                  className={`${styles.listRow} ${team.user_id === currentUserId ? styles.myTeamRow : ''} ${favourites.has(team.id) ? styles.favouriteRow : ''}`}
+                  onClick={() => toggleTeam(team.id)}
+                >
                 <span className={styles.colPos}>{team.rank}</span>
                 <span className={styles.colTeam}>
                   {team.team_name}
@@ -317,7 +317,7 @@ export default function PoolLeaderboard() {
       {view === 'card' && (
         <div className={styles.cardGrid}>
           {filteredTeams.map(team => (
-            <div key={team.id} className={`${styles.card} ${team.user_id === currentUserId ? styles.myTeamCard : ''}`}>
+            <div key={team.id} className={`${styles.card} ${team.user_id === currentUserId ? styles.myTeamCard : ''} ${favourites.has(team.id) ? styles.favouriteCard : ''}`}>
               <div className={styles.cardHeader}>
                 <span className={styles.cardRank}>{team.rank}</span>
                 <span className={styles.cardTeamName}>

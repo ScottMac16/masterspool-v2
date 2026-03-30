@@ -180,10 +180,14 @@
   background: #0d5245ba;
 }
 
+.favouriteRow, .favouriteCard{
+  border: 2px solid #c9a84c;
+}
 
 
 
-.colPos { font-weight: 800; font-size: 0.7rem; height: auto; }
+
+.colPos { font-weight: 800; font-size: 0.7rem; height: auto; margin: auto; margin-left: 0;}
 .colTeam { font-weight: 700; font-size: 0.8rem; }
 .colStat { text-align: center; font-weight: 700; font-size: 0.75rem; }
 .colExpand { text-align: right; opacity: 0.4; font-size: 0.75rem; }
