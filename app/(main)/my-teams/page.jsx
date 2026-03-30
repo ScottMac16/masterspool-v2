@@ -63,12 +63,12 @@ export default async function MyTeamsPage() {
             </div>
             <div className={styles.badges}>
               {team.in_grand_pool && (
-                <span className={styles.grandPoolBadge}><Trophy size={14} /> SMAC Pool</span>
+                <span className={styles.grandPoolBadge}><Trophy size={14} /></span>
               )}
               {team.paid ? (
                   <span className={styles.paidBadge}><CheckCircle size={14} /> Paid</span>
                 ) : (
-                  <span className={styles.notPaidBadge}><Clock size={14} /> Not Paid</span>
+                  <span className={styles.notPaidBadge}>Not Paid</span>
                 )}
               <span className={styles.salary}>
                 <DollarSign size={14} />{team.total_salary?.toLocaleString()}
