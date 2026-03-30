@@ -182,9 +182,11 @@
   justify-content: space-between;
 }
 
-.teamFooter{
+.teamFooter a{
   border-radius: 5px;
   border: 1px solid grey;
+  font-weight: 500;
+  font-size: 0.75rem;
 }
 
 @media screen and (max-width: 700px) {
