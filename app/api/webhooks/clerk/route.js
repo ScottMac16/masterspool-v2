@@ -29,15 +29,23 @@ export async function POST(req) {
   const email = email_addresses?.[0]?.email_address
 
   if (event.type === 'user.created') {
-    const { error } = await supabaseAdmin.from('users').upsert({
-      id,
-      email,
-      first_name,
-      last_name,
-      image_url,
-    })
-    console.log('Supabase error:', error)
+  const { error } = await supabaseAdmin.from('users').upsert({
+    id,
+    email,
+    first_name,
+    last_name,
+    image_url,
+  })
+  console.log('Supabase error:', error)
 
+    // Auto-join SMAC Pool
+    const { error: orgError } = await supabaseAdmin
+      .from('org_members')
+      .upsert({
+        org_id: '00000000-0000-0000-0000-000000000001',
+        user_id: id,
+      }, { onConflict: 'org_id,user_id' })
+    console.log('Org member error:', orgError)
   }
 
   if (event.type === 'user.updated') {
