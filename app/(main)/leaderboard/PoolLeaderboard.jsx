@@ -296,7 +296,7 @@ export default function PoolLeaderboard() {
                     <div key={i} className={`${styles.cardGolferRow} ${g.missedCut ? styles.cutGolfer : ''}`}>
                       <span className={styles.cgPos}>{g.position}</span>
                       <span className={styles.cgName}>{g.name}</span>
-                      <span className={`${styles.cgStat} ${scoreClass(g.score, styles)}`}>
+                      <span className={`${styles.colStat} ${styles.totScore}}`}>
                         {formatScore(g.score)}
                       </span>
                       <span className={`${styles.cgStat} ${scoreClass(g.today, styles)}`}>
