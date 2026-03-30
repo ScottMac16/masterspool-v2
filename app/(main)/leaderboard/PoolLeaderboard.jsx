@@ -192,20 +192,28 @@ export default function PoolLeaderboard() {
             )}
           </div>
           <div className={styles.headerButtons}>
-            <button
-              className={`${styles.viewBtn} ${showMyTeamsOnly ? styles.activeView : ''}`}
-              onClick={() => setShowMyTeamsOnly(v => !v)}
-              title="Show my teams only"
-            >
-              <User size={14} color={showMyTeamsOnly ? '#c9a84c' : 'white'} />
-            </button>
-            <button
-              className={`${styles.viewBtn} ${showFavouritesOnly ? styles.activeView : ''}`}
-              onClick={() => setShowFavouritesOnly(v => !v)}
-              title="Show favourites only"
-            >
-              <Star size={14} fill={showFavouritesOnly ? '#c9a84c' : 'none'} color={showFavouritesOnly ? '#c9a84c' : 'white'} />
-            </button>
+            {currentUserId ? (
+                <>
+                  <button
+                    className={`${styles.viewBtn} ${showMyTeamsOnly ? styles.activeView : ''}`}
+                    onClick={() => setShowMyTeamsOnly(v => !v)}
+                    title="Show my teams only"
+                  >
+                    <User size={14} color={showMyTeamsOnly ? '#c9a84c' : 'white'} />
+                  </button>
+                  <button
+                    className={`${styles.viewBtn} ${showFavouritesOnly ? styles.activeView : ''}`}
+                    onClick={() => setShowFavouritesOnly(v => !v)}
+                    title="Show favourites only"
+                  >
+                    <Star size={14} fill={showFavouritesOnly ? '#c9a84c' : 'none'} color={showFavouritesOnly ? '#c9a84c' : 'white'} />
+                  </button>
+                </>
+              ) : (
+                <a href="/sign-in" className={styles.signInBanner}>
+                  Sign in to track your team
+                </a>
+              )}
             <div className={styles.viewToggle}>
               <button
                 className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}

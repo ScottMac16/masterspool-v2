@@ -402,6 +402,23 @@
   border: #c9a84c 1px solid;
 }
 
+.signInBanner {
+  font-size: 0.75rem;
+  color: #c9a84c;
+  text-decoration: none;
+  border: 1px solid #c9a84c;
+  border-radius: 20px;
+  padding: 10px 10px;
+  white-space: nowrap;
+}
+
+.signInBanner:hover {
+  font-size: 0.75rem;
+  background: #c9a84c;
+  color: white;
+
+}
+
 @media screen and (max-width: 725px) {
   .headerTop{
     width: 100%;
