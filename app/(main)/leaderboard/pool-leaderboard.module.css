@@ -205,7 +205,7 @@
   background: #F1F1F1;
   border-radius: 5px;
   overflow: hidden;
-  border: 2px solid rgb(197, 197, 197);
+  border: 2px solid transparent;
   display: flex;
   flex-direction: column;
   gap: 5px;
