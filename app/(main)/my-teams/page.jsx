@@ -96,7 +96,7 @@ export default async function MyTeamsPage() {
             </div>
 
             {!tournament?.picks_locked && (
-              <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+              <div className={styles.teamFooter}>
                 <a href={`/my-picks?edit=${team.id}`} className={styles.editBtn}>
                   Edit Team
                 </a>
