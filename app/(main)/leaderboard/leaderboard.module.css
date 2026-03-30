@@ -4,8 +4,7 @@
   background-color: #1D5345;
   height: 100vh;
   
-  overflow: hidden;
-  overflow-y: scroll;
+
 
   scrollbar-gutter: stable;
   padding-bottom: 25vh;
@@ -498,8 +497,66 @@ position: relative;
 }
 
 
+.minimizeBtn{
+  display: none;
+}
 
 
+@media screen and (min-width: 725px) {
+
+
+.minimizeBtn{
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  right: 2;
+  display: flex;
+  padding: 3px;
+  margin-left: auto;
+  margin-right: 0px;
+  background: #2E6556;
+  border: 2px solid #c9a84c;
+  border-radius: 5px;
+  color: #c9a84c;
+  font-weight: 600;
+
+}
+
+
+
+.minimizeBtn:hover{
+  cursor: pointer;
+}
+
+
+.minimized .searchHeader *{
+ 
+  justify-content: center;
+}
+
+.minimized .searchRow{
+  display: none;
+}
+.minimized .columnHeaders{
+  visibility: hidden;
+}
+
+.minimized .name,
+.minimized .today,
+.minimized .thru,
+.minimized .expandBtn,
+.minimized .flag {
+  display: none;
+}
+
+.minimized .row{
+  display: grid;
+  grid-template-columns: 25px auto 1fr;
+  grid-gap: 0px;
+  gap: 2px;
+}
+
+}
 
 
 @media screen and (max-width: 725px) {

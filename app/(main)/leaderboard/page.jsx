@@ -6,11 +6,13 @@ import GolfLeaderboard from './GolfLeaderboard'
 import PoolLeaderboard from './PoolLeaderboard'
 import styles from './combined.module.css'
 
+
 export default function LeaderboardPage() {
   const router = useRouter()
   const [activePanel, setActivePanel] = useState(1)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
+  const [golfMinimized, setGolfMinimized] = useState(false)
 
   useEffect(() => {
     fetch('/api/tournament-status')
@@ -101,9 +103,9 @@ export default function LeaderboardPage() {
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseUp}
       >
-        <div className={styles.panel}>
-          <GolfLeaderboard />
-        </div>
+          <div className={`${styles.panel} ${golfMinimized ? styles.panelMinimized : ''}`}>
+            <GolfLeaderboard minimized={golfMinimized} onToggle={() => setGolfMinimized(v => !v)} />
+          </div>
         <div className={styles.panel}>
           <PoolLeaderboard />
         </div>

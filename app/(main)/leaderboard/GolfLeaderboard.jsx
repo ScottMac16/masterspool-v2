@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import styles from './leaderboard.module.css'
-import { Search, Star, ChevronDown, ChevronRight} from 'lucide-react'
+import { Search, Star, ChevronDown, ChevronRight, ChevronLeft} from 'lucide-react'
 import { FaCanadianMapleLeaf } from "react-icons/fa6";
 import { mockLeaderboard, mockScorecard } from '@/lib/mock-data'
 
@@ -24,7 +24,7 @@ function holeScoreClass(scoreType) {
   }
 }
 
-export default function GolfLeaderboard() {
+export default function GolfLeaderboard({ minimized, onToggle }) {
   const [golfers, setGolfers] = useState([])
   const [search, setSearch] = useState('')
   const [expandedId, setExpandedId] = useState(null)
@@ -42,6 +42,7 @@ export default function GolfLeaderboard() {
   })
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [showCanadiansOnly, setShowCanadiansOnly] = useState(false)
+
 
   useEffect(() => {
     fetch('/api/golf/pick-pct')
@@ -72,7 +73,8 @@ export default function GolfLeaderboard() {
       }
     }, [])
 
-  async function togglePlayer(id) {
+async function togglePlayer(id) {
+  if (minimized) return
       if (expandedId === id) {
         setExpandedId(null)
         return
@@ -267,10 +269,16 @@ export default function GolfLeaderboard() {
 }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${minimized ? styles.minimized : ''}`}>
+            <button className={styles.minimizeBtn} onClick={onToggle}>
+        {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+      </button>
       <div className={styles.header}>
+        
         <div className={styles.searchHeader}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <h1 className={styles.title}>Leaderboard</h1>
+          </div>
           <div>
    
             
@@ -288,7 +296,7 @@ export default function GolfLeaderboard() {
             </div>
           </div>
 
-                 <button
+            <button
               className={`${styles.filterBtn} ${showFavoritesOnly ? styles.filterBtnActive : ''}`}
               onClick={() => setShowFavoritesOnly(v => !v)}
               title="Show favourites only"
@@ -347,7 +355,7 @@ export default function GolfLeaderboard() {
               <span className={`${styles.score} ${scoreClass(g.score, styles)}`}>{g.score}</span>
               <span className={styles.today}>{g.today}</span>
               <span className={styles.thru}>{g.thru}</span>
-              <span style={{ color: '#c9a84c', fontSize: '0.7rem' }}>{expandedId === g.id ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
+              <span className={styles.expandBtn} style={{ color: '#c9a84c', fontSize: '0.7rem' }}>{expandedId === g.id ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
               </div>
               {expandedId === g.id && (
                 <div className={styles.scorecardWrap}

@@ -19,11 +19,25 @@
 .panel:first-child {
   flex: 1 1 475px;
   max-width: 500px;
+    
 }
 
 .panel:last-child {
   flex: 2;
 }
+
+
+@media screen and (min-width: 725px) {
+
+.panelMinimized {
+  max-width: 150px !important;
+  min-width: 80px !important;
+  flex: 2;
+
+}
+
+}
+
 
 @media (max-width: 799px) {
   .mobileTabs {
