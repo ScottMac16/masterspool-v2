@@ -370,12 +370,12 @@
   font-size: 0.8rem;
 }
 
-.myTeamRow, .myTeamCard .cardHeader{
+.myTeamRow, .myTeamCard > .cardHeader{
   position: relative;
   overflow: hidden;
 }
 
-.myTeamRow::after, .myTeamCard .cardHeader::after{
+.myTeamRow::after, .myTeamCard > .cardHeader::after{
   position: absolute;
   content: "";
   left: 0;
