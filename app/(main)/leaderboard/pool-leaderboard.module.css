@@ -180,9 +180,6 @@
   background: #0d5245ba;
 }
 
-.favouriteRow, .favouriteCard{
-  border: 2px solid #c9a84c;
-}
 
 
 
@@ -207,7 +204,7 @@
   background: #F1F1F1;
   border-radius: 5px;
   overflow: hidden;
-  border: 1px solid rgb(197, 197, 197);
+  border: 2px solid rgb(197, 197, 197);
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -405,6 +402,11 @@
   background: #C8A74B;
   z-index: 0;
 }
+
+.favouriteRow, .favouriteCard{
+  border: 2px solid #c9a84c !important;
+}
+
 
 
 .starBtn {
