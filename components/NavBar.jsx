@@ -69,9 +69,15 @@ export default function NavBar() {
         {showAdmin && (
           <Link href="/admin" className={styles.adminLink}>Admin</Link>
         )}
-        <SignOutButton>
-          <button className={styles.signOut}>Sign Out</button>
-        </SignOutButton>
+        {user && (
+          <SignOutButton>
+            <button className={styles.signOut}>Sign Out</button>
+          </SignOutButton>
+        )}
+
+        {!user && (
+          <a href="/sign-in" className={styles.signOut}>Sign In</a>
+        )}
       </div>
 
       {/* Mobile hamburger */}
@@ -100,9 +106,15 @@ export default function NavBar() {
           {showAdmin && (
             <Link href="/admin" className={styles.mobileAdminLink} onClick={() => setMenuOpen(false)}>Admin</Link>
           )}
-          <SignOutButton>
-            <button className={styles.mobileSignOut} onClick={() => setMenuOpen(false)}>Sign Out</button>
-          </SignOutButton>
+          {user && (
+            <SignOutButton>
+              <button className={styles.mobileSignOut} onClick={() => setMenuOpen(false)}>Sign Out</button>
+            </SignOutButton>
+          )}
+
+          {!user && (
+              <a href="/sign-in" className={styles.mobileSignOut} >Sign In</a>
+            )}
         </div>
       )}
     </nav>
