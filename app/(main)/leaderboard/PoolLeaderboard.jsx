@@ -261,10 +261,10 @@ export default function PoolLeaderboard() {
                 <span className={styles.colTeam}>
                   {team.team_name}
                 </span>
-                <span className={`${styles.colStat} ${scoreClass(team.totalScore, styles)}`}>
+                <span className={`${styles.colStat} ${styles.totScore}}`}>
                   {formatScore(team.totalScore)}
                 </span>
-                <span className={`${styles.colStat} ${scoreClass(team.todayScore, styles)}`}>
+                <span className={styles.colStat}>
                   {formatScore(team.todayScore)}
                 </span>
                 <span className={styles.colStat}>{team.cutCount}</span>

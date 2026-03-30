@@ -188,6 +188,7 @@
 .colPos { font-weight: 800; font-size: 0.7rem; height: auto; margin: auto; margin-left: 0;}
 .colTeam { font-weight: 700; font-size: 0.8rem; }
 .colStat { text-align: center; font-weight: 700; font-size: 0.75rem; }
+.totScore{font-size: 0.85rem; color: #c9a84c;}
 .colExpand { text-align: right; opacity: 0.4; font-size: 0.75rem; }
 
 .listHeader .colPos { font-size: 0.55rem; text-align: left; font-weight: 500;}
