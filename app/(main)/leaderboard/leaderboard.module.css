@@ -4,7 +4,7 @@
   background-color: #1D5345;
   height: 100vh;
   
-
+  overflow-y: scroll;
 
   scrollbar-gutter: stable;
   padding-bottom: 25vh;
@@ -506,14 +506,16 @@ position: relative;
 
 
 .minimizeBtn{
-  position: absolute;
+  position: sticky;
   z-index: 100;
   top: 0;
-  right: 2;
+  
   display: flex;
   padding: 3px;
+  
   margin-left: auto;
   margin-right: 0px;
+  
   background: #2E6556;
   border: 2px solid #c9a84c;
   border-radius: 5px;
