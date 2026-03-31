@@ -4,7 +4,7 @@
   padding: 10px 25px;
 
     scrollbar-gutter: stable;
-  scrollbar-color: #c9a84c white ;
+  scrollbar-color: var(--color-gold) white ;
 
 
 
@@ -27,12 +27,12 @@
   flex: 1;
   min-width: 0;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 
   scrollbar-gutter: stable;
-  scrollbar-color: #c9a84c white ;
+  scrollbar-color: var(--color-gold) white ;
 }
 
 .leftHeader {
@@ -53,20 +53,20 @@
 }
 
 .leftTitle {
-  font-size: 1rem;
+  font-size: var(--text-md);
   font-weight: 700;
-  color: #1a4731;
+  color: var(--color-primary);
   margin: 0;
 }
 
 .cancelBtn {
   background: none;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 8px;
   font-size: 0.8rem;
   cursor: pointer;
-  color: #666;
+  color: var(--color-text-muted);
   height: 100%;
   display: flex;
 
@@ -75,8 +75,8 @@
 .search {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   font-size: 16px;
   box-sizing: border-box;
 
@@ -94,9 +94,9 @@
   padding: 8px 16px;
   font-size: 0.55rem;
   font-weight: 700;
-  color: #888;
+  color: var(--color-text-light);
   letter-spacing: 1px;
-  background: #f9f9f9;
+  background: var(--color-bg-hover);
   border-bottom: 1px solid #eee;
 }
 
@@ -105,7 +105,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border-light);
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -115,7 +115,7 @@
 }
 
 .golferRow.picked {
-  background: #e8f5ee;
+  background: var(--color-picked-bg);
 }
 
 .golferRow.disabled {
@@ -132,13 +132,13 @@
 .headshot {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   object-fit: cover;
   background: #eee;
 }
 
 .golferName {
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   font-weight: 600;
 }
 
@@ -149,13 +149,13 @@
 }
 
 .salary {
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 700;
-  color: #1a4731;
+  color: var(--color-primary);
 }
 
 .checkmark {
-  color: #1a4731;
+  color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -164,35 +164,35 @@
   width: 360px;
   flex-shrink: 0;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 14px;
     scrollbar-gutter: stable;
-  scrollbar-color: #c9a84c white ;
+  scrollbar-color: var(--color-gold) white ;
 }
 
 /* ── Cap Bar ── */
 .capBar {
   background: #f4f4f4;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 10px 14px;
   margin: 0 auto 10px auto;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border-input);
 }
 
 .capInfo {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   margin-bottom: 8px;
 }
 
 .capTrack {
   height: 6px;
-  background: #ddd;
+  background: var(--color-border-input);
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 6px;
@@ -210,22 +210,22 @@
 }
 
 .capCount {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
   text-align: right;
   display: flex;
   align-items: center;
 }
 
 .over {
-  color: #8b1a1a;
+  color: var(--color-error);
 }
 
 /* ── Fields ── */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--radius-xs);
 }
 
 .field label {
@@ -237,8 +237,8 @@
 
 .input {
   padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-md);
   font-size: 16px;
   width: 100%;
   box-sizing: border-box;
@@ -248,7 +248,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
 }
 
 /* ── Slots ── */
@@ -262,7 +262,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 8px 10px;
   min-height: 52px;
   transition: all 0.15s;
@@ -274,12 +274,12 @@
 }
 
 .slotFilled {
-  border: 2px solid #e8f5ee;
-  background: #e8f5ee;
+  border: 2px solid var(--color-picked-bg);
+  background: var(--color-picked-bg);
 }
 
 .slotActive {
-  border-color: #1a4731 !important;
+  border-color: var(--color-primary) !important;
 }
 
 .slotAdd {
@@ -296,26 +296,26 @@
 .slotNum {
   width: 24px;
   height: 24px;
-  border-radius: 50%;
-  background: #ddd;
+  border-radius: var(--radius-round);
+  background: var(--color-border-input);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   font-weight: 700;
-  color: #888;
+  color: var(--color-text-light);
   flex-shrink: 0;
 }
 
 .slotAddText {
   color: #aaa;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
 }
 
 .slotHeadshot {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   object-fit: cover;
   background: #eee;
   flex-shrink: 0;
@@ -323,7 +323,7 @@
 
 .slotName {
   flex: 1;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   min-width: 0;
   overflow: hidden;
@@ -333,7 +333,7 @@
 
 .slotSalary {
   font-size: 0.8rem;
-  color: #1a4731;
+  color: var(--color-primary);
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -341,7 +341,7 @@
 .slotEdit {
   background: none;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   width: 26px;
   height: 26px;
   cursor: pointer;
@@ -356,11 +356,11 @@
 .slotRemove {
   background: none;
   border: 1px solid #ffcccc;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   width: 26px;
   height: 26px;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: #c0392b;
   flex-shrink: 0;
   display: flex;
@@ -372,11 +372,11 @@
 .submitBtn {
   width: 100%;
   padding: 12px;
-  background: #1a4731;
+  background: var(--color-primary);
   color: white;
   border: none;
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-md);
   font-weight: 700;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -389,15 +389,15 @@
 
 .locked {
   text-align: center;
-  color: #888;
-  font-size: 0.9rem;
+  color: var(--color-text-light);
+  font-size: var(--text-base);
   padding: 10px;
 }
 
 .noOrg {
   text-align: center;
-  color: #888;
-  font-size: 0.85rem;
+  color: var(--color-text-light);
+  font-size: var(--text-sm);
 }
 
 /* ── Mobile ── */
@@ -434,8 +434,8 @@
 }
 
 .capAvg {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
   text-align: right;
   margin-top: 2px;
 }

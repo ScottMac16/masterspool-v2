@@ -7,31 +7,31 @@
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: var(--text-xl);
   font-weight: 800;
-  color: #1a4731;
+  color: var(--color-primary);
   margin-bottom: 4px;
 }
 
 .tournament {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
   margin-bottom: 32px;
 }
 
 .empty {
   text-align: center;
   padding: 60px 0;
-  color: #888;
+  color: var(--color-text-light);
 }
 
 .btn {
   display: inline-block;
   margin-top: 12px;
-  background: #1a4731;
+  background: var(--color-primary);
   color: white;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   text-decoration: none;
   font-weight: 600;
 }
@@ -49,8 +49,8 @@
   background: white;
 
   flex: 0 0 425px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -59,12 +59,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background: #1a4731;
+  background: var(--color-primary);
   color: white;
 }
 
 .teamName {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   font-weight: 700;
   color: white;
 }
@@ -81,16 +81,16 @@
 }
 
 .grandPoolBadge {
-  background: #c9a84c;
+  background: var(--color-gold);
   color: white;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
   font-weight: 600;
 }
 
 .salary {
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   color: rgba(255,255,255,0.85);
   font-weight: 600;
   display: none;
@@ -105,7 +105,7 @@
   align-items: center;
   gap: 10px;
   padding: 8px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .golferRow:last-child {
@@ -113,28 +113,28 @@
 }
 
 .golferNum {
-  font-size: 0.75rem;
-  color: #999;
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
   width: 16px;
 }
 
 .headshot {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   object-fit: cover;
   background: #eee;
 }
 
 .golferName {
   flex: 1;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   font-weight: 500;
 }
 
 .golferSalary {
-  font-size: 0.85rem;
-  color: #1a4731;
+  font-size: var(--text-sm);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -142,12 +142,12 @@
   display: block;
   text-align: center;
   padding: 12px;
-  background: #f5f0e8;
-  color: #1a4731;
+  background: var(--color-bg-cream);
+  color: var(--color-primary);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   text-decoration: none;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-border);
 }
 
 .editBtn:hover {
@@ -156,24 +156,24 @@
 
 
 .paidBadge {
-  background: #e8f5e9;
-  color: #1a4731;
+  background: var(--color-paid-bg);
+  color: var(--color-primary);
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
   font-weight: 600;
-  border: 1px solid #a5d6a7;
+  border: 1px solid var(--color-paid-border);
 }
 
 
 .notPaidBadge {
-  background: #fff3e0;
-  color: #e65100;
+  background: var(--color-gold-bg);
+  color: var(--color-unpaid-text);
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
   font-weight: 600;
-  border: 1px solid #ffcc80;
+  border: 1px solid var(--color-unpaid-border);
 }
 
 .teamFooter{
@@ -186,7 +186,7 @@
   border-radius: 5px;
   border: 1px solid grey;
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
 }
 
 @media screen and (max-width: 700px) {

@@ -7,25 +7,25 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
+
 }
 
 .card {
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
 }
 
 .switchLink {
   text-align: center;
   margin-top: 16px;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   color: white;
   text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   padding: 10px 30px;
-  border-radius: 50px;
-  background-color: #1a4731;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
 }
 
 .switchLink a {
@@ -33,7 +33,7 @@
   font-weight: 700;
   text-decoration: underline;
 
-  
+
 }
 
 .switchLink a:hover {

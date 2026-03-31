@@ -5,29 +5,29 @@
 }
 
 .back {
-  color: #1a4731;
+  color: var(--color-primary);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   font-weight: 600;
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: var(--text-xl);
   font-weight: 800;
-  color: #1a4731;
+  color: var(--color-primary);
   margin: 16px 0 24px;
 }
 
 .card {
   background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   padding: 24px;
   margin-bottom: 24px;
 }
 
 .card h2 {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   font-weight: 700;
   margin-bottom: 12px;
 }
@@ -39,37 +39,37 @@
 }
 
 .tournamentBtn {
-  background: #f0f0f0;
+  background: var(--color-border-light);
   border: 2px solid transparent;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
   font-weight: 600;
 }
 
-.tournamentBtn:hover { background: #e0e0e0; }
+.tournamentBtn:hover { background: var(--color-border); }
 
 .active {
-  background: #1a4731;
+  background: var(--color-primary);
   color: white;
-  border-color: #1a4731;
+  border-color: var(--color-primary);
 }
 
 .hint {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--color-text-light);
   margin-bottom: 12px;
 }
 
 .hint code {
-  background: #f0f0f0;
+  background: var(--color-border-light);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
 }
 
 .fileInput {
-  font-size: 0.9rem;
+  font-size: var(--text-base);
 }
 
 .section {
@@ -77,16 +77,16 @@
 }
 
 .sectionTitle {
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   font-weight: 700;
   margin-bottom: 12px;
-  color: #1a1a1a;
+  color: var(--color-text-heading);
 }
 
 .golferList {
   background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   overflow: hidden;
 }
 
@@ -94,7 +94,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 120px;
   padding: 10px 16px;
-  background: #1a4731;
+  background: var(--color-primary);
   color: white;
   font-size: 0.8rem;
   font-weight: 700;
@@ -107,11 +107,11 @@
   grid-template-columns: 1fr 1fr 120px;
   align-items: center;
   padding: 10px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .golferRow:last-child { border-bottom: none; }
-.golferRow:hover { background: #f9f9f9; }
+.golferRow:hover { background: var(--color-bg-hover); }
 
 .golferInfo {
   display: flex;
@@ -122,7 +122,7 @@
 .headshot {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   object-fit: cover;
 }
 
@@ -134,38 +134,38 @@
 }
 
 .csvName {
-  font-size: 0.85rem;
-  color: #666;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
 .salary {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--text-base);
 }
 
 .salaryInput {
   width: 110px;
   padding: 6px 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
   outline: none;
 }
 
-.salaryInput:focus { border-color: #1a4731; }
+.salaryInput:focus { border-color: var(--color-primary); }
 
 .saveBtn {
-  background: #1a4731;
+  background: var(--color-primary);
   color: white;
   border: none;
   padding: 14px 28px;
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-md);
   font-weight: 700;
   cursor: pointer;
   width: 100%;
   margin-top: 16px;
 }
 
-.saveBtn:hover { background: #2d6a4f; }
+.saveBtn:hover { background: var(--color-primary-hover); }
 .saveBtn:disabled { opacity: 0.6; cursor: not-allowed; }
