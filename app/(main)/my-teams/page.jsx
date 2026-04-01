@@ -62,7 +62,30 @@ export default async function MyTeamsPage() {
               <span className={styles.poolName}>{poolMap[team.pool_id]}</span>
             </div>
             <div className={styles.badges}>
-            
+             {team.in_grand_pool && !poolMap[team.pool_id] ? (
+                  // Only in SMAC Pool
+                  team.paid_grand_pool ? (
+                    <span className={styles.paidBadge}><CheckCircle size={14} /> Paid</span>
+                  ) : (
+                    <span className={styles.notPaidBadge}> Not Paid</span>
+                  )
+                ) : (
+                  // In org pool (and maybe grand pool too)
+                  <>
+                    {team.paid ? (
+                      <span className={styles.paidBadge}><CheckCircle size={14} /> Org Paid</span>
+                    ) : (
+                      <span className={styles.notPaidBadge}>Org Not Paid</span>
+                    )}
+                    {team.in_grand_pool && (
+                      team.paid_grand_pool ? (
+                        <span className={styles.paidBadge}><CheckCircle size={14} /> SMAC Paid</span>
+                      ) : (
+                        <span className={styles.notPaidBadge}>SMAC Not Paid</span>
+                      )
+                    )}
+                  </>
+                )}
               <span className={styles.salary}>
                 <DollarSign size={14} />{team.total_salary?.toLocaleString()}
               </span>
