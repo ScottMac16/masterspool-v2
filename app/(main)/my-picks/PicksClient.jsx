@@ -47,12 +47,7 @@ export default function PicksClient({ tournament, orgs, salaries, existingTeams,
   const totalSalary = picks.reduce((sum, p) => sum + p.salary, 0)
   const remaining = salaryCap - totalSalary
   const picksLocked = tournament.picks_locked
-  const isGrandPoolOnly = orgs.length === 1 && orgs[0]?.id === '00000000-0000-0000-0000-000000000001'
-
-  console.log('orgs:', orgs)
-  console.log('isGrandPoolOnly:', isGrandPoolOnly)
-
-  
+  const isGrandPoolOnly = orgs.length === 1 && orgs[0]?.id === '00000000-0000-0000-0000-000000000001'  
   const pickedIds = new Set(slots.filter(Boolean).map(p => p.golfer_espn_id))
 
   function handleSlotClick(index) {
