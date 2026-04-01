@@ -13,7 +13,10 @@ function sortSlots(slots) {
 }
 
 export default function PicksClient({ tournament, orgs, salaries, existingTeams, userId, editTeam }) {
-  const [selectedOrg, setSelectedOrg] = useState(orgs[0]?.id || null)
+  const [selectedOrg, setSelectedOrg] = useState(() => {
+    const nonSmacOrg = orgs.find(o => o.id !== '00000000-0000-0000-0000-000000000001')
+    return nonSmacOrg?.id || orgs[0]?.id || null
+  })
   const [teamName, setTeamName] = useState(editTeam?.team_name || '')
   const [inGrandPool, setInGrandPool] = useState(
     editTeam?.in_grand_pool || (orgs.length === 1 && orgs[0]?.id === '00000000-0000-0000-0000-000000000001')
