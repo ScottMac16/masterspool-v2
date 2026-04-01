@@ -62,30 +62,30 @@ export default async function MyTeamsPage() {
               <span className={styles.poolName}>{poolMap[team.pool_id]}</span>
             </div>
             <div className={styles.badges}>
-              {team.org_name === 'SMAC Pool' || !team.org_name ? (
-                // Only in SMAC Pool
-                team.paid_grand_pool ? (
-                  <span className={styles.paidBadge}><CheckCircle size={14} /> Paid</span>
-                ) : (
-                  <span className={styles.notPaidBadge}><Clock size={14} /> Not Paid</span>
-                )
-              ) : (
-                // In org pool
-                <>
-                  {team.paid ? (
-                    <span className={styles.paidBadge}><CheckCircle size={14} /> Org Paid</span>
+              {poolMap[team.pool_id] === 'SMAC Pool' ? (
+                  // Only in SMAC Pool
+                  team.paid_grand_pool ? (
+                    <span className={styles.paidBadge}><CheckCircle size={14} /> Paid</span>
                   ) : (
-                    <span className={styles.notPaidBadge}><Clock size={14} /> Org Not Paid</span>
-                  )}
-                  {team.in_grand_pool && (
-                    team.paid_grand_pool ? (
-                      <span className={styles.paidBadge}><CheckCircle size={14} /> SMAC Paid</span>
+                    <span className={styles.notPaidBadge}><Clock size={14} /> Not Paid</span>
+                  )
+                ) : (
+                  // In org pool
+                  <>
+                    {team.paid ? (
+                      <span className={styles.paidBadge}><CheckCircle size={14} /> Org Paid</span>
                     ) : (
-                      <span className={styles.notPaidBadge}><Clock size={14} /> SMAC Not Paid</span>
-                    )
-                  )}
-                </>
-              )}
+                      <span className={styles.notPaidBadge}><Clock size={14} /> Org Not Paid</span>
+                    )}
+                    {team.in_grand_pool && (
+                      team.paid_grand_pool ? (
+                        <span className={styles.paidBadge}><CheckCircle size={14} /> SMAC Paid</span>
+                      ) : (
+                        <span className={styles.notPaidBadge}><Clock size={14} /> SMAC Not Paid</span>
+                      )
+                    )}
+                  </>
+                )}
               <span className={styles.salary}>
                 <DollarSign size={14} />{team.total_salary?.toLocaleString()}
               </span>
