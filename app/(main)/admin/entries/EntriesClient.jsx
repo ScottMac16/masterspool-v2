@@ -5,9 +5,7 @@ import { ClipboardList, MapPin, Trophy } from 'lucide-react'
 import styles from './entries.module.css'
 
 export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, isSuperAdmin }) {
-  const [activeOrg, setActiveOrg] = useState(() =>
-    isSuperAdmin ? 'all' : orgs[0]?.id || 'all'
-  )
+  const [activeOrg, setActiveOrg] = useState('grandpool')
   const [paidMap, setPaidMap] = useState(() => {
     const map = {}
     allTeams.forEach(t => { map[t.id] = { paid: t.paid, paid_grand_pool: t.paid_grand_pool } })
@@ -26,8 +24,6 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
   const grandPoolTeams = allTeams.filter(t => t.in_grand_pool)
   const activeTeams = activeOrg === 'grandpool'
     ? grandPoolTeams
-    : activeOrg === 'all'
-    ? allTeams
     : teamsByOrg[activeOrg] || []
 
   const totalPaid = Object.values(paidMap).filter(m => m.paid).length
@@ -50,22 +46,12 @@ export default function EntriesClient({ tournament, orgs, teamsByOrg, allTeams, 
       )}
 
       <div className={styles.tabs}>
-        {isSuperAdmin && (
-          <>
-            <button
-              className={`${styles.tab} ${activeOrg === 'all' ? styles.activeTab : ''}`}
-              onClick={() => setActiveOrg('all')}
-            >
-              All <span className={styles.tabCount}>{allTeams.length}</span>
-            </button>
-            <button
-              className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
-              onClick={() => setActiveOrg('grandpool')}
-            >
-              <Trophy size={14} /> SMAC Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
-            </button>
-          </>
-        )}
+        <button
+          className={`${styles.tab} ${styles.grandTab} ${activeOrg === 'grandpool' ? styles.activeTab : ''}`}
+          onClick={() => setActiveOrg('grandpool')}
+        >
+          <Trophy size={14} /> SMAC Pool <span className={styles.tabCount}>{grandPoolTeams.length}</span>
+        </button>
         {orgs
           .filter(org => org.id !== '00000000-0000-0000-0000-000000000001')
           .map(org => (
