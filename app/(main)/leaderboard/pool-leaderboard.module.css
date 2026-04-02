@@ -50,7 +50,7 @@
   width: 100%;
 
   display: flex;
-  gap: 5px;
+  gap: 10px;
 
 }
 
@@ -65,7 +65,7 @@
 .title {
   font-size: var(--text-base);
   font-weight: 800;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   color: var(--color-primary);
   text-align: left;
   margin-left: 5px;
