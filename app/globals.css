@@ -81,8 +81,6 @@ body {
   height: 100vh;
   height: 100dvh;
 
-  scrollbar-gutter: stable;
-  scrollbar-color: var(--color-gold) white ;
 }
 
 * {
