@@ -12,11 +12,13 @@ export default function LeaderboardPage() {
   const [activePanel, setActivePanel] = useState(1)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
-  const [golfMinimized, setGolfMinimized] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return localStorage.getItem('golf-minimized') === 'true'
-  })
+  const [golfMinimized, setGolfMinimized] = useState(false)
 
+  useEffect(() => {
+    const stored = localStorage.getItem('golf-minimized') === 'true'
+    setGolfMinimized(stored)
+  }, [])
+ 
   useEffect(() => {
     fetch('/api/tournament-status')
       .then(r => r.json())
