@@ -12,7 +12,10 @@ export default function LeaderboardPage() {
   const [activePanel, setActivePanel] = useState(1)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
-  const [golfMinimized, setGolfMinimized] = useState(false)
+  const [golfMinimized, setGolfMinimized] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('golf-minimized') === 'true'
+  })
 
   useEffect(() => {
     fetch('/api/tournament-status')
@@ -104,7 +107,14 @@ export default function LeaderboardPage() {
         onMouseLeave={onMouseUp}
       >
           <div className={`${styles.panel} ${golfMinimized ? styles.panelMinimized : ''}`}>
-            <GolfLeaderboard minimized={golfMinimized} onToggle={() => setGolfMinimized(v => !v)} />
+            <GolfLeaderboard 
+              minimized={golfMinimized} 
+              onToggle={() => {
+                const next = !golfMinimized
+                setGolfMinimized(next)
+                localStorage.setItem('golf-minimized', String(next))
+              }} 
+            />
           </div>
         <div className={styles.panel}>
           <PoolLeaderboard />
