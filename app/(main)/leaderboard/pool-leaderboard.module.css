@@ -2,7 +2,7 @@
   background: #ffffff;
 
   width: 100%;
-  padding: 15px 0px 0 0;
+  padding: 0px 0px 0 0;
   height: 100vh;
 
   overflow: hidden;
@@ -30,7 +30,7 @@
   justify-content: space-between;
 
   position: sticky;
-  top: -15px;
+  top: 0px;
   left: 0;
 
   width: 100%;
@@ -40,33 +40,35 @@
   background: white;
 
   padding: 15px 20px 0 20px;
+
+
 }
 
 
-.headerTop{
+.headerTop, .headerBottom{
 
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-}
-
-.headerBottom{
 
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  
+  gap: 5px;
 
 }
+
+
+.headerButtons{
+  margin-left: auto;
+  margin-right: 0;
+}
+
+
 
 .title {
   font-size: var(--text-base);
   font-weight: 800;
   letter-spacing: 1px;
   color: var(--color-primary);
-  text-align: center;
+  text-align: left;
+  margin-left: 5px;
 }
 
 .loading {
@@ -78,6 +80,10 @@
 .viewToggle {
   display: flex;
   gap: var(--radius-xs);
+  margin-left: 0;
+  margin-right: auto;
+
+  
 }
 
 .viewBtn {
@@ -88,20 +94,51 @@
   background: none;
   border: 1px solid transparent;
   cursor: pointer;
-  padding: 10px;
+  padding: 8px;
   border-radius: var(--radius-round);
   transition: background 0.15s;
   background: #e6e6e6;
-    color: white;
+  color: white;
+
+}
+
+.viewToggle {
+  display: flex;
+  background: rgba(75, 75, 75, 0.1);
+  border-radius: 50px;
+  padding: 5px;
+  gap: 10px;
+
+}
+
+.viewToggleOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  border-radius: 50px;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  color: var(--color-text-faint);
+  
+}
+
+.viewToggleActive {
+  background: var(--color-primary-hover);
+  color: var(--color-gold)
+
 }
 
 
 
 
 .activeView {
-  background: #4e4e4e;
+  background: var(--color-primary-hover);
   color: white;
-  padding: 10px;
+  padding: 8px;
 }
 
 .tabs {
@@ -459,7 +496,9 @@
 
 
 
-@media screen and (max-width: 725px) {
+@media screen and (max-width: 799px) {
+
+
   .headerTop{
     width: 100%;
     display: flex;
@@ -470,13 +509,19 @@
 
   .headerBottom{
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
     align-items: flex-start;
 
   }
 
+  .headerBottom .searchBox{
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  
   .tab {
     flex: 1 1 calc(100% / 3); /* tablet: 3 per row */
   }

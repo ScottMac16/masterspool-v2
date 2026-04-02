@@ -182,23 +182,45 @@ export default function PoolLeaderboard() {
           )}
 
           
-        <h1 className={styles.title}>POOL LEADERBOARD</h1>
+        
 
  
 
         <div className={styles.headerTop}>
+          <h1 className={styles.title}>POOL LEADERBOARD</h1>
+
+        </div>
+        <div className={styles.headerBottom}>
           <div className={styles.searchBox}>
-            <Search size={14} />
-            <input
-              placeholder="Search teams..."
-              value={teamSearch}
-              onChange={e => setTeamSearch(e.target.value)}
-            />
-            {teamSearch && (
-              <button className={styles.clearBtn} onClick={() => setTeamSearch('')}>✕</button>
-            )}
-          </div>
-          <div className={styles.headerButtons}>
+                  <Search size={14} />
+                  <input
+                    placeholder="Search teams..."
+                    value={teamSearch}
+                    onChange={e => setTeamSearch(e.target.value)}
+                  />
+                  {teamSearch && (
+                    <button className={styles.clearBtn} onClick={() => setTeamSearch('')}>✕</button>
+                  )}
+                </div>
+
+              <div 
+                className={styles.viewToggle}
+                onClick={() => {
+                  const next = view === 'list' ? 'card' : 'list'
+                  setView(next)
+                  localStorage.setItem('pool-view', next)
+                }}
+                title={view === 'list' ? 'Switch to card view' : 'Switch to list view'}
+              >
+                <span className={`${styles.viewToggleOption} ${view === 'list' ? styles.viewToggleActive : ''}`}>
+                  <List size={16} />
+                </span>
+                <span className={`${styles.viewToggleOption} ${view === 'card' ? styles.viewToggleActive : ''}`}>
+                  <LayoutGrid size={16} />
+                </span>
+              </div>
+
+                  <div className={styles.headerButtons}>
             {currentUserId ? (
                 <>
                   <button
@@ -221,22 +243,11 @@ export default function PoolLeaderboard() {
                   Sign in to track your team
                 </a>
               )}
-            <div className={styles.viewToggle}>
-             <button
-                className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
-                onClick={() => { setView('list'); localStorage.setItem('pool-view', 'list') }}
-                title="List view"
-              ><List size={16} /></button>
-              <button
-                className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
-                onClick={() => { setView('card'); localStorage.setItem('pool-view', 'card') }}
-                title="Card view"
-              ><LayoutGrid size={16} /></button>
-            </div>
+         
           </div>
         </div>
 
-        <div className={styles.headerBottom}>
+        <div>
           {teamSearch && (
             <div className={styles.filterPill}>
               Filter Search: {teamSearch.toUpperCase()}

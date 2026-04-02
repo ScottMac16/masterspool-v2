@@ -267,19 +267,18 @@ async function togglePlayer(id) {
 
   return (
     <div className={`${styles.wrapper} ${minimized ? styles.minimized : ''}`}>
-            <button className={styles.minimizeBtn} onClick={onToggle}>
-        {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-      </button>
+
       <div className={styles.header}>
         
         <div className={styles.searchHeader}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <h1 className={styles.title}>Leaderboard</h1>
-          </div>
-          <div>
+            <h1 className={styles.title}>Leaderboard</h1>
+              
+            <button className={styles.minimizeBtn} onClick={onToggle}>
+              {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+            </button>  
+          
    
-            
-          <div className={styles.searchRow}>
+
             <div className={styles.searchBox}>
               <span><Search size={14}/></span>
               <input
@@ -290,8 +289,8 @@ async function togglePlayer(id) {
               {search && (
                 <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
               )}
+
             </div>
-          </div>
 
             <button
               className={`${styles.filterBtn} ${showFavoritesOnly ? styles.filterBtnActive : ''}`}
@@ -300,7 +299,8 @@ async function togglePlayer(id) {
             >
               <Star size={14} fill={showFavoritesOnly ? '#ffffff' : 'none'} color={showFavoritesOnly ? 'white' : 'white'} />
             </button>
-               <button
+
+              <button
               className={`${styles.filterBtn} ${showCanadiansOnly ? styles.filterBtnActive : ''}`}
               onClick={() => setShowCanadiansOnly(v => !v)}
               title="Show Canadians only"
@@ -314,7 +314,7 @@ async function togglePlayer(id) {
                 }} 
               />
             </button>
-          </div>
+        
         </div>
         <div className={styles.columnHeaders}>
           <span></span>
