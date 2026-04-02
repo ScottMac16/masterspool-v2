@@ -34,6 +34,11 @@ export default function PoolLeaderboard() {
     } catch { return new Set() }
   })
 
+  const [view, setView] = useState(() => {
+    if (typeof window === 'undefined') return 'list'
+    return localStorage.getItem('pool-view') || 'list'
+  })
+
   function toggleFavourite(e, id) {
     e.stopPropagation()
     setFavourites(prev => {
@@ -146,6 +151,12 @@ export default function PoolLeaderboard() {
     return true
   })
 
+
+  const [minimized, setMinimized] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('golf-minimized') === 'true'
+  })
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -215,14 +226,14 @@ export default function PoolLeaderboard() {
                 </a>
               )}
             <div className={styles.viewToggle}>
-              <button
+             <button
                 className={`${styles.viewBtn} ${view === 'list' ? styles.activeView : ''}`}
-                onClick={() => setView('list')}
+                onClick={() => { setView('list'); localStorage.setItem('pool-view', 'list') }}
                 title="List view"
               ><List size={16} /></button>
               <button
                 className={`${styles.viewBtn} ${view === 'card' ? styles.activeView : ''}`}
-                onClick={() => setView('card')}
+                onClick={() => { setView('card'); localStorage.setItem('pool-view', 'card') }}
                 title="Card view"
               ><LayoutGrid size={16} /></button>
             </div>

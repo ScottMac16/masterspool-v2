@@ -42,6 +42,10 @@ export default function GolfLeaderboard({ minimized, onToggle }) {
   })
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [showCanadiansOnly, setShowCanadiansOnly] = useState(false)
+  const [minimized, setMinimized] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('golf-minimized') === 'true'
+  })
 
 
   useEffect(() => {
@@ -267,9 +271,16 @@ async function togglePlayer(id) {
 
   return (
     <div className={`${styles.wrapper} ${minimized ? styles.minimized : ''}`}>
-            <button className={styles.minimizeBtn} onClick={onToggle}>
-        {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-      </button>
+          <button
+          className={styles.minimizeBtn}
+          onClick={() => {
+            const next = !minimized
+            setMinimized(next)
+            localStorage.setItem('golf-minimized', next)
+          }}
+        >
+          {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
       <div className={styles.header}>
         
         <div className={styles.searchHeader}>
