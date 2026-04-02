@@ -400,26 +400,6 @@
   padding: 0;
 }
 
-.filterPill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgb(188, 188, 188);
-  border-radius: var(--radius-pill);
-  padding: 4px 12px;
-  font-size: var(--text-xs);
-  color: rgb(64, 64, 64);
-  margin-bottom: 8px;
-  border: 1px solid rgb(164, 164, 164);
-}
-
-.filterPill button {
-  background: none;
-  border: none;
-  color: rgb(64, 64, 64);
-  cursor: pointer;
-  font-size: 0.8rem;
-}
 
 .myTeamRow, .myTeamCard .cardHeader{
   position: relative;
@@ -492,6 +472,53 @@
   background: var(--color-gold);
   color: white;
 
+}
+
+.pillHeader{
+  display: flex;
+  align-items: center;
+
+  padding: 5px 0;
+  gap: 10px;
+}
+
+
+.filterPill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgb(188, 188, 188);
+  
+
+  padding: 4px 12px;
+  font-size: var(--text-xs);
+  color: rgb(64, 64, 64);
+  border-radius: var(--radius-pill);
+  border: 1px solid rgb(164, 164, 164);
+}
+
+.filterPill button {
+  background: none;
+  border: none;
+  color: rgb(64, 64, 64);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-gold-bg);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  gap: 8px;
+  border-radius: var(--radius-pill);
+
+  padding: 4px 12px;
+  font-size: var(--text-xs);
+
+  white-space: nowrap;
 }
 
 

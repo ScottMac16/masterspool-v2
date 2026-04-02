@@ -20,7 +20,7 @@ export async function GET() {
 
   if (!tournament) return Response.json({ error: 'No tournament' }, { status: 404 })
 
-  const espnGolfers = await getLeaderboard(tournament.espn_event_id)
+  const { leaderboard: espnGolfers, status } = await getLeaderboard(tournament.espn_event_id)
 
   const scoreMap = {}
   let worstScore = -999
@@ -168,5 +168,6 @@ export async function GET() {
     orgs = userOrgs?.map(m => m.orgs).filter(o => o.id !== '00000000-0000-0000-0000-000000000001') || []
   }
 
-  return Response.json({ scoredTeams, orgs, tournament, missedCutScore, currentUserId: userId})
+  return Response.json({ scoredTeams, orgs, tournament, missedCutScore, currentUserId: userId, status })
+  
 }

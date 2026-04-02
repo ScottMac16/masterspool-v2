@@ -25,6 +25,8 @@ export default function PoolLeaderboard() {
   const [teamSearch, setTeamSearch] = useState('')
   const [showFavouritesOnly, setShowFavouritesOnly] = useState(false)
   const [showMyTeamsOnly, setShowMyTeamsOnly] = useState(false)
+
+
   const [favourites, setFavourites] = useState(() => {
     if (typeof window === 'undefined') return new Set()
     try {
@@ -37,6 +39,8 @@ export default function PoolLeaderboard() {
     if (typeof window === 'undefined') return 'list'
     return localStorage.getItem('pool-view') || 'list'
   })
+
+  
 
   function toggleFavourite(e, id) {
     e.stopPropagation()
@@ -105,7 +109,7 @@ export default function PoolLeaderboard() {
   // Set default tab based on whether user is in grand pool
   useEffect(() => {
     if (!data) return
-    const { scoredTeams, orgs, currentUserId } = data
+    const { scoredTeams, orgs, currentUserId} = data
     const inGrandPool = scoredTeams.some(t => t.user_id === currentUserId && t.in_grand_pool && t.paid_grand_pool)
     if (!inGrandPool && orgs.length > 0) {
       setActiveTab(orgs[0]?.id)
@@ -127,7 +131,7 @@ export default function PoolLeaderboard() {
   </div>
 )
 
-  const { scoredTeams, orgs, currentUserId } = data
+  const { scoredTeams, orgs, currentUserId, status } = data
 
   const grandPoolTeams = scoredTeams.filter(t => t.in_grand_pool && t.paid_grand_pool)
   const userInGrandPool = scoredTeams.some(t => t.user_id === currentUserId && t.in_grand_pool && t.paid_grand_pool)
@@ -247,13 +251,22 @@ export default function PoolLeaderboard() {
           </div>
         </div>
 
-        <div>
+        <div className={styles.pillHeader}>
+
+          {status && (
+            <div className={styles.statusPill}>
+              {status}
+            </div>
+          )}
+
           {teamSearch && (
             <div className={styles.filterPill}>
               Filter Search: {teamSearch.toUpperCase()}
               <button onClick={() => setTeamSearch('')}>✕</button>
             </div>
           )}
+
+ 
 
         </div>
       </div>
