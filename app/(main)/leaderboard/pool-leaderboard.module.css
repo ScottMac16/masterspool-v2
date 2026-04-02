@@ -94,7 +94,7 @@
   background: none;
   border: 1px solid transparent;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   border-radius: var(--radius-round);
   transition: background 0.15s;
   background: #e6e6e6;
@@ -106,7 +106,7 @@
   display: flex;
   background: rgba(75, 75, 75, 0.1);
   border-radius: 50px;
-  padding: 5px;
+  padding: 3px;
   gap: 10px;
 
 }
@@ -115,7 +115,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
+  padding: 10px;
   border: none;
   border-radius: 50px;
   background: transparent;
