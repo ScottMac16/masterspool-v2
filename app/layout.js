@@ -4,6 +4,13 @@ import './globals.css'
 export const metadata = {
   title: 'SMAC Golf Pool',
   description: 'Compete with friends in the SMAC Golf Pool. Pick your 8-man roster and track your score live.',
+
+  icons: {
+    icon: '/smacIcon.png',          
+    shortcut: '/smacIcon.png',
+    apple: '/smacIcon.png',          
+  },
+
   openGraph: {
     title: 'SMAC Golf Pool',
     description: 'Compete with friends in the SMAC Golf Pool. Pick your 8-man roster and track your score live.',
@@ -18,6 +25,7 @@ export const metadata = {
     ],
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
     title: 'SMAC Golf Pool',
