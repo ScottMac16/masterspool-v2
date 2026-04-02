@@ -44,7 +44,6 @@ export default function GolfLeaderboard({ minimized, onToggle }) {
   const [showCanadiansOnly, setShowCanadiansOnly] = useState(false)
 
 
-
   useEffect(() => {
     fetch('/api/golf/pick-pct')
       .then(r => r.json())
@@ -268,16 +267,9 @@ async function togglePlayer(id) {
 
   return (
     <div className={`${styles.wrapper} ${minimized ? styles.minimized : ''}`}>
-          <button
-          className={styles.minimizeBtn}
-          onClick={() => {
-            const next = !minimized
-            setMinimized(next)
-            localStorage.setItem('golf-minimized', next)
-          }}
-        >
-          {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-        </button>
+            <button className={styles.minimizeBtn} onClick={onToggle}>
+        {minimized ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+      </button>
       <div className={styles.header}>
         
         <div className={styles.searchHeader}>
