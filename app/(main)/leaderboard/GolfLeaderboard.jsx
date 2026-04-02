@@ -54,7 +54,10 @@ export default function GolfLeaderboard({ minimized, onToggle }) {
       function fetchData() {
         fetch('/api/golf')
           .then(r => r.json())
-          .then(d => setGolfers(Array.isArray(d) && d.length ? d : []))
+          .then(d => {
+  const golferData = d.leaderboard || d
+  setGolfers(Array.isArray(golferData) && golferData.length ? golferData : [])
+})
           .catch(() => setGolfers([]))
       }
 

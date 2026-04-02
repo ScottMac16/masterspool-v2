@@ -11,6 +11,6 @@ export async function GET() {
     .limit(1)
     .single()
 
-  const leaderboard = await getLeaderboard(tournament?.espn_event_id)
-  return Response.json(leaderboard)
+  const { leaderboard, status } = await getLeaderboard(tournament?.espn_event_id)
+  return Response.json({ leaderboard, status })
 }
