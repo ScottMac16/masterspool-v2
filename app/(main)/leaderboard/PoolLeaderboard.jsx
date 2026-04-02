@@ -20,7 +20,6 @@ function scoreClass(score, styles) {
 export default function PoolLeaderboard() {
   const [data, setData] = useState(null)
   const [activeTab, setActiveTab] = useState('grandpool')
-  const [view, setView] = useState('list')
   const [expandedTeams, setExpandedTeams] = useState(new Set())
   const [error, setError] = useState(false)
   const [teamSearch, setTeamSearch] = useState('')
@@ -152,10 +151,7 @@ export default function PoolLeaderboard() {
   })
 
 
-  const [minimized, setMinimized] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return localStorage.getItem('golf-minimized') === 'true'
-  })
+  
 
   return (
     <div className={styles.wrapper}>
