@@ -57,6 +57,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  
 
 }
 
@@ -152,12 +153,12 @@
 .listHeader {
   display: grid;
   grid-template-columns: 40px 1fr 15% 10% 10% 2%;
-  padding: 6px 16px;
+  padding: 20px 16px 8px 16px;
   font-size: 0.55rem;
   letter-spacing: 1px;
   position: sticky;
   text-align: center;
-  top: 110px;
+  top: 70px;
   background: white;
 
   margin-bottom: 10px;
@@ -255,6 +256,7 @@
 
   margin: 0;
   text-align: center;
+  align-items: center;
 
 
 }

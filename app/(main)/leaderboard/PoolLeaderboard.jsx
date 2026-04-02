@@ -289,7 +289,7 @@ export default function PoolLeaderboard() {
                         onClick={e => toggleFavourite(e, team.id)}
                         title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
                       >
-                        <Star size={12} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                        <Star size={18} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
                       </button>
 
                     </span>
@@ -345,7 +345,7 @@ export default function PoolLeaderboard() {
                     onClick={e => toggleFavourite(e, team.id)}
                     title={favourites.has(team.id) ? 'Remove from favourites' : 'Add to favourites'}
                   >
-                    <Star size={14} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
+                    <Star size={18} fill={favourites.has(team.id) ? '#c9a84c' : 'none'} color={favourites.has(team.id) ? '#c9a84c' : '#aaa'} />
                   </button>
                 </span>
                 <span className={styles.cgName}></span>
