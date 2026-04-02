@@ -42,10 +42,7 @@ export default function GolfLeaderboard({ minimized, onToggle }) {
   })
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
   const [showCanadiansOnly, setShowCanadiansOnly] = useState(false)
-  const [minimized, setMinimized] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return localStorage.getItem('golf-minimized') === 'true'
-  })
+
 
 
   useEffect(() => {
