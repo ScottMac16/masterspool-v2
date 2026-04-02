@@ -71,7 +71,7 @@
   background: white;
   border: 1px solid rgb(172, 172, 172);
   border-radius: var(--radius-pill);
-  padding: 10px 12px;
+  padding: 6px 12px;
   z-index: 10;
   color: rgb(83, 83, 83);
   width: 100%;
