@@ -14,7 +14,7 @@ export async function GET(req, { params }) {
   const eventId = tournament?.espn_event_id
 
   const [linescoresRes, parMap] = await Promise.all([
-    fetch(`https://sports.core.api.espn.com/v2/sports/golf/leagues/pga/events/${eventId}/competitions/${eventId}/competitors/${id}/linescores?lang=en&region=us`, { next: { revalidate: 60 } }),
+    fetch(`https://sports.core.api.espn.com/v2/sports/golf/leagues/pga/events/${eventId}/competitions/${eventId}/competitors/${id}/linescores?lang=en&region=us`, { next: { revalidate: 'no-store' } }),
     getCourseHoles(eventId)
   ])
 
