@@ -92,13 +92,14 @@
   align-items: center;
   justify-content: center;
   background: none;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-gold);
   cursor: pointer;
   padding: 10px;
   border-radius: var(--radius-round);
   transition: background 0.15s;
   background: #e6e6e6;
   color: white;
+  border-
 
 }
 

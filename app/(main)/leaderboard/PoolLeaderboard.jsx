@@ -232,14 +232,14 @@ export default function PoolLeaderboard() {
                     onClick={() => setShowMyTeamsOnly(v => !v)}
                     title="Show my teams only"
                   >
-                    <User size={14} color={showMyTeamsOnly ? '#c9a84c' : 'white'} />
+                    <User size={14} color={showMyTeamsOnly ? '#c9a84c' : '#4d4d4d'} />
                   </button>
                   <button
                     className={`${styles.viewBtn} ${showFavouritesOnly ? styles.activeView : ''}`}
                     onClick={() => setShowFavouritesOnly(v => !v)}
                     title="Show favourites only"
                   >
-                    <Star size={14} fill={showFavouritesOnly ? '#c9a84c' : 'none'} color={showFavouritesOnly ? '#c9a84c' : 'white'} />
+                    <Star size={14} fill={showFavouritesOnly ? '#c9a84c' : 'none'} color={showFavouritesOnly ? '#c9a84c' : '#4d4d4d'} />
                   </button>
                 </>
               ) : (
