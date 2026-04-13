@@ -25,7 +25,17 @@ export default function PoolLeaderboard() {
   const [teamSearch, setTeamSearch] = useState('')
   const [showFavouritesOnly, setShowFavouritesOnly] = useState(false)
   const [showMyTeamsOnly, setShowMyTeamsOnly] = useState(false)
+  const [sortBy, setSortBy] = useState('totalScore')
+  const [sortDir, setSortDir] = useState('asc')
 
+  function toggleSort(field) {
+    if (sortBy === field) {
+      setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortBy(field)
+      setSortDir('asc')
+    }
+  }
 
   const [favourites, setFavourites] = useState(() => {
     if (typeof window === 'undefined') return new Set()
@@ -142,7 +152,12 @@ export default function PoolLeaderboard() {
     ? grandPoolTeams
     : scoredTeams.filter(t => t.org_id === activeTab && t.paid)
 
-  const rankedTeams = activeTeams.map((t, i, arr) => {
+  const sortedActive = [...activeTeams].sort((a, b) => {
+    const mul = sortDir === 'asc' ? 1 : -1
+    return (a[sortBy] - b[sortBy]) * mul
+  })
+
+  const rankedTeams = sortedActive.map((t, i, arr) => {
     const rank = arr.findIndex(a => a.totalScore === t.totalScore) + 1
     return { ...t, rank }
   })
@@ -275,13 +290,19 @@ export default function PoolLeaderboard() {
       {view === 'list' && (
         <div className={styles.listView}>
           <div className={styles.listHeader}>
-            <span className={styles.colPos}>POS</span>
-            <span className={styles.colTeam}>TEAM NAME</span>
-            <span>TOTAL</span>
-            <span>TODAY</span>
-            <span>CUT</span>
-            <span className={styles.colExpand}></span>
-          </div>
+          <span className={styles.colPos}>POS</span>
+          <span className={styles.colTeam}>TEAM NAME</span>
+          <span className={styles.sortable} onClick={() => toggleSort('totalScore')}>
+            TOTAL {sortBy === 'totalScore' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
+          </span>
+          <span className={styles.sortable} onClick={() => toggleSort('todayScore')}>
+            TODAY {sortBy === 'todayScore' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
+          </span>
+          <span className={styles.sortable} onClick={() => toggleSort('cutCount')}>
+            CUT {sortBy === 'cutCount' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
+          </span>
+          <span className={styles.colExpand}></span>
+        </div>
           {filteredTeams.map(team => (
             <div key={team.id} className={styles.listItem}>
               <div

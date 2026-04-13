@@ -520,6 +520,16 @@
   white-space: nowrap;
 }
 
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sortable:hover {
+  color: var(--color-gold);
+}
+
 
 
 @media screen and (max-width: 799px) {
